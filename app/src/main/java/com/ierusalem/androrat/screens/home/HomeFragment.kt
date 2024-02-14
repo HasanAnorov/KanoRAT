@@ -26,6 +26,7 @@ class HomeFragment: Fragment() {
                 AndroRATTheme {
                     HomeScreen(
                         state = state,
+                        onSaveScreenshotClick = {},
                         onReadExternalStoragePermissionRequest = {},
                         onCameraPermissionRequest = {},
                         onRecordAudioPermissionRequest = {},

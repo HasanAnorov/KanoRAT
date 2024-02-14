@@ -1,16 +1,15 @@
 package com.ierusalem.androrat.screens
 
 import android.Manifest
-import android.app.Activity
+import android.content.ContentValues
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Color
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
-import android.util.Log
-import android.view.View
+import android.provider.MediaStore
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
@@ -33,11 +32,9 @@ import com.ierusalem.androrat.ui.theme.AndroRATTheme
 import com.ierusalem.androrat.utility.openAppSettings
 import java.io.File
 import java.io.FileOutputStream
-import java.util.Date
+import java.io.OutputStream
 
 class MainActivity : ComponentActivity() {
-
-    val TAG = "ahi3646"
 
     private val recordAudioAndCallPhonePermissions = arrayOf(
         Manifest.permission.RECORD_AUDIO,
@@ -111,48 +108,48 @@ class MainActivity : ComponentActivity() {
                 )
 
                 /**
-                 For android 13
-                 These permissions and launchers needed for android 13
+                For android 13
+                These permissions and launchers needed for android 13
 
-//                val readImagePermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
-//                    Manifest.permission.READ_MEDIA_IMAGES
-//                else
-//                    Manifest.permission.READ_EXTERNAL_STORAGE
-//                val readAudioPermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
-//                    Manifest.permission.READ_MEDIA_AUDIO
-//                else
-//                    Manifest.permission.READ_EXTERNAL_STORAGE
-//                val readVideoPermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
-//                    Manifest.permission.READ_MEDIA_VIDEO
-//                else
-//                    Manifest.permission.READ_EXTERNAL_STORAGE
+                //                val readImagePermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+                //                    Manifest.permission.READ_MEDIA_IMAGES
+                //                else
+                //                    Manifest.permission.READ_EXTERNAL_STORAGE
+                //                val readAudioPermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+                //                    Manifest.permission.READ_MEDIA_AUDIO
+                //                else
+                //                    Manifest.permission.READ_EXTERNAL_STORAGE
+                //                val readVideoPermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+                //                    Manifest.permission.READ_MEDIA_VIDEO
+                //                else
+                //                    Manifest.permission.READ_EXTERNAL_STORAGE
 
                 val readAudioPermissionForAndroid13Launcher = rememberLauncherForActivityResult(
-                    contract = ActivityResultContracts.RequestPermission(),
-                    onResult = { isGranted ->
-                        homeViewModel.onPermissionResult(
-                            permission = readAudioPermission,
-                            isGranted = isGranted
-                        )
-                    }
+                contract = ActivityResultContracts.RequestPermission(),
+                onResult = { isGranted ->
+                homeViewModel.onPermissionResult(
+                permission = readAudioPermission,
+                isGranted = isGranted
+                )
+                }
                 )
                 val readImagesPermissionForAndroid13Launcher = rememberLauncherForActivityResult(
-                    contract = ActivityResultContracts.RequestPermission(),
-                    onResult = { isGranted ->
-                        homeViewModel.onPermissionResult(
-                            permission = readImagePermission,
-                            isGranted = isGranted
-                        )
-                    }
+                contract = ActivityResultContracts.RequestPermission(),
+                onResult = { isGranted ->
+                homeViewModel.onPermissionResult(
+                permission = readImagePermission,
+                isGranted = isGranted
+                )
+                }
                 )
                 val readVideoPermissionForAndroid13Launcher = rememberLauncherForActivityResult(
-                    contract = ActivityResultContracts.RequestPermission(),
-                    onResult = { isGranted ->
-                        homeViewModel.onPermissionResult(
-                            permission = readVideoPermission,
-                            isGranted = isGranted
-                        )
-                    }
+                contract = ActivityResultContracts.RequestPermission(),
+                onResult = { isGranted ->
+                homeViewModel.onPermissionResult(
+                permission = readVideoPermission,
+                isGranted = isGranted
+                )
+                }
                 )
                  */
 
@@ -160,14 +157,14 @@ class MainActivity : ComponentActivity() {
                 val multipleReadMediaPermissionLauncher = rememberLauncherForActivityResult(
                     contract = ActivityResultContracts.RequestMultiplePermissions(),
                     onResult = { perms ->
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                             readMediaPermissionsAndroid13.forEach { permission ->
                                 homeViewModel.onPermissionResult(
                                     permission = permission,
                                     isGranted = perms[permission] == true
                                 )
                             }
-                        }else{
+                        } else {
                             Manifest.permission.READ_EXTERNAL_STORAGE
                         }
                     }
@@ -234,7 +231,7 @@ class MainActivity : ComponentActivity() {
                                     PhotosAndVideosPermissionTextProvider()
                                 }
 
-                                Manifest.permission.READ_EXTERNAL_STORAGE ->{
+                                Manifest.permission.READ_EXTERNAL_STORAGE -> {
                                     ReadExternalStoragePermissionTextProvider()
                                 }
 
@@ -266,11 +263,17 @@ class MainActivity : ComponentActivity() {
 
                 HomeScreen(
                     state = state,
+                    onSaveScreenshotClick = {
+                        if (state.screenshot != null) {
+                            saveMediaToStorage(state.screenshot!!)
+                        } else {
+                            Toast.makeText(this, "Can not save!", Toast.LENGTH_SHORT).show()
+                        }
+                    },
                     onReadExternalStoragePermissionRequest = {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
-                            Log.d(TAG, "onCreate: ")
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                             multipleReadMediaPermissionLauncher.launch(readMediaPermissionsAndroid13)
-                        }else{
+                        } else {
                             readExternalStoragePermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
                         }
                     },
@@ -284,46 +287,74 @@ class MainActivity : ComponentActivity() {
                         cameraResultPermissionLauncher.launch(Manifest.permission.CAMERA)
                     },
                     onTakeScreenShotClick = {
-//                        val screenshot = takeScreenshot(this)
-//                        val bitmap = captureScreenShot(window.decorView.rootView)
-//                        homeViewModel.setPhoto(screenshot)
-//                        takeScreenshot(this)
-//                        Toast.makeText(this, "Took screenshot", Toast.LENGTH_SHORT).show()
+                        homeViewModel.updatePhoto(it)
                     }
                 )
             }
         }
     }
 
-    private fun captureScreenShot(view: View): Bitmap {
-        val returnedBitmap = Bitmap.createBitmap(view.width, view.height, Bitmap.Config.ARGB_8888)
-        val canvas = Canvas(returnedBitmap)
-        val bgDrawable = view.background
-        if (bgDrawable != null) bgDrawable.draw(canvas)
-        else canvas.drawColor(Color.WHITE)
-        view.draw(canvas)
-        return returnedBitmap
+    private fun saveMediaToStorage(bitmap: Bitmap) {
+        val filename = "${System.currentTimeMillis()}.jpg"
+        var fos: OutputStream? = null
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            contentResolver?.also { resolver ->
+                val contentValues = ContentValues().apply {
+                    put(MediaStore.MediaColumns.DISPLAY_NAME, filename)
+                    put(MediaStore.MediaColumns.MIME_TYPE, "image/jpg")
+                    put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES)
+                }
+                val imageUri: Uri? =
+                    resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+                fos = imageUri?.let { resolver.openOutputStream(it) }
+            }
+        } else {
+            val imagesDir =
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+            val image = File(imagesDir, filename)
+            fos = FileOutputStream(image)
+        }
+        fos?.use {
+            bitmap.compress( Bitmap.CompressFormat.JPEG, 100, it)
+            Toast.makeText(this, "Saved to Photos", Toast.LENGTH_SHORT).show()
+        }
     }
 
-    private fun takeScreenshot(activity: Activity): File {
-        val now = Date()
-        val date = android.text.format.DateFormat.format("yyyy-MM-dd_hh:mm:ss", now)
 
-        val rootView = activity.window.decorView.rootView
-        rootView.isDrawingCacheEnabled = true
-        val bitmap = Bitmap.createBitmap(rootView.drawingCache)
-        rootView.isDrawingCacheEnabled = false
 
-        val imageFile = File(
-            activity.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "screenshot-$date.png"
-        )
 
-        val outputStream = FileOutputStream(imageFile)
-        val quality = 100
-        bitmap.compress(Bitmap.CompressFormat.PNG, quality, outputStream)
-        outputStream.flush()
-        outputStream.close()
+//    private suspend fun Bitmap.saveToDisk(context: Context): Uri {
+//        val file = File(
+//            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+//            "screenshot-${System.currentTimeMillis()}.png"
+//        )
+//
+//        file.writeBitmap(this, Bitmap.CompressFormat.PNG, 100)
+//
+//        return scanFilePath(context, file.path) ?: throw Exception("File could not be saved")
+//    }
+//
+//    private suspend fun scanFilePath(context: Context, filePath: String): Uri? {
+//        return suspendCancellableCoroutine { continuation ->
+//            MediaScannerConnection.scanFile(
+//                context,
+//                arrayOf(filePath),
+//                arrayOf("image/png")
+//            ) { _, scannedUri ->
+//                if (scannedUri == null) {
+//                    continuation.cancel(Exception("File $filePath could not be scanned"))
+//                } else {
+//                    continuation.resume(scannedUri)
+//                }
+//            }
+//        }
+//    }
+//
+//    private fun File.writeBitmap(bitmap: Bitmap, format: Bitmap.CompressFormat, quality: Int) {
+//        outputStream().use { out ->
+//            bitmap.compress(format, quality, out)
+//            out.flush()
+//        }
+//    }
 
-        return imageFile
-    }
 }

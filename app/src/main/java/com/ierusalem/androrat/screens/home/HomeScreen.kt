@@ -1,6 +1,6 @@
 package com.ierusalem.androrat.screens.home
 
-import android.graphics.BitmapFactory
+import android.graphics.Picture
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -9,14 +9,20 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.drawscope.draw
+import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
+import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -28,20 +34,45 @@ import com.ierusalem.androrat.ui.theme.dimens
 @Composable
 fun HomeScreen(
     state: HomeScreenState,
+    onSaveScreenshotClick: () -> Unit,
     onReadExternalStoragePermissionRequest: () -> Unit,
     onMultiplePermissionRequest: () -> Unit,
     onRecordAudioPermissionRequest: () -> Unit,
     onCameraPermissionRequest: () -> Unit,
-    onTakeScreenShotClick: () -> Unit,
+    onTakeScreenShotClick: (picture: Picture) -> Unit,
 ) {
+    val picture = remember { Picture() }
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background),
+            .verticalScroll(rememberScrollState())
+            .background(MaterialTheme.colorScheme.background)
+            .drawWithCache {
+                // Example that shows how to redirect rendering to an Android Picture and then
+                // draw the picture into the original destination
+                val width = this.size.width.toInt()
+                val height = this.size.height.toInt()
+
+                onDrawWithContent {
+                    val pictureCanvas =
+                        androidx.compose.ui.graphics.Canvas(
+                            picture.beginRecording(
+                                width,
+                                height
+                            )
+                        )
+                    // requires at least 1.6.0-alpha01+
+                    draw(this, this.layoutDirection, pictureCanvas, this.size) {
+                        this@onDrawWithContent.drawContent()
+                    }
+                    picture.endRecording()
+
+                    drawIntoCanvas { canvas -> canvas.nativeCanvas.drawPicture(picture) }
+                }
+            },
         verticalArrangement = Arrangement.Bottom,
         horizontalAlignment = Alignment.CenterHorizontally,
         content = {
-//            val bitmap = BitmapFactory.decodeResource(LocalContext.current.resources, R.drawable.ic_launcher_foreground)
             if (state.screenshot == null) {
                 Image(
                     modifier = Modifier
@@ -49,21 +80,32 @@ fun HomeScreen(
                         .padding(horizontal = 16.dp, vertical = 16.dp)
                         .fillMaxWidth(),
                     painter = painterResource(id = R.drawable.ic_launcher_background),
-                    contentDescription = "Profile icon",
-                    colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.onSecondaryContainer)
+                    contentDescription = "Screenshot place",
                 )
             } else {
-                val bitmap = BitmapFactory.decodeFile(state.screenshot.name)
                 Image(
                     modifier = Modifier
                         .height(390.dp)
                         .padding(horizontal = 16.dp, vertical = 16.dp)
                         .fillMaxWidth(),
-                    bitmap = bitmap.asImageBitmap(),
-                    contentDescription = "Profile icon",
-                    colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.onSecondaryContainer)
+                    bitmap = state.screenshot.asImageBitmap(),
+                    contentDescription = "Screenshot place",
                 )
             }
+            CommonAndroRatButton(
+                onClick = onSaveScreenshotClick,
+                text = "Save screenshot to gallery",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        start = MaterialTheme.dimens.spacing16,
+                        end = MaterialTheme.dimens.spacing16,
+                        bottom = MaterialTheme.dimens.spacing16
+                    )
+                    .clip(RoundedCornerShape(MaterialTheme.dimens.spacing12))
+                    .background(color = MaterialTheme.colorScheme.onBackground.copy(0.1f))
+            )
+
 
             CommonAndroRatButton(
                 onClick = onMultiplePermissionRequest,
@@ -122,7 +164,7 @@ fun HomeScreen(
             )
 
             CommonAndroRatButton(
-                onClick = onTakeScreenShotClick,
+                onClick = { onTakeScreenShotClick(picture) },
                 text = "Take a screenshot",
                 modifier = Modifier
                     .fillMaxWidth()
@@ -145,6 +187,7 @@ fun HomeScreen_LightPreview() {
     AndroRATTheme(darkTheme = false) {
         HomeScreen(
             state = HomeScreenState(),
+            onSaveScreenshotClick = {},
             onReadExternalStoragePermissionRequest = {},
             onMultiplePermissionRequest = {},
             onCameraPermissionRequest = {},
@@ -160,6 +203,7 @@ fun HomeScreen_DarkPreview() {
     AndroRATTheme(darkTheme = true) {
         HomeScreen(
             state = HomeScreenState(),
+            onSaveScreenshotClick = {},
             onReadExternalStoragePermissionRequest = {},
             onMultiplePermissionRequest = {},
             onCameraPermissionRequest = {},
