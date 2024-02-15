@@ -37,6 +37,7 @@ android {
         jvmTarget = "1.8"
     }
     buildFeatures {
+        viewBinding = true
         compose = true
     }
     composeOptions {
@@ -51,11 +52,15 @@ android {
 
 dependencies {
 
+    //to use appCompat features
+    implementation("androidx.appcompat:appcompat:1.6.1")
     //view model
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
-
     //screenshot library
     implementation ("dev.shreyaspatil:capturable:2.0.0")
+    //navigation
+    implementation ("androidx.navigation:navigation-fragment-ktx:2.7.7")
+    implementation ("androidx.navigation:navigation-ui-ktx:2.7.7")
 
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")

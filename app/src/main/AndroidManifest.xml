@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!--    SMS READING-->
+    <uses-permission android:name="android.permission.READ_SMS"/>
+
     <!--RECORD AUDIO-->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
