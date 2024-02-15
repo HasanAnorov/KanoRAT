@@ -1,6 +1,7 @@
 package com.ierusalem.androrat.screens.home
 
 import android.graphics.Picture
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -14,15 +15,19 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ExperimentalComposeApi
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawWithCache
-import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.drawscope.draw
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.nativeCanvas
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -30,7 +35,11 @@ import com.ierusalem.androrat.R
 import com.ierusalem.androrat.ui.components.CommonAndroRatButton
 import com.ierusalem.androrat.ui.theme.AndroRATTheme
 import com.ierusalem.androrat.ui.theme.dimens
+import dev.shreyaspatil.capturable.capturable
+import dev.shreyaspatil.capturable.controller.rememberCaptureController
+import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalComposeUiApi::class, ExperimentalComposeApi::class)
 @Composable
 fun HomeScreen(
     state: HomeScreenState,
@@ -39,13 +48,18 @@ fun HomeScreen(
     onMultiplePermissionRequest: () -> Unit,
     onRecordAudioPermissionRequest: () -> Unit,
     onCameraPermissionRequest: () -> Unit,
-    onTakeScreenShotClick: (picture: Picture) -> Unit,
+    onTakeScreenShotClick: (bitmap: ImageBitmap) -> Unit,
 ) {
+    val captureController = rememberCaptureController()
+    val coroutineScope = rememberCoroutineScope()
+    val scrollState = rememberScrollState()
+    val context = LocalContext.current
     val picture = remember { Picture() }
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll(rememberScrollState())
+            .verticalScroll(scrollState)
+            .capturable(captureController)
             .background(MaterialTheme.colorScheme.background)
             .drawWithCache {
                 // Example that shows how to redirect rendering to an Android Picture and then
@@ -88,7 +102,7 @@ fun HomeScreen(
                         .height(390.dp)
                         .padding(horizontal = 16.dp, vertical = 16.dp)
                         .fillMaxWidth(),
-                    bitmap = state.screenshot.asImageBitmap(),
+                    bitmap = state.screenshot,
                     contentDescription = "Screenshot place",
                 )
             }
@@ -164,7 +178,17 @@ fun HomeScreen(
             )
 
             CommonAndroRatButton(
-                onClick = { onTakeScreenShotClick(picture) },
+                onClick = {
+                    val bitmapAsync = captureController.captureAsync()
+                    try {
+                        coroutineScope.launch {
+                            val bitmap = bitmapAsync.await()
+                            onTakeScreenShotClick(bitmap)
+                        }
+                    }catch (error: Throwable){
+                        Toast.makeText(context, "Can't take a screenshot", Toast.LENGTH_SHORT).show()
+                    }
+                },
                 text = "Take a screenshot",
                 modifier = Modifier
                     .fillMaxWidth()

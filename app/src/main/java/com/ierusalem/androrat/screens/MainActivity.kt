@@ -18,6 +18,8 @@ import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.core.content.ContextCompat
 import com.ierusalem.androrat.screens.home.HomeScreen
 import com.ierusalem.androrat.screens.home.HomeViewModel
@@ -294,7 +296,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    private fun saveMediaToStorage(bitmap: Bitmap) {
+    private fun saveMediaToStorage(bitmap: ImageBitmap) {
         val filename = "${System.currentTimeMillis()}.jpg"
         var fos: OutputStream? = null
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -315,46 +317,9 @@ class MainActivity : ComponentActivity() {
             fos = FileOutputStream(image)
         }
         fos?.use {
-            bitmap.compress( Bitmap.CompressFormat.JPEG, 100, it)
+            bitmap.asAndroidBitmap().compress( Bitmap.CompressFormat.JPEG, 100, it)
             Toast.makeText(this, "Saved to Photos", Toast.LENGTH_SHORT).show()
         }
     }
-
-
-
-
-//    private suspend fun Bitmap.saveToDisk(context: Context): Uri {
-//        val file = File(
-//            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
-//            "screenshot-${System.currentTimeMillis()}.png"
-//        )
-//
-//        file.writeBitmap(this, Bitmap.CompressFormat.PNG, 100)
-//
-//        return scanFilePath(context, file.path) ?: throw Exception("File could not be saved")
-//    }
-//
-//    private suspend fun scanFilePath(context: Context, filePath: String): Uri? {
-//        return suspendCancellableCoroutine { continuation ->
-//            MediaScannerConnection.scanFile(
-//                context,
-//                arrayOf(filePath),
-//                arrayOf("image/png")
-//            ) { _, scannedUri ->
-//                if (scannedUri == null) {
-//                    continuation.cancel(Exception("File $filePath could not be scanned"))
-//                } else {
-//                    continuation.resume(scannedUri)
-//                }
-//            }
-//        }
-//    }
-//
-//    private fun File.writeBitmap(bitmap: Bitmap, format: Bitmap.CompressFormat, quality: Int) {
-//        outputStream().use { out ->
-//            bitmap.compress(format, quality, out)
-//            out.flush()
-//        }
-//    }
 
 }

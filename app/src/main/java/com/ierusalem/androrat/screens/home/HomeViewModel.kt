@@ -1,10 +1,8 @@
 package com.ierusalem.androrat.screens.home
 
-import android.graphics.Bitmap
-import android.graphics.Picture
-import android.os.Build
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -30,34 +28,17 @@ class HomeViewModel : ViewModel() {
         }
     }
 
-    fun updatePhoto(picture: Picture) {
+    fun updatePhoto(bitmap: ImageBitmap) {
         _state.update {
             it.copy(
-                screenshot = createBitmapFromPicture(picture)
+                screenshot = bitmap
             )
         }
-    }
-
-    private fun createBitmapFromPicture(picture: Picture): Bitmap{
-        val bitmap = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            Bitmap.createBitmap(picture)
-        } else {
-            val bitmap = Bitmap.createBitmap(
-                picture.width,
-                picture.height,
-                Bitmap.Config.ARGB_8888
-            )
-            val canvas = android.graphics.Canvas(bitmap)
-            canvas.drawColor(android.graphics.Color.WHITE)
-            canvas.drawPicture(picture)
-            bitmap
-        }
-        return bitmap
     }
 
 }
 
 @Immutable
 data class HomeScreenState(
-    val screenshot: Bitmap? = null
+    val screenshot: ImageBitmap? = null
 )
