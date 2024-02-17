@@ -105,6 +105,18 @@ class CameraPermissionTextProvider : PermissionTextProvider {
     }
 }
 
+class ReadSMSMessageTextProvider: PermissionTextProvider{
+    override fun getDescription(isPermanentlyDeclined: Boolean): String {
+        return if (isPermanentlyDeclined) {
+            "It seems you permanently declined SMS permission. " +
+                    "You can go to the app settings to grant it."
+        } else {
+            "This app needs access to your SMS Message so that you " +
+                    "can text to your friends."
+        }
+    }
+}
+
 class ReadExternalStoragePermissionTextProvider : PermissionTextProvider {
     override fun getDescription(isPermanentlyDeclined: Boolean): String {
         return if (isPermanentlyDeclined) {

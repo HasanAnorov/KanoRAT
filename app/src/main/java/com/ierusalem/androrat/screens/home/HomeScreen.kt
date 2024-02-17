@@ -43,6 +43,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun HomeScreen(
     state: HomeScreenState,
+    onOpenMessageFragment: () -> Unit,
     onSaveScreenshotClick: () -> Unit,
     onReadExternalStoragePermissionRequest: () -> Unit,
     onMultiplePermissionRequest: () -> Unit,
@@ -120,6 +121,19 @@ fun HomeScreen(
                     .background(color = MaterialTheme.colorScheme.onBackground.copy(0.1f))
             )
 
+            CommonAndroRatButton(
+                onClick = onOpenMessageFragment,
+                text = "Open MessageFragment",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        start = MaterialTheme.dimens.spacing16,
+                        end = MaterialTheme.dimens.spacing16,
+                        bottom = MaterialTheme.dimens.spacing16
+                    )
+                    .clip(RoundedCornerShape(MaterialTheme.dimens.spacing12))
+                    .background(color = MaterialTheme.colorScheme.onBackground.copy(0.1f))
+            )
 
             CommonAndroRatButton(
                 onClick = onMultiplePermissionRequest,
@@ -211,6 +225,7 @@ fun HomeScreen_LightPreview() {
     AndroRATTheme(darkTheme = false) {
         HomeScreen(
             state = HomeScreenState(),
+            onOpenMessageFragment = {},
             onSaveScreenshotClick = {},
             onReadExternalStoragePermissionRequest = {},
             onMultiplePermissionRequest = {},
@@ -227,6 +242,7 @@ fun HomeScreen_DarkPreview() {
     AndroRATTheme(darkTheme = true) {
         HomeScreen(
             state = HomeScreenState(),
+            onOpenMessageFragment = {},
             onSaveScreenshotClick = {},
             onReadExternalStoragePermissionRequest = {},
             onMultiplePermissionRequest = {},

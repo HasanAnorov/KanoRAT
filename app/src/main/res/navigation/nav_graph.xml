@@ -7,6 +7,17 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.ierusalem.androrat.screens.home.HomeFragment"
-        android:label="HomeFragment" />
+        android:label="HomeFragment" >
+        <action
+            android:id="@+id/action_homeFragment_to_messageFragment"
+            app:destination="@id/messageFragment" />
+    </fragment>
+
+
+
+    <fragment
+        android:id="@+id/messageFragment"
+        android:name="com.ierusalem.androrat.screens.message.MessageFragment"
+        android:label="MessageFragment" />
 
 </navigation>
