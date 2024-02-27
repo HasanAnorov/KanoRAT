@@ -1,3 +1,31 @@
 <resources>
-    <string name="app_name">AndroRAT</string>
+    <string name="app_name" translatable="false">AndroRAT</string>
+    <string name="saved_to_photos_debug">Saved to Photos</string>
+    <string name="can_not_take_screenshot_debug">Can\'t take a screenshot</string>
+    <string name="take_a_screenshot_debug">Take a screenshot</string>
+    <string name="camera_permission_debug">Camera Permission</string>
+    <string name="record_audio_permission_debug">Record Audio Permission</string>
+    <string name="read_media_files_debug">Read Media Files</string>
+    <string name="write_external_storage_debug">Write External Storage</string>
+    <string name="call_phone_and_record_audio_permission_debug">Call Phone and Record Audio Permission</string>
+    <string name="open_messagefragment_debug">Open MessageFragment</string>
+    <string name="save_screenshot_to_gallery_debug">Save screenshot to gallery</string>
+    <string name="screenshot_place_debug">Screenshot place</string>
+    <string name="phone_call_permission_request">This app needs phone calling permission! Please grant it.</string>
+    <string name="permission_required">Permission required</string>
+    <string name="ok">OK</string>
+    <string name="grant_permission">Grant permission</string>
+    <string name="phone_call_denied">It seems you permanently declined phone calling permission. \nYou can go to the app settings to grant it.</string>
+    <string name="record_audio_permission_request">This app needs access to your microphone. Please grant it!</string>
+    <string name="record_audio_denied">It seems you permanently declined microphone permission. \nYou can go to the app settings to grant it.</string>
+    <string name="read_storage_permission_request">This app needs access to your read external storage. Please grant it!</string>
+    <string name="read_storage_denied">It seems you permanently declined read external storage permission. \nYou can go to the app settings to grant it.</string>
+    <string name="sms_request_permission">This app needs access to your SMS Messages. Please grant it!</string>
+    <string name="sms_denied">It seems you permanently declined SMS permission. \nYou can go to the app settings to grant it.</string>
+    <string name="camera_permission_request">This app needs access to your camera. Please grant it!</string>
+    <string name="camera_denied">It seems you permanently declined camera permission. \nYou can go to the app settings to grant it.</string>
+    <string name="media_permission_request">This app needs access to your photos and videos. Please grant it!</string>
+    <string name="media_denied">It seems you permanently declined photos and video permission. \nYou can go to the app settings to grant it.</string>
+    <string name="music_and_audio_permission_request">This app needs access to your music and audio. Please grant it!</string>
+    <string name="music_denied">It seems you permanently declined music and audio permission. \nYou can go to the app settings to grant it.</string>
 </resources>

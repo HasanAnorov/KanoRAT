@@ -29,6 +29,7 @@ import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ierusalem.androrat.R
@@ -46,6 +47,7 @@ fun HomeScreen(
     onOpenMessageFragment: () -> Unit,
     onSaveScreenshotClick: () -> Unit,
     onReadExternalStoragePermissionRequest: () -> Unit,
+    onWriteExternalStoragePermissionRequest: () -> Unit,
     onMultiplePermissionRequest: () -> Unit,
     onRecordAudioPermissionRequest: () -> Unit,
     onCameraPermissionRequest: () -> Unit,
@@ -95,7 +97,7 @@ fun HomeScreen(
                         .padding(horizontal = 16.dp, vertical = 16.dp)
                         .fillMaxWidth(),
                     painter = painterResource(id = R.drawable.ic_launcher_background),
-                    contentDescription = "Screenshot place",
+                    contentDescription = stringResource(id = R.string.screenshot_place_debug),
                 )
             } else {
                 Image(
@@ -104,12 +106,12 @@ fun HomeScreen(
                         .padding(horizontal = 16.dp, vertical = 16.dp)
                         .fillMaxWidth(),
                     bitmap = state.screenshot,
-                    contentDescription = "Screenshot place",
+                    contentDescription = stringResource(R.string.screenshot_place_debug),
                 )
             }
             CommonAndroRatButton(
                 onClick = onSaveScreenshotClick,
-                text = "Save screenshot to gallery",
+                text = stringResource(R.string.save_screenshot_to_gallery_debug),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(
@@ -122,8 +124,10 @@ fun HomeScreen(
             )
 
             CommonAndroRatButton(
-                onClick = onOpenMessageFragment,
-                text = "Open MessageFragment",
+                onClick = {
+                    onOpenMessageFragment()
+                },
+                text = stringResource(R.string.open_messagefragment_debug),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(
@@ -137,7 +141,7 @@ fun HomeScreen(
 
             CommonAndroRatButton(
                 onClick = onMultiplePermissionRequest,
-                text = "Call Phone and Record Audio Permission",
+                text = stringResource(R.string.call_phone_and_record_audio_permission_debug),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(
@@ -151,7 +155,7 @@ fun HomeScreen(
 
             CommonAndroRatButton(
                 onClick = onReadExternalStoragePermissionRequest,
-                text = "Read Media Files",
+                text = stringResource(R.string.read_media_files_debug),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(
@@ -163,9 +167,23 @@ fun HomeScreen(
                     .background(color = MaterialTheme.colorScheme.onBackground.copy(0.1f))
             )
 
+//            CommonAndroRatButton(
+//                onClick = onWriteExternalStoragePermissionRequest,
+//                text = stringResource(R.string.write_external_storage_debug),
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .padding(
+//                        start = MaterialTheme.dimens.spacing16,
+//                        end = MaterialTheme.dimens.spacing16,
+//                        bottom = MaterialTheme.dimens.spacing16
+//                    )
+//                    .clip(RoundedCornerShape(MaterialTheme.dimens.spacing12))
+//                    .background(color = MaterialTheme.colorScheme.onBackground.copy(0.1f))
+//            )
+
             CommonAndroRatButton(
                 onClick = onRecordAudioPermissionRequest,
-                text = "Record Audio Permission",
+                text = stringResource(R.string.record_audio_permission_debug),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(
@@ -179,7 +197,7 @@ fun HomeScreen(
 
             CommonAndroRatButton(
                 onClick = onCameraPermissionRequest,
-                text = "Camera Permission",
+                text = stringResource(R.string.camera_permission_debug),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(
@@ -199,11 +217,15 @@ fun HomeScreen(
                             val bitmap = bitmapAsync.await()
                             onTakeScreenShotClick(bitmap)
                         }
-                    }catch (error: Throwable){
-                        Toast.makeText(context, "Can't take a screenshot", Toast.LENGTH_SHORT).show()
+                    } catch (error: Throwable) {
+                        Toast.makeText(
+                            context,
+                            context.resources.getString(R.string.can_not_take_screenshot_debug),
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 },
-                text = "Take a screenshot",
+                text = stringResource(R.string.take_a_screenshot_debug),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(
@@ -227,6 +249,7 @@ fun HomeScreen_LightPreview() {
             state = HomeScreenState(),
             onOpenMessageFragment = {},
             onSaveScreenshotClick = {},
+            onWriteExternalStoragePermissionRequest = {},
             onReadExternalStoragePermissionRequest = {},
             onMultiplePermissionRequest = {},
             onCameraPermissionRequest = {},
@@ -244,6 +267,7 @@ fun HomeScreen_DarkPreview() {
             state = HomeScreenState(),
             onOpenMessageFragment = {},
             onSaveScreenshotClick = {},
+            onWriteExternalStoragePermissionRequest = {},
             onReadExternalStoragePermissionRequest = {},
             onMultiplePermissionRequest = {},
             onCameraPermissionRequest = {},

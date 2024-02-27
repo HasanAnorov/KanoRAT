@@ -10,6 +10,10 @@
         android:label="HomeFragment" >
         <action
             android:id="@+id/action_homeFragment_to_messageFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/slide_out"
             app:destination="@id/messageFragment" />
     </fragment>
 

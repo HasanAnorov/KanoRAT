@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
+//todo try to open exact permission screen at once
 fun Fragment.openAppSettings() {
     Intent(
         Settings.ACTION_APPLICATION_DETAILS_SETTINGS,

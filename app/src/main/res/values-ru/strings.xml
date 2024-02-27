@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="saved_to_photos_debug">Сохранено в фотографиях</string>
+    <string name="can_not_take_screenshot_debug">Не могу сделать скриншот</string>
+    <string name="take_a_screenshot_debug">Сделать снимок экрана</string>
+    <string name="camera_permission_debug">Разрешение камеры</string>
+    <string name="record_audio_permission_debug">Разрешение на запись аудио</string>
+    <string name="read_media_files_debug">Чтение медиа-файлов</string>
+    <string name="write_external_storage_debug">Запись внешнего хранилища</string>
+    <string name="call_phone_and_record_audio_permission_debug">Разрешение на вызов телефона и запись аудио</string>
+    <string name="open_messagefragment_debug">Открыть фрагмент сообщения</string>
+    <string name="save_screenshot_to_gallery_debug">Сохранить скриншот в галерею</string>
+    <string name="screenshot_place_debug">Место для скриншота</string>
+    <string name="phone_call_permission_request">Этому приложению требуется разрешение на телефонные звонки! Пожалуйста, даруйте это.</string>
+    <string name="permission_required">Требуется разрешение</string>
+    <string name="ok">OK</string>
+    <string name="grant_permission">Предоставить разрешение</string>
+    <string name="phone_call_denied">Кажется, вы навсегда отклонили разрешение на телефонные звонки. \nВы можете перейти в настройки приложения, чтобы предоставить его.</string>
+    <string name="record_audio_permission_request">Этому приложению необходим доступ к вашему микрофону. Пожалуйста, даруйте это!</string>
+    <string name="record_audio_denied">Кажется, вы навсегда отклонили разрешение на использование микрофона. \nВы можете перейти в настройки приложения, чтобы предоставить его.</string>
+    <string name="read_storage_permission_request">Этому приложению необходим доступ к вашему внешнему хранилищу для чтения. Пожалуйста, даруйте это!</string>
+    <string name="read_storage_denied">Кажется, вы навсегда отклонили разрешение на чтение внешнего хранилища. \Вы можете перейти в настройки приложения, чтобы предоставить его.</string>
+    <string name="sms_request_permission">Этому приложению необходим доступ к вашим SMS-сообщениям. Пожалуйста, даруйте это!</string>
+    <string name="sms_denied">Кажется, вы навсегда отклонили разрешение на отправку SMS. \nВы можете перейти в настройки приложения, чтобы предоставить его.</string>
+    <string name="camera_permission_request">Этому приложению необходим доступ к вашей камере. Пожалуйста, даруйте это!</string>
+    <string name="camera_denied">Кажется, вы навсегда отклонили разрешение на использование камеры. \nВы можете перейти в настройки приложения, чтобы предоставить его.</string>
+    <string name="media_permission_request">Этому приложению необходим доступ к вашим фотографиям и видео. Пожалуйста, даруйте это!</string>
+    <string name="media_denied">Кажется, вы навсегда отклонили разрешение на фото и видео. \nВы можете перейти в настройки приложения, чтобы предоставить его.</string>
+    <string name="music_and_audio_permission_request">Этому приложению необходим доступ к вашей музыке и аудио. Пожалуйста, даруйте это!</string>
+    <string name="music_denied">Кажется, вы навсегда отклонили разрешение на музыку и аудио. \nВы можете перейти в настройки приложения, чтобы предоставить его.</string>
+</resources>
