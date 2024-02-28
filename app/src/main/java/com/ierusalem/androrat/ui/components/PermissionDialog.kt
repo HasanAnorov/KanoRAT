@@ -14,8 +14,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ierusalem.androrat.R
+import com.ierusalem.androrat.ui.theme.AndroRATTheme
 
 @Composable
 fun PermissionDialog(
@@ -142,5 +144,30 @@ class PhoneCallPermissionTextProvider : PermissionTextProvider {
         } else {
             context.getString(R.string.phone_call_permission_request)
         }
+    }
+}
+
+@Preview
+@Composable
+fun PermissionDialog_Preview(){
+    PermissionDialog(
+        permissionTextProvider = PhoneCallPermissionTextProvider(),
+        isPermanentlyDeclined = false,
+        onDismiss = { /*TODO*/ },
+        onOkClick = { /*TODO*/ },
+        onGoToAppSettingsClick = { /*TODO*/ }
+    )
+}
+@Preview
+@Composable
+fun PermissionDialog_Preview_Dark(){
+    AndroRATTheme(darkTheme = true) {
+        PermissionDialog(
+            permissionTextProvider = PhoneCallPermissionTextProvider(),
+            isPermanentlyDeclined = true,
+            onDismiss = { /*TODO*/ },
+            onOkClick = { /*TODO*/ },
+            onGoToAppSettingsClick = { /*TODO*/ }
+        )
     }
 }

