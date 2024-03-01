@@ -8,6 +8,3 @@ fun <VM, EVENT> VM.emitNavigation(event: EVENT) where VM: NavigationEventDelegat
     viewModelScope.launch { sendEvent(event) }
 }
 
-suspend fun <VM, EVENT> VM.navigateTo(event: EVENT) where VM: NavigationEventDelegate<EVENT>, VM : ViewModel{
-    sendEvent(event)
-}
