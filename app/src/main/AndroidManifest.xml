@@ -2,6 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+
+    <!--    SMS READING-->
+    <uses-permission android:name="android.permission.READ_SMS"/>
+
     <!--RECORD AUDIO-->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
@@ -22,9 +28,12 @@
     <uses-permission-sdk-23
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="28" />
+<!--    todo campare with vid compose-->
     <uses-permission-sdk-23
         android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="28" />
+
+    <uses-permission-sdk-23 android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/>
 
     <!--   Android 10 (sdk 29) "<=" up to "<" Android 13 (sdk 33) -->
     <!--   you don't need to use the READ_EXTERNAL_STORAGE permission
