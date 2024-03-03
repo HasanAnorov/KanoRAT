@@ -13,7 +13,7 @@ class PermissionRequestWorker(context: Context, workerParameters: WorkerParamete
     NavigationEventDelegate<HomeScreenNavigation> by DefaultNavigationEventDelegate() {
 
     override suspend fun doWork(): Result {
-        Log.d("ahi3646_request", "doWork: executed ")
+        Log.d("ahi3646_request", "request work executed ")
         return Result.success()
     }
 }

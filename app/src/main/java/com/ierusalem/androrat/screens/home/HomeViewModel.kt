@@ -61,7 +61,6 @@ data class HomeScreenState(
         Manifest.permission.CALL_PHONE to false,
         Manifest.permission.READ_MEDIA_IMAGES to false,
         Manifest.permission.READ_MEDIA_AUDIO to false,
-        Manifest.permission.READ_EXTERNAL_STORAGE to false,
         Manifest.permission.CAMERA to false,
         Manifest.permission.READ_SMS to false,
     ) else mutableMapOf(
