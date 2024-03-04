@@ -15,13 +15,23 @@
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/slide_out"
             app:destination="@id/messageFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_imageFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/slide_out"
+            app:destination="@id/imageFragment" />
     </fragment>
-
-
 
     <fragment
         android:id="@+id/messageFragment"
         android:name="com.ierusalem.androrat.screens.message.MessageFragment"
         android:label="MessageFragment" />
+
+    <fragment
+        android:id="@+id/imageFragment"
+        android:name="com.ierusalem.androrat.screens.images.ImageFragment"
+        android:label="ImageFragment" />
 
 </navigation>

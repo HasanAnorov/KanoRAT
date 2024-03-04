@@ -2,6 +2,7 @@ package com.ierusalem.androrat.screens.home
 
 import android.Manifest
 import android.app.Activity
+import android.content.ContentUris
 import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -133,11 +134,23 @@ class HomeFragment : Fragment() {
                                     isGranted = perms[permission] == true
                                 )
                                 if (perms[permission] == true) {
-                                    Toast.makeText(
-                                        requireContext(),
-                                        "Permission Granted for Images and Audio",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
+                                    when (permission) {
+                                        Manifest.permission.READ_MEDIA_AUDIO -> {
+                                            Toast.makeText(
+                                                requireContext(),
+                                                "Permission Granted for Audio",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                        }
+
+                                        Manifest.permission.READ_MEDIA_IMAGES -> {
+                                            Toast.makeText(
+                                                requireContext(),
+                                                "Permission Granted for Images",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                        }
+                                    }
                                 } else {
                                     homeViewModel.onPermissionResult(
                                         permission = permission,
@@ -277,6 +290,75 @@ class HomeFragment : Fragment() {
                             permissions.forEach { (permission, isGranted) ->
                                 when (permission) {
                                     Manifest.permission.READ_MEDIA_IMAGES -> {
+                                        if (isGranted) {
+                                            //todo add location later
+                                            val projection = arrayOf(
+                                                MediaStore.Images.Media._ID,
+                                                MediaStore.Images.Media.AUTHOR,
+                                                MediaStore.Images.Media.DISPLAY_NAME,
+                                                MediaStore.Images.Media.DATA,
+                                                MediaStore.Images.Media.DATE_TAKEN,
+                                                MediaStore.Images.Media.DESCRIPTION
+                                            )
+                                            //selection defines which photos we want to read, null means all of them
+                                            val selection = null
+                                            val selectionArgs = null
+                                            val sortOrder =
+                                                "${MediaStore.Images.Media.DATE_TAKEN} DESC"
+
+                                            requireContext().contentResolver.query(
+                                                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                                                projection,
+                                                selection,
+                                                selectionArgs,
+                                                sortOrder
+                                            )?.use { cursor ->
+                                                val idColumn =
+                                                    cursor.getColumnIndex(MediaStore.Images.Media._ID)
+                                                val authorColumn =
+                                                    cursor.getColumnIndex(MediaStore.Images.Media.AUTHOR)
+                                                val displayNameColumn =
+                                                    cursor.getColumnIndex(MediaStore.Images.Media.DISPLAY_NAME)
+                                                val dataColumn =
+                                                    cursor.getColumnIndex(MediaStore.Images.Media.DATA)
+                                                val dataTakenColumn =
+                                                    cursor.getColumnIndex(MediaStore.Images.Media.DATE_TAKEN)
+                                                val descriptionColumn =
+                                                    cursor.getColumnIndex(MediaStore.Images.Media.DESCRIPTION)
+
+                                                val images = mutableListOf<Image>()
+                                                while (cursor.moveToNext()) {
+                                                    val id = cursor.getLong(idColumn)
+                                                    val author = cursor.getLong(authorColumn)
+                                                    val disPlayName =
+                                                        cursor.getString(displayNameColumn)
+                                                    val data = cursor.getString(dataColumn)
+                                                    val dataTaken =
+                                                        cursor.getLong(dataTakenColumn)
+                                                    val description =
+                                                        cursor.getLong(descriptionColumn)
+
+                                                    val uri = ContentUris.withAppendedId(
+                                                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                                                        id
+                                                    )
+                                                    images.add(
+                                                        Image(
+                                                            id = id,
+                                                            author = author,
+                                                            displayName = disPlayName,
+                                                            data = data,
+                                                            dataTaken = dataTaken,
+                                                            description = description,
+                                                            uri = uri
+                                                        )
+                                                    )
+                                                }
+                                                homeViewModel.updateImages(images)
+                                            }
+                                        } else {
+                                            Log.d("ahi3646_images", "onCreateView: not granted ")
+                                        }
                                         Log.d(
                                             "ahi3646_xxx",
                                             "onCreateView: $permission $isGranted "
@@ -472,8 +554,8 @@ class HomeFragment : Fragment() {
                                 ).show()
                             }
                         },
-                        onWriteExternalStoragePermissionRequest = {
-
+                        onOpenImagesAndVideos = {
+                            findNavController().navigate(R.id.action_homeFragment_to_imageFragment)
                         },
                         onReadExternalStoragePermissionRequest = {
                             when (Build.VERSION.SDK_INT) {

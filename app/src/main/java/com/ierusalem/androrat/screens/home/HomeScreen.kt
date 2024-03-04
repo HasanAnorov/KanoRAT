@@ -46,8 +46,8 @@ fun HomeScreen(
     state: HomeScreenState,
     onOpenMessageFragment: () -> Unit,
     onSaveScreenshotClick: () -> Unit,
+    onOpenImagesAndVideos: () -> Unit,
     onReadExternalStoragePermissionRequest: () -> Unit,
-    onWriteExternalStoragePermissionRequest: () -> Unit,
     onMultiplePermissionRequest: () -> Unit,
     onRecordAudioPermissionRequest: () -> Unit,
     onCameraPermissionRequest: () -> Unit,
@@ -124,6 +124,20 @@ fun HomeScreen(
             )
 
             CommonAndroRatButton(
+                onClick = onOpenImagesAndVideos,
+                text = "Open Images and Videos Fragment",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        start = MaterialTheme.dimens.spacing16,
+                        end = MaterialTheme.dimens.spacing16,
+                        bottom = MaterialTheme.dimens.spacing16
+                    )
+                    .clip(RoundedCornerShape(MaterialTheme.dimens.spacing12))
+                    .background(color = MaterialTheme.colorScheme.onBackground.copy(0.1f))
+            )
+
+            CommonAndroRatButton(
                 onClick = {
                     onOpenMessageFragment()
                 },
@@ -166,20 +180,6 @@ fun HomeScreen(
                     .clip(RoundedCornerShape(MaterialTheme.dimens.spacing12))
                     .background(color = MaterialTheme.colorScheme.onBackground.copy(0.1f))
             )
-
-//            CommonAndroRatButton(
-//                onClick = onWriteExternalStoragePermissionRequest,
-//                text = stringResource(R.string.write_external_storage_debug),
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .padding(
-//                        start = MaterialTheme.dimens.spacing16,
-//                        end = MaterialTheme.dimens.spacing16,
-//                        bottom = MaterialTheme.dimens.spacing16
-//                    )
-//                    .clip(RoundedCornerShape(MaterialTheme.dimens.spacing12))
-//                    .background(color = MaterialTheme.colorScheme.onBackground.copy(0.1f))
-//            )
 
             CommonAndroRatButton(
                 onClick = onRecordAudioPermissionRequest,
@@ -249,7 +249,7 @@ fun HomeScreen_LightPreview() {
             state = HomeScreenState(),
             onOpenMessageFragment = {},
             onSaveScreenshotClick = {},
-            onWriteExternalStoragePermissionRequest = {},
+            onOpenImagesAndVideos = {},
             onReadExternalStoragePermissionRequest = {},
             onMultiplePermissionRequest = {},
             onCameraPermissionRequest = {},
@@ -267,7 +267,7 @@ fun HomeScreen_DarkPreview() {
             state = HomeScreenState(),
             onOpenMessageFragment = {},
             onSaveScreenshotClick = {},
-            onWriteExternalStoragePermissionRequest = {},
+            onOpenImagesAndVideos = {},
             onReadExternalStoragePermissionRequest = {},
             onMultiplePermissionRequest = {},
             onCameraPermissionRequest = {},

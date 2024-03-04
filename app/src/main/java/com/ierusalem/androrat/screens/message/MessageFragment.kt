@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
+import com.ierusalem.androrat.ui.theme.AndroRATTheme
 
 class MessageFragment : Fragment() {
 
@@ -17,7 +18,9 @@ class MessageFragment : Fragment() {
 
         return ComposeView(requireContext()).apply {
             setContent {
-                MessageScreen()
+                AndroRATTheme {
+                    MessageScreen()
+                }
             }
         }
     }
