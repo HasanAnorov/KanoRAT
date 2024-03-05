@@ -81,7 +81,6 @@ data class HomeScreenState(
         Manifest.permission.READ_SMS to false,
     )
 )
-
 data class Image(
     val id: Long,
     val author: Long,

