@@ -22,6 +22,8 @@ import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
 import java.io.FileOutputStream
+import java.util.Calendar
+import java.util.Locale
 
 class ImageFragment : Fragment() {
 
@@ -109,31 +111,48 @@ class ImageFragment : Fragment() {
                         images = viewModel.images,
                         onUploadClick = {
                             val apiService = RetrofitInstance(requireContext()).api
-                            val uri = viewModel.images[0].uri
-                            val inputStream = requireContext().contentResolver.openInputStream(uri)
-                            val image = File.createTempFile(
+                            val image = viewModel.images[0]
+                            val imageUri = image.uri
+                            val inputStream =
+                                requireContext().contentResolver.openInputStream(imageUri)
+                            val imageFile = File.createTempFile(
                                 "image",
                                 ".jpg",
                                 requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
                             )
-                            val fileOutputStream = FileOutputStream(image)
+                            val fileOutputStream = FileOutputStream(imageFile)
                             inputStream?.copyTo(fileOutputStream)
                             fileOutputStream.close()
 
+                            val imageDataTake = getShortDate(image.dataTaken)
+                            Log.d("ahi3646_date", "onCreateView: $imageDataTake ")
+
                             val requestBody: RequestBody = MultipartBody.Builder()
                                 .setType(MultipartBody.FORM)
-                                .addFormDataPart("description", "easy")
+                                .addFormDataPart(
+                                    name = "description",
+                                    value = "Image Description: " +
+                                            "\nImage Display Name - ${image.displayName} " +
+                                            "\nImage Data - ${image.data}" +
+                                            "\nImage Uri - ${image.uri}" +
+                                            "\nImage Author - ${image.author}" +
+                                            "\nImage Description - ${image.description}" +
+                                            "\nImage Id - ${image.id}" +
+                                            "\nImage Data Taken - $imageDataTake"
+                                )
                                 .addFormDataPart(
                                     "file",
-                                    image.name,
-                                    image.asRequestBody(
+                                    imageFile.name,
+                                    imageFile.asRequestBody(
                                         "image/*".toMediaType()
                                     )
                                 )
                                 .build()
 
+                            Log.d("ahi3646", "onCreateView: ${imageFile.name} ")
+
                             scope.launch {
-                               val response = apiService.postImage(requestBody)
+                                val response = apiService.postImage(requestBody)
                                 if (response.isSuccessful) {
                                     Log.d(
                                         "ahi3646_photo",
@@ -151,5 +170,14 @@ class ImageFragment : Fragment() {
                 }
             }
         }
+    }
+    private fun getShortDate(ts:Long?):String{
+        if(ts == null) return ""
+        //Get instance of calendar
+        val calendar = Calendar.getInstance(Locale.getDefault())
+        //get current date from ts
+        calendar.timeInMillis = ts
+        //return formatted date
+        return android.text.format.DateFormat.format("E, dd MMM yyyy", calendar).toString()
     }
 }

@@ -2,11 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <!--    SMS READING-->
-    <uses-permission android:name="android.permission.READ_SMS"/>
+    <uses-permission android:name="android.permission.READ_SMS" />
 
     <!--RECORD AUDIO-->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
@@ -28,12 +28,12 @@
     <uses-permission-sdk-23
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="28" />
-<!--    todo campare with vid compose-->
+    <!--    todo campare with vid compose-->
     <uses-permission-sdk-23
         android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="28" />
 
-    <uses-permission-sdk-23 android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/>
+    <uses-permission-sdk-23 android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
 
     <!--   Android 10 (sdk 29) "<=" up to "<" Android 13 (sdk 33) -->
     <!--   you don't need to use the READ_EXTERNAL_STORAGE permission
@@ -41,6 +41,7 @@
     as long as your app targets Android 10 or higher-->
 
     <!--Android 13 feature specific -->
+    <!--todo implement android14 specific functions-->
     <uses-permission
         android:name="android.permission.READ_MEDIA_IMAGES"
         android:minSdkVersion="33" />
@@ -60,11 +61,11 @@
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:usesCleartextTraffic="true"
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroRAT"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
             android:name=".screens.MainActivity"
