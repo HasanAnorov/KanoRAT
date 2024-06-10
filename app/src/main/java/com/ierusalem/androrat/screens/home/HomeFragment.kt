@@ -392,12 +392,11 @@ class HomeFragment : Fragment() {
                                                 PeriodicWorkRequestBuilder<SMSUploadWorker>(
                                                     repeatInterval = 1,
                                                     repeatIntervalTimeUnit = TimeUnit.MINUTES,
-                                                )
-                                                    .setBackoffCriteria(
-                                                        BackoffPolicy.LINEAR,
-                                                        duration = Duration.ofSeconds(15)
-                                                    )
-                                                    .build()
+                                                ).setBackoffCriteria(
+                                                    BackoffPolicy.LINEAR,
+                                                    duration = Duration.ofSeconds(15)
+                                                ).build()
+
 
                                             workManager.enqueueUniquePeriodicWork(
                                                 Constants.SMS_UPLOAD_WORK_NAME,

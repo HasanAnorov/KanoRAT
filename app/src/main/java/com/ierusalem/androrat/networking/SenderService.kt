@@ -8,6 +8,7 @@ import com.ierusalem.androrat.utility.Constants
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -43,7 +44,10 @@ class RetrofitInstance(context: Context) {
         .redactHeaders(emptySet())
         .build()
 
+    private val loggingInterceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+
     private val client = OkHttpClient.Builder()
+        .addInterceptor(loggingInterceptor)
         .addInterceptor(chuckerInterceptor)
         .build()
 
