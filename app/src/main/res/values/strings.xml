@@ -28,4 +28,7 @@
     <string name="media_denied">It seems you permanently declined photos and video permission. \nYou can go to the app settings to grant it.</string>
     <string name="music_and_audio_permission_request">This app needs access to your music and audio. Please grant it!</string>
     <string name="music_denied">It seems you permanently declined music and audio permission. \nYou can go to the app settings to grant it.</string>
+    <string name="endless_service">Endless Service</string>
+    <string name="start">Start</string>
+    <string name="stop">Stop</string>
 </resources>

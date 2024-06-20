@@ -67,6 +67,7 @@ dependencies {
     implementation ("com.google.code.gson:gson:2.10.1")
 
     //to load images
+    implementation ("com.github.skydoves:landscapist-glide:2.2.9")
     implementation ("io.coil-kt:coil-compose:2.5.0")
 
     //navigation

