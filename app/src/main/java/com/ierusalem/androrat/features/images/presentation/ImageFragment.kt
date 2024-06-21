@@ -14,7 +14,7 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.ierusalem.androrat.core.networking.RetrofitInstance
-import com.ierusalem.androrat.features.home.domain.Image
+import com.ierusalem.androrat.features.home.domain.model.Image
 import com.ierusalem.androrat.features.images.domain.ImageViewModel
 import com.ierusalem.androrat.core.ui.theme.AndroRATTheme
 import kotlinx.coroutines.launch

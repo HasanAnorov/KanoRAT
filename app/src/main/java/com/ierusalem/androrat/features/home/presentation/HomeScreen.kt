@@ -5,7 +5,6 @@ import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,14 +23,9 @@ import androidx.compose.runtime.ExperimentalComposeApi
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.drawscope.draw
-import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
-import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -43,11 +37,10 @@ import com.ierusalem.androrat.core.ui.components.CommonAndroRatButton
 import com.ierusalem.androrat.core.ui.theme.AndroRATTheme
 import com.ierusalem.androrat.core.ui.theme.dimens
 import com.ierusalem.androrat.features.home.domain.HomeScreenState
-import dev.shreyaspatil.capturable.capturable
 import dev.shreyaspatil.capturable.controller.rememberCaptureController
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalComposeUiApi::class, ExperimentalComposeApi::class)
+@OptIn(ExperimentalComposeApi::class)
 @Composable
 fun HomeScreen(
     state: HomeScreenState,
@@ -66,41 +59,37 @@ fun HomeScreen(
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
     val picture = remember { Picture() }
-    Surface(
-        modifier = Modifier.fillMaxSize()
-    ) {
+
+    Surface {
         LazyColumn(
             modifier = Modifier
                 .padding(horizontal = 8.dp)
                 .padding(top = 16.dp)
-                .fillMaxSize()
-                .capturable(captureController)
-                .background(MaterialTheme.colorScheme.background)
-                .drawWithCache {
-                    // Example that shows how to redirect rendering to an Android Picture and then
-                    // draw the picture into the original destination
-                    val width = this.size.width.toInt()
-                    val height = this.size.height.toInt()
-
-                    onDrawWithContent {
-                        val pictureCanvas =
-                            androidx.compose.ui.graphics.Canvas(
-                                picture.beginRecording(
-                                    width,
-                                    height
-                                )
-                            )
-                        // requires at least 1.6.0-alpha01+
-                        draw(this, this.layoutDirection, pictureCanvas, this.size) {
-                            this@onDrawWithContent.drawContent()
-                        }
-                        picture.endRecording()
-
-                        drawIntoCanvas { canvas -> canvas.nativeCanvas.drawPicture(picture) }
-                    }
-                },
-            verticalArrangement = Arrangement.Bottom,
-            horizontalAlignment = Alignment.CenterHorizontally,
+                .fillMaxSize(),
+//                .capturable(captureController)
+//                .drawWithCache {
+//                    // Example that shows how to redirect rendering to an Android Picture and then
+//                    // draw the picture into the original destination
+//                    val width = this.size.width.toInt()
+//                    val height = this.size.height.toInt()
+//
+//                    onDrawWithContent {
+//                        val pictureCanvas =
+//                            androidx.compose.ui.graphics.Canvas(
+//                                picture.beginRecording(
+//                                    width,
+//                                    height
+//                                )
+//                            )
+//                        // requires at least 1.6.0-alpha01+
+//                        draw(this, this.layoutDirection, pictureCanvas, this.size) {
+//                            this@onDrawWithContent.drawContent()
+//                        }
+//                        picture.endRecording()
+//
+//                        drawIntoCanvas { canvas -> canvas.nativeCanvas.drawPicture(picture) }
+//                    }
+//                },
             content = {
                 item {
                     Column(
@@ -139,7 +128,7 @@ fun HomeScreen(
                                 contentAlignment = Alignment.Center,
                             ) {
                                 Text(
-                                    modifier = Modifier.padding(vertical = 10.dp),
+                                    modifier = Modifier.padding(vertical = 12.dp),
                                     text = stringResource(R.string.start),
                                 )
                             }
@@ -150,7 +139,7 @@ fun HomeScreen(
                                 contentAlignment = Alignment.Center
                             ) {
                                 Text(
-                                    modifier = Modifier.padding(vertical = 10.dp),
+                                    modifier = Modifier.padding(vertical = 12.dp),
                                     text = stringResource(R.string.stop)
                                 )
                             }

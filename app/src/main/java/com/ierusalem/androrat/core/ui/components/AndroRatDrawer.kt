@@ -1,5 +1,6 @@
 package com.ierusalem.androrat.core.ui.components
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -62,9 +63,9 @@ fun AndroChatDrawerContent(
         DividerItem()
         Spacer(modifier = Modifier.height(2.dp))
         ChatItem(
-            text = stringResource(id = R.string.app_name),
-            image = painterResource(id = R.drawable.ic_launcher_background),
-            onChatClicked = {  }
+            text = stringResource(R.string.andro_rtc),
+            image = painterResource(id = R.drawable.controller),
+            onChatClicked = { onDrawerItemClick(HomeScreenClickIntents.AndroRtc) }
         )
     }
 }
@@ -87,8 +88,11 @@ private fun DrawerHeader() {
                         .size(64.dp)
                         .background(MaterialTheme.colorScheme.primary),
                     contentAlignment = Alignment.Center
-                ){
-                    Text(text = "H")
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.cib_arch_linux),
+                        contentDescription = null
+                    )
                 }
             },
             modifier = Modifier
