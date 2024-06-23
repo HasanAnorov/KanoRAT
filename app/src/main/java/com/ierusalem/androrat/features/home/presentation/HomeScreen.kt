@@ -116,9 +116,7 @@ fun HomeScreen(
                         )
                         Row(
                             modifier = Modifier.background(
-                                MaterialTheme.colorScheme.onBackground.copy(
-                                    0.03f
-                                )
+                                MaterialTheme.colorScheme.onBackground.copy(0.03f)
                             )
                         ) {
                             Box(

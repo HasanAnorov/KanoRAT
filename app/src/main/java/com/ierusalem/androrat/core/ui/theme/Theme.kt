@@ -79,7 +79,7 @@ fun AndroRATTheme(
     ) {
         MaterialTheme(
             colorScheme = colorScheme,
-            typography = Typography,
+            typography = AndroRatTypography,
             content = content
         )
     }

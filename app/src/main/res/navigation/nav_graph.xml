@@ -49,7 +49,7 @@
         android:label="ImageFragment" />
     <fragment
         android:id="@+id/androRtcFragment"
-        android:name="com.ierusalem.androrat.features.rtc.AndroRtcFragment"
+        android:name="com.ierusalem.androrat.features.rtc.presentation.AndroRtcFragment"
         android:label="AndroRtcFragment" />
     <fragment
         android:id="@+id/settingsFragment"

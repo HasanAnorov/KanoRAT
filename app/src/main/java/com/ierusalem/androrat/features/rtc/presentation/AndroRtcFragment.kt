@@ -1,4 +1,4 @@
-package com.ierusalem.androrat.features.rtc
+package com.ierusalem.androrat.features.rtc.presentation
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -18,7 +18,7 @@ class AndroRtcFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setContent {
                 AndroRATTheme {
-
+                    AndroRtcScreen()
                 }
             }
         }

@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -26,6 +27,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.material3.ShapeDefaults
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
@@ -54,31 +56,7 @@ fun SettingsScreen(
     uiState: SettingsState,
     eventHandler: (SettingsScreenEvents) -> Unit,
 ) {
-    val topBarState = rememberTopAppBarState()
-    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(topBarState)
-
-    Scaffold(
-        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-        topBar = {
-            AndroRatAppBar(
-                modifier = modifier,
-                scrollBehavior = scrollBehavior,
-                onNavIconPressed = { eventHandler(SettingsScreenEvents.NavIconClick) },
-                title = {
-                    Text(
-                        text = stringResource(R.string.settings),
-                        style = MaterialTheme.typography.titleMedium
-                    )
-                },
-                navIcon = Icons.AutoMirrored.Filled.ArrowBack
-            )
-        },
-        // Exclude ime and navigation bar padding so this can be added by the UserInput composable
-        contentWindowInsets = ScaffoldDefaults
-            .contentWindowInsets
-            .exclude(WindowInsets.navigationBars)
-            .exclude(WindowInsets.ime)
-    ) { paddingValues ->
+    Surface(modifier = modifier) {
         if (uiState.languageDialogVisibility) {
             LanguageDialog(
                 onDismissDialog = {
@@ -92,10 +70,19 @@ fun SettingsScreen(
             )
         }
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues),
+            modifier = Modifier.fillMaxSize(),
             content = {
+                AndroRatAppBar(
+                    modifier = modifier,
+                    onNavIconPressed = { eventHandler(SettingsScreenEvents.NavIconClick) },
+                    title = {
+                        Text(
+                            text = stringResource(R.string.settings),
+                            style = MaterialTheme.typography.titleMedium
+                        )
+                    },
+                    navIcon = Icons.AutoMirrored.Filled.ArrowBack
+                )
                 GeneralOptionsUI(
                     eventHandler = eventHandler,
                     uiState = uiState
@@ -104,7 +91,6 @@ fun SettingsScreen(
         )
     }
 }
-
 
 @Composable
 fun GeneralOptionsUI(eventHandler: (SettingsScreenEvents) -> Unit, uiState: SettingsState) {
