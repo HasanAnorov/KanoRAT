@@ -36,8 +36,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ierusalem.androrat.R
+import com.ierusalem.androrat.core.data.AppPreview
 import com.ierusalem.androrat.core.ui.theme.AndroRATTheme
-import com.ierusalem.androrat.features.home.domain.HomeScreenClickIntents
+import com.ierusalem.androrat.features.home.domain.model.Category
+import com.ierusalem.androrat.features.home.domain.model.DrawerClicks
+import com.ierusalem.androrat.features.home.domain.model.UserProfile
 import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.glide.GlideImage
 
@@ -49,29 +52,34 @@ import com.skydoves.landscapist.glide.GlideImage
 
 @Composable
 fun AndroChatDrawerContent(
-    onDrawerItemClick: (HomeScreenClickIntents) -> Unit
+    modifier: Modifier = Modifier,
+    onDrawerItemClick: (DrawerClicks) -> Unit,
+    userProfile: UserProfile,
+    categories: List<Category>
 ) {
     // Use windowInsetsTopHeight() to add a spacer which pushes the drawer content
     // below the status bar (y-axis)
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
     ) {
         Spacer(Modifier.windowInsetsTopHeight(WindowInsets.statusBars))
-        DrawerHeader()
+        DrawerHeader(userProfile)
         DividerItem()
         Spacer(modifier = Modifier.height(2.dp))
-        ChatItem(
-            text = stringResource(R.string.andro_rtc),
-            image = painterResource(id = R.drawable.controller),
-            onChatClicked = { onDrawerItemClick(HomeScreenClickIntents.AndroRtc) }
-        )
+        categories.forEach {category ->
+            ChatItem(
+                text = stringResource(id = category.name),
+                image = painterResource(id = category.icon),
+                onChatClicked = { onDrawerItemClick(category.navigation) }
+            )
+        }
     }
 }
 
 @Composable
-private fun DrawerHeader() {
+private fun DrawerHeader(userProfile: UserProfile) {
     Row(
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = CenterVertically,
@@ -81,7 +89,7 @@ private fun DrawerHeader() {
             .padding(all = 12.dp)
     ) {
         GlideImage(
-            imageModel = { "https://guide-images.cdn.ifixit.com/igi/v6bM4OpwhDPjSmRd.large" },
+            imageModel = { userProfile.avatarUrl },
             failure = {
                 Box(
                     modifier = Modifier
@@ -116,18 +124,10 @@ private fun DrawerHeader() {
                 .padding(start = 12.dp)
         ) {
             Text(
-                text = "Hasan Anorov",
+                text = userProfile.username,
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1,
                 style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onBackground
-            )
-            Text(
-                modifier = Modifier.padding(top = 4.dp),
-                text = "ierusalem",
-                overflow = TextOverflow.Ellipsis,
-                maxLines = 1,
-                style = MaterialTheme.typography.titleSmall,
                 color = MaterialTheme.colorScheme.onBackground
             )
         }
@@ -179,7 +179,11 @@ fun DrawerPreview() {
     AndroRATTheme {
         Surface {
             Column {
-                AndroChatDrawerContent {}
+                AndroChatDrawerContent(
+                    onDrawerItemClick = {},
+                    userProfile = AppPreview.PreviewDrawer.userProfile,
+                    categories = AppPreview.PreviewDrawer.categories
+                )
             }
         }
     }
@@ -191,7 +195,11 @@ fun DrawerPreviewDark() {
     AndroRATTheme(isDarkTheme = true) {
         Surface {
             Column {
-                AndroChatDrawerContent {}
+                AndroChatDrawerContent(
+                    onDrawerItemClick = {},
+                    userProfile = AppPreview.PreviewDrawer.userProfile,
+                    categories = AppPreview.PreviewDrawer.categories
+                )
             }
         }
     }

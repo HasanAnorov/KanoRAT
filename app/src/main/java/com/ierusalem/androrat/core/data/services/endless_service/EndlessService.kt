@@ -1,4 +1,4 @@
-package com.ierusalem.androrat.core.services.endless_service
+package com.ierusalem.androrat.core.data.services.endless_service
 
 import android.app.AlarmManager
 import android.app.Notification
@@ -15,8 +15,8 @@ import android.os.PowerManager
 import android.os.SystemClock
 import android.widget.Toast
 import com.ierusalem.androrat.R
-import com.ierusalem.androrat.core.utility.log
-import com.ierusalem.androrat.features.MainActivity
+import com.ierusalem.androrat.core.utils.log
+import com.ierusalem.androrat.core.ui.MainActivity
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope

@@ -1,4 +1,4 @@
-package com.ierusalem.androrat.core.services.endless_service
+package com.ierusalem.androrat.core.data.services.endless_service
 
 import android.content.Context
 import android.content.SharedPreferences

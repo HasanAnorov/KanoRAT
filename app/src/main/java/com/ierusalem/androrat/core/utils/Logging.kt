@@ -1,4 +1,4 @@
-package com.ierusalem.androrat.core.utility
+package com.ierusalem.androrat.core.utils
 
 import android.util.Log
 

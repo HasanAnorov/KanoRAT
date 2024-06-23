@@ -1,11 +1,11 @@
-package com.ierusalem.androrat.core.services.endless_service
+package com.ierusalem.androrat.core.data.services.endless_service
 
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.util.Log
-import com.ierusalem.androrat.core.utility.log
+import com.ierusalem.androrat.core.utils.log
 
 class StartReceiver : BroadcastReceiver() {
 

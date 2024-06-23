@@ -22,6 +22,20 @@
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/slide_out"
             app:destination="@id/imageFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_androRtcFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/slide_out"
+            app:destination="@id/androRtcFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_settingsFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/slide_out"
+            app:destination="@id/settingsFragment" />
     </fragment>
 
     <fragment
@@ -33,5 +47,13 @@
         android:id="@+id/imageFragment"
         android:name="com.ierusalem.androrat.features.images.presentation.ImageFragment"
         android:label="ImageFragment" />
+    <fragment
+        android:id="@+id/androRtcFragment"
+        android:name="com.ierusalem.androrat.features.rtc.AndroRtcFragment"
+        android:label="AndroRtcFragment" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.ierusalem.androrat.features.settings.presentation.SettingsFragment"
+        android:label="SettingsFragment" />
 
 </navigation>

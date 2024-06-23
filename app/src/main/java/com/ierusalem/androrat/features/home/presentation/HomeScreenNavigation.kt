@@ -1,6 +1,7 @@
 package com.ierusalem.androrat.features.home.presentation
 
 sealed interface HomeScreenNavigation {
-    data object OpenMessageFragment : HomeScreenNavigation
-    //data class OpenGistsFragment(val username: String) : HomeScreenNavigation
+    data object NavigateToMessageFragment : HomeScreenNavigation
+    data object NavigateToAndroRtcFragment : HomeScreenNavigation
+    data object NavigateToSettingsFragment : HomeScreenNavigation
 }

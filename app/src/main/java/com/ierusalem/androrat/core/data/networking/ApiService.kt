@@ -1,10 +1,10 @@
-package com.ierusalem.androrat.core.networking
+package com.ierusalem.androrat.core.data.networking
 
 import android.content.Context
 import com.chuckerteam.chucker.api.ChuckerCollector
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.google.gson.GsonBuilder
-import com.ierusalem.androrat.core.utility.Constants
+import com.ierusalem.androrat.core.utils.Constants
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody
 import okhttp3.ResponseBody

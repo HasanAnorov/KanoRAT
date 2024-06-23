@@ -4,10 +4,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.graphics.ImageBitmap
 import androidx.lifecycle.ViewModel
+import com.ierusalem.androrat.features.home.domain.model.DrawerClicks
 import com.ierusalem.androrat.core.ui.navigation.DefaultNavigationEventDelegate
 import com.ierusalem.androrat.core.ui.navigation.NavigationEventDelegate
+import com.ierusalem.androrat.core.ui.navigation.emitNavigation
 import com.ierusalem.androrat.features.home.domain.model.Image
 import com.ierusalem.androrat.features.home.presentation.HomeScreenNavigation
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,7 +27,7 @@ class HomeViewModel : ViewModel(),
     val visiblePermissionDialogQueue = mutableStateListOf<String>()
     private var images by mutableStateOf(emptyList<Image>())
 
-    private fun openDrawer() {
+    private fun openDrawer(){
         _drawerShouldBeOpened.value = true
     }
 
@@ -34,16 +35,15 @@ class HomeViewModel : ViewModel(),
         _drawerShouldBeOpened.value = false
     }
 
-    fun updateImages(images: List<Image>){
+    fun updateImages(images: List<Image>) {
         this.images = images
     }
-
 
     fun dismissDialog() {
         visiblePermissionDialogQueue.removeFirst()
     }
 
-    fun updatePermissionState(permission: String, isGranted: Boolean){
+    fun updatePermissionState(permission: String, isGranted: Boolean) {
         val oldPermissionsState = state.value.permissions
         oldPermissionsState[permission] = isGranted
         _state.update {
@@ -53,20 +53,44 @@ class HomeViewModel : ViewModel(),
         }
     }
 
+    fun handleDrawerAction(action: DrawerClicks) {
+        when (action) {
+            DrawerClicks.NavigateToAndroRtc -> {
+                emitNavigation(HomeScreenNavigation.NavigateToAndroRtcFragment)
+            }
+
+            DrawerClicks.NavigateToSettings -> {
+                emitNavigation(HomeScreenNavigation.NavigateToSettingsFragment)
+            }
+        }
+    }
+
+    fun handleEvents(event: HomeScreenClickIntents) {
+        when (event) {
+            HomeScreenClickIntents.OpenDrawer -> {
+                openDrawer()
+            }
+
+            HomeScreenClickIntents.NavigateToMessageFragment -> {
+
+            }
+
+            HomeScreenClickIntents.SaveScreenshotClick -> {
+
+            }
+
+            HomeScreenClickIntents.NavigateToImagesAndVideos -> {
+
+            }
+        }
+    }
+
     fun onPermissionResult(
         permission: String,
         isGranted: Boolean
     ) {
         if (!isGranted && !visiblePermissionDialogQueue.contains(permission)) {
             visiblePermissionDialogQueue.add(permission)
-        }
-    }
-
-    fun updatePhoto(bitmap: ImageBitmap) {
-        _state.update {
-            it.copy(
-                screenshot = bitmap
-            )
         }
     }
 
