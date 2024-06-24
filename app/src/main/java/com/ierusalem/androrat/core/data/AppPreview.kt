@@ -5,6 +5,7 @@ import com.ierusalem.androrat.core.app.AppLanguage
 import com.ierusalem.androrat.features.home.domain.model.Category
 import com.ierusalem.androrat.features.home.domain.model.DrawerClicks
 import com.ierusalem.androrat.features.home.domain.model.UserProfile
+import com.ierusalem.androrat.features.rtc.domain.AndroRtcClient
 
 sealed class AppPreview {
 
@@ -25,4 +26,73 @@ sealed class AppPreview {
             Category(R.string.settings, R.drawable.settings_sharp, DrawerClicks.NavigateToSettings),
         )
     }
+
+    object PreviewAndroRtc{
+        val androRtcClients = listOf(
+            AndroRtcClient(
+                clientName = "Hasan",
+                deviceName = "POCO F3",
+                lastOnlineTime = "12:34",
+                isOnline = true,
+                provider = "Open Weather"
+            ),
+            AndroRtcClient(
+                clientName = "Hasan",
+                deviceName = "POCO F3",
+                lastOnlineTime = "12:34",
+                isOnline = true,
+                provider = "Open Weather"
+            ),
+            AndroRtcClient(
+                clientName = "Hasan",
+                deviceName = "POCO F3",
+                lastOnlineTime = "12:34",
+                isOnline = false,
+                provider = "Open Weather"
+            ),
+            AndroRtcClient(
+                clientName = "Hasan",
+                deviceName = "POCO F3",
+                lastOnlineTime = "12:34",
+                isOnline = true,
+                provider = "Open Weather"
+            ),
+            AndroRtcClient(
+                clientName = "Hasan",
+                deviceName = "POCO F3",
+                lastOnlineTime = "12:34",
+                isOnline = false,
+                provider = "Open Weather"
+            ),
+            AndroRtcClient(
+                clientName = "Hasan",
+                deviceName = "POCO F3",
+                lastOnlineTime = "12:34",
+                isOnline = false,
+                provider = "Open Weather"
+            ),
+            AndroRtcClient(
+                clientName = "Hasan",
+                deviceName = "POCO F3",
+                lastOnlineTime = "12:34",
+                isOnline = true,
+                provider = "Open Weather"
+            ),
+            AndroRtcClient(
+                clientName = "Hasan",
+                deviceName = "POCO F3",
+                lastOnlineTime = "12:34",
+                isOnline = true,
+                provider = "Open Weather"
+            ),
+            AndroRtcClient(
+                clientName = "Hasan",
+                deviceName = "POCO F3",
+                lastOnlineTime = "12:34",
+                isOnline = false,
+                provider = "Open Weather"
+            )
+        )
+    }
+
 }

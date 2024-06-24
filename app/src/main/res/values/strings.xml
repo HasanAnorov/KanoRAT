@@ -47,4 +47,10 @@
     <string name="cancel">Cancel</string>
     <string name="save">Save</string>
     <string name="home">Home</string>
+    <string name="no_data_available">No data found!</string>
+    <string name="something_went_wrong">Somethig went wrong!</string>
+    <string name="loading">Loading</string>
+    <string name="client">"Client: "</string>
+    <string name="device">"Device: "</string>
+    <string name="provider">"Provider: "</string>
 </resources>
