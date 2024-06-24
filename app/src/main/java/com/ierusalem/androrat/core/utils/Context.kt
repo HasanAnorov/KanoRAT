@@ -18,7 +18,6 @@ fun Context.getSystemDetails():String {
             "ID: ${Build.ID} \n" +
             "SDK: ${Build.VERSION.SDK_INT} \n" +
             "Manufacture: ${Build.MANUFACTURER} \n" +
-            "Brand: ${Build.BRAND} \n" +
             "Hardware: ${Build.HARDWARE} \n" +
             "Bootloader: ${Build.BOOTLOADER} \n" +
             "User: ${Build.USER} \n" +
