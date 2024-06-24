@@ -1,7 +1,10 @@
 package com.ierusalem.androrat.features.rtc_info.presentation
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -10,10 +13,13 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.ierusalem.androrat.core.ui.components.AndroRatAppBar
 import com.ierusalem.androrat.core.ui.theme.AndroRATTheme
 import com.ierusalem.androrat.features.rtc_info.domain.AndroRtcInfoUiState
+import com.ierusalem.androrat.features.rtc_info.presentation.components.ClientCallProperty
 import com.ierusalem.androrat.features.rtc_info.presentation.components.DeviceInfo
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -38,7 +44,17 @@ fun AndroRtcInfoScreen(
                     },
                     navIcon = Icons.AutoMirrored.Filled.ArrowBack
                 )
-                DeviceInfo()
+                ClientCallProperty(
+                    modifier = Modifier
+                        .padding(horizontal = 8.dp)
+                )
+                DeviceInfo(
+                    modifier = Modifier
+                        .padding(top = 8.dp)
+                        .padding(horizontal = 8.dp)
+                        .clip(RoundedCornerShape(16.dp))
+                        .background(MaterialTheme.colorScheme.surfaceDim.copy(0.2F))
+                )
             }
         )
     }
