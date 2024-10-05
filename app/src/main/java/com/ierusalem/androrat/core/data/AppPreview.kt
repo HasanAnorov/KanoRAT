@@ -5,7 +5,7 @@ import com.ierusalem.androrat.core.app.AppLanguage
 import com.ierusalem.androrat.features.home.domain.model.Category
 import com.ierusalem.androrat.features.home.domain.model.DrawerClicks
 import com.ierusalem.androrat.features.home.domain.model.UserProfile
-import com.ierusalem.androrat.features.rtc.domain.AndroRtcClient
+import com.ierusalem.androrat.features.rtc_features.rtc.domain.AndroRtcClient
 
 sealed class AppPreview {
 

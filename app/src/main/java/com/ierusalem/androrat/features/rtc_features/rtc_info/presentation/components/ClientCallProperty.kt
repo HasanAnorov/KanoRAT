@@ -1,4 +1,4 @@
-package com.ierusalem.androrat.features.rtc_info.presentation.components
+package com.ierusalem.androrat.features.rtc_features.rtc_info.presentation.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

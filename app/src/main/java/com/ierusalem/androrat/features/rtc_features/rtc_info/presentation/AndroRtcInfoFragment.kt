@@ -1,4 +1,4 @@
-package com.ierusalem.androrat.features.rtc_info.presentation
+package com.ierusalem.androrat.features.rtc_features.rtc_info.presentation
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,9 +11,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.fragment.findNavController
 import com.ierusalem.androrat.core.ui.theme.AndroRATTheme
-import com.ierusalem.androrat.features.rtc_info.domain.AndroRtcInfoViewModel
+import com.ierusalem.androrat.features.rtc_features.rtc_info.domain.AndroRtcInfoViewModel
 import dagger.hilt.android.AndroidEntryPoint
-
 
 @AndroidEntryPoint
 class AndroRtcInfoFragment : Fragment() {

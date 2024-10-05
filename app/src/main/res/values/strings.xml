@@ -53,4 +53,7 @@
     <string name="client">"Client: "</string>
     <string name="device">"Device: "</string>
     <string name="provider">"Provider: "</string>
+    <string name="location">Location</string>
+    <string name="files">Files</string>
+    <string name="messages">Messages</string>
 </resources>

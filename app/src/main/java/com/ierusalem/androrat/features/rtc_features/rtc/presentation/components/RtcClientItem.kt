@@ -1,4 +1,4 @@
-package com.ierusalem.androrat.features.rtc.presentation.components
+package com.ierusalem.androrat.features.rtc_features.rtc.presentation.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ierusalem.androrat.R
 import com.ierusalem.androrat.core.ui.theme.AndroRATTheme
-import com.ierusalem.androrat.features.rtc.domain.AndroRtcClient
+import com.ierusalem.androrat.features.rtc_features.rtc.domain.AndroRtcClient
 
 @Composable
 fun RtcClientItem(

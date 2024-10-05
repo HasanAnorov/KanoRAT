@@ -1,4 +1,4 @@
-package com.ierusalem.androrat.features.rtc.presentation
+package com.ierusalem.androrat.features.rtc_features.rtc.presentation
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,8 +23,8 @@ import com.ierusalem.androrat.core.ui.components.ErrorScreen
 import com.ierusalem.androrat.core.ui.components.LoadingScreen
 import com.ierusalem.androrat.core.ui.theme.AndroRATTheme
 import com.ierusalem.androrat.core.utils.Resource
-import com.ierusalem.androrat.features.rtc.domain.AndroRtcUiState
-import com.ierusalem.androrat.features.rtc.presentation.components.RtcClientItem
+import com.ierusalem.androrat.features.rtc_features.rtc.domain.AndroRtcUiState
+import com.ierusalem.androrat.features.rtc_features.rtc.presentation.components.RtcClientItem
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

@@ -1,4 +1,4 @@
-package com.ierusalem.androrat.features.rtc.domain
+package com.ierusalem.androrat.features.rtc_features.rtc.domain
 
 import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel

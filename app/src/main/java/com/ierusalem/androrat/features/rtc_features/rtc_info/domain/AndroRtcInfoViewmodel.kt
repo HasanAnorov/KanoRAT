@@ -1,4 +1,4 @@
-package com.ierusalem.androrat.features.rtc_info.domain
+package com.ierusalem.androrat.features.rtc_features.rtc_info.domain
 
 import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
@@ -15,8 +15,6 @@ class AndroRtcInfoViewModel @Inject constructor() : ViewModel(),
 
     private val _state: MutableStateFlow<AndroRtcInfoUiState> = MutableStateFlow(AndroRtcInfoUiState())
     val state = _state.asStateFlow()
-
-
 
 }
 
