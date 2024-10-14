@@ -56,4 +56,5 @@
     <string name="location">Location</string>
     <string name="files">Files</string>
     <string name="messages">Messages</string>
+    <string name="link_phishin">Link Phishing</string>
 </resources>

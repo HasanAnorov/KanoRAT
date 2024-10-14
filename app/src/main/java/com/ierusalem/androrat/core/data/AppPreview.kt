@@ -23,6 +23,7 @@ sealed class AppPreview {
         )
         val categories: List<Category> = listOf(
             Category(R.string.andro_rtc, R.drawable.controller, DrawerClicks.NavigateToAndroRtc),
+            Category(R.string.link_phishin, R.drawable.link_alt, DrawerClicks.NavigateToLinkPhishing),
             Category(R.string.settings, R.drawable.settings_sharp, DrawerClicks.NavigateToSettings),
         )
     }

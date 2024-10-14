@@ -55,6 +55,11 @@ class HomeViewModel : ViewModel(),
 
     fun handleDrawerAction(action: DrawerClicks) {
         when (action) {
+
+            DrawerClicks.NavigateToLinkPhishing -> {
+                emitNavigation(HomeScreenNavigation.NavigateToLinkPhishingFragment)
+            }
+
             DrawerClicks.NavigateToAndroRtc -> {
                 emitNavigation(HomeScreenNavigation.NavigateToAndroRtcFragment)
             }

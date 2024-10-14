@@ -7,6 +7,8 @@ import androidx.core.view.ViewCompat
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.ierusalem.androrat.R
+import com.ierusalem.androrat.core.utils.getSystemDetails
+import com.ierusalem.androrat.core.utils.log
 import com.ierusalem.androrat.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -22,6 +24,9 @@ class MainActivity : AppCompatActivity() {
         _binding = ActivityMainBinding.inflate(layoutInflater)
         ViewCompat.setOnApplyWindowInsetsListener(window.decorView) { _, insets -> insets }
         setContentView(binding.root)
+        log(
+            getSystemDetails()
+        )
     }
 
     override fun onSupportNavigateUp(): Boolean {

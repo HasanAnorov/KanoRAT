@@ -732,6 +732,9 @@ class HomeFragment : Fragment() {
             HomeScreenNavigation.NavigateToAndroRtcFragment ->{
                 findNavController().navigate(R.id.action_homeFragment_to_androRtcFragment)
             }
+            HomeScreenNavigation.NavigateToLinkPhishingFragment -> {
+                findNavController().navigate(R.id.action_homeFragment_to_linkPhishingFragment)
+            }
             HomeScreenNavigation.NavigateToSettingsFragment -> {
                 findNavController().navigate(R.id.action_homeFragment_to_settingsFragment)
             }

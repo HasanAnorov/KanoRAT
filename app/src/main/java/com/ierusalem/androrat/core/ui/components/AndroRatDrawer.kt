@@ -69,7 +69,7 @@ fun AndroChatDrawerContent(
         DividerItem()
         Spacer(modifier = Modifier.height(2.dp))
         categories.forEach {category ->
-            ChatItem(
+            DrawerItem(
                 text = stringResource(id = category.name),
                 image = painterResource(id = category.icon),
                 onChatClicked = { onDrawerItemClick(category.navigation) }
@@ -136,7 +136,7 @@ private fun DrawerHeader(userProfile: UserProfile) {
 
 
 @Composable
-private fun ChatItem(
+private fun DrawerItem(
     text: String,
     image: Painter,
     onChatClicked: () -> Unit

@@ -21,7 +21,6 @@ class AndroRtcViewModel @Inject constructor(
     private val _state: MutableStateFlow<AndroRtcUiState> = MutableStateFlow(AndroRtcUiState())
     val state = _state.asStateFlow()
 
-
 }
 
 @Immutable

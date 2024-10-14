@@ -36,6 +36,13 @@
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/slide_out"
             app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_linkPhishingFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/slide_out"
+            app:destination="@id/linkPhishingFragment" />
     </fragment>
 
     <fragment
@@ -69,5 +76,9 @@
         android:id="@+id/androRtcInfoFragment"
         android:name="com.ierusalem.androrat.features.rtc_features.rtc_info.presentation.AndroRtcInfoFragment"
         android:label="AndroRtcInfoFragment" />
+    <fragment
+        android:id="@+id/linkPhishingFragment"
+        android:name="com.ierusalem.androrat.features.link_phishing.presentation.LinkPhishingFragment"
+        android:label="LinkPhishingFragment" />
 
 </navigation>
