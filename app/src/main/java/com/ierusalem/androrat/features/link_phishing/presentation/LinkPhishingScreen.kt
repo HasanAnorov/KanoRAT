@@ -1,4 +1,4 @@
-package com.ierusalem.androrat.features.link_phishing.presentation.components
+package com.ierusalem.androrat.features.link_phishing.presentation
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
@@ -15,11 +15,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.ierusalem.androrat.R
 import com.ierusalem.androrat.core.ui.components.AndroRatAppBar
 import com.ierusalem.androrat.core.ui.theme.AndroRATTheme
+import com.ierusalem.androrat.features.link_phishing.domain.LinkPhishingUiState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LinkPhishingScreen(
     modifier: Modifier = Modifier,
+    uiState: LinkPhishingUiState = LinkPhishingUiState(),
     eventHandler: (LinkPhishingEvents) -> Unit = {},
 ) {
     Surface {
@@ -38,6 +40,9 @@ fun LinkPhishingScreen(
                     },
                     navIcon = Icons.AutoMirrored.Filled.ArrowBack
                 )
+            }
+            item {
+
             }
         }
     }

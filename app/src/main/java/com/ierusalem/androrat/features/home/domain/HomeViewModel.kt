@@ -40,7 +40,7 @@ class HomeViewModel : ViewModel(),
     }
 
     fun dismissDialog() {
-        visiblePermissionDialogQueue.removeFirst()
+        visiblePermissionDialogQueue.removeAt(0)
     }
 
     fun updatePermissionState(permission: String, isGranted: Boolean) {

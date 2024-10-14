@@ -1,4 +1,4 @@
-package com.ierusalem.androrat.features.link_phishing.presentation.components
+package com.ierusalem.androrat.features.link_phishing.presentation
 
 sealed interface LinkPhishingEvents {
     data object OnNavIconClick: LinkPhishingEvents
