@@ -1,7 +1,7 @@
 package com.ierusalem.androrat.features.link_phishing.presentation
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -16,6 +16,7 @@ import com.ierusalem.androrat.R
 import com.ierusalem.androrat.core.ui.components.AndroRatAppBar
 import com.ierusalem.androrat.core.ui.theme.AndroRATTheme
 import com.ierusalem.androrat.features.link_phishing.domain.LinkPhishingUiState
+import com.ierusalem.androrat.features.link_phishing.presentation.components.LinkPhishingContent
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -25,25 +26,24 @@ fun LinkPhishingScreen(
     eventHandler: (LinkPhishingEvents) -> Unit = {},
 ) {
     Surface {
-        LazyColumn(
+        Column(
             modifier = modifier.fillMaxSize()
         ) {
-            item {
-                AndroRatAppBar(
-                    modifier = modifier,
-                    onNavIconPressed = { eventHandler(LinkPhishingEvents.OnNavIconClick) },
-                    title = {
-                        Text(
-                            text = stringResource(R.string.link_phishin),
-                            style = MaterialTheme.typography.titleMedium
-                        )
-                    },
-                    navIcon = Icons.AutoMirrored.Filled.ArrowBack
-                )
-            }
-            item {
-
-            }
+            AndroRatAppBar(
+                modifier = modifier,
+                onNavIconPressed = { eventHandler(LinkPhishingEvents.OnNavIconClick) },
+                title = {
+                    Text(
+                        text = stringResource(R.string.link_phishin),
+                        style = MaterialTheme.typography.titleMedium
+                    )
+                },
+                navIcon = Icons.AutoMirrored.Filled.ArrowBack
+            )
+            LinkPhishingContent(
+                modifier = modifier,
+                uiState = uiState
+            )
         }
     }
 }
