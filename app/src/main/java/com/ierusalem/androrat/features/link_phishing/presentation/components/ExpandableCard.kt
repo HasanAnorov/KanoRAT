@@ -3,13 +3,13 @@ package com.ierusalem.androrat.features.link_phishing.presentation.components
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Card
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -32,128 +32,126 @@ fun ExpandableCard(
 ) {
     var expanded by remember { mutableStateOf(false) }
 
-    Card(
-        onClick = { expanded = !expanded },
-        modifier = modifier.fillMaxWidth()
+    Column(
+        modifier = modifier
     ) {
-        Column(
+        Row(
             modifier = Modifier
-                .padding(vertical = 4.dp)
+                .clickable { expanded = !expanded }
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(horizontal = 8.dp, vertical = 16.dp)
         ) {
-            Row {
-                Text(
-                    modifier = Modifier,
-                    text = "IP Address: ",
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onBackground,
-                )
-                Text(
-                    modifier = Modifier.weight(1F),
-                    text = deviceInfo.ipAddress,
-                    style = MaterialTheme.typography.titleMedium
-                )
-            }
-
-            AnimatedVisibility(
-                visible = expanded,
-                enter = fadeIn(),
-                exit = fadeOut()
+            Text(
+                modifier = Modifier,
+                text = "IP Address: ",
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onBackground,
+            )
+            Text(
+                modifier = Modifier.weight(1F),
+                text = deviceInfo.ipAddress,
+                style = MaterialTheme.typography.titleMedium
+            )
+        }
+        AnimatedVisibility(
+            visible = expanded,
+            enter = fadeIn(),
+            exit = fadeOut()
+        ) {
+            Column(
+                modifier = Modifier.padding(horizontal = 8.dp)
             ) {
-                Column {
-                    Spacer(Modifier.height(8.dp))
-                    HorizontalDivider(
-                        color = MaterialTheme.colorScheme.background,
-                        thickness = 1.dp
-                    )
-                    StatusProperty(
-                        modifier = Modifier,
-                        status = "Browser: ",
-                        state = deviceInfo.browser
-                    )
-                    HorizontalDivider(
-                        color = MaterialTheme.colorScheme.background,
-                        thickness = 1.dp
-                    )
-                    StatusProperty(
-                        modifier = Modifier,
-                        status = "Browser Version: ",
-                        state = deviceInfo.browserVersion
-                    )
-                    HorizontalDivider(
-                        color = MaterialTheme.colorScheme.background,
-                        thickness = 1.dp
-                    )
-                    StatusProperty(
-                        modifier = Modifier,
-                        status = "OS: ",
-                        state = deviceInfo.os
-                    )
-                    HorizontalDivider(
-                        color = MaterialTheme.colorScheme.background,
-                        thickness = 1.dp
-                    )
-                    StatusProperty(
-                        modifier = Modifier,
-                        status = "OS Version: ",
-                        state = deviceInfo.osVersion
-                    )
-                    HorizontalDivider(
-                        color = MaterialTheme.colorScheme.background,
-                        thickness = 1.dp
-                    )
-                    StatusProperty(
-                        modifier = Modifier,
-                        status = "Device: ",
-                        state = deviceInfo.device
-                    )
-                    HorizontalDivider(
-                        color = MaterialTheme.colorScheme.background,
-                        thickness = 1.dp
-                    )
-                    StatusProperty(
-                        modifier = Modifier,
-                        status = "Is Mobile: ",
-                        state = deviceInfo.isMobile.toString()
-                    )
-                    HorizontalDivider(
-                        color = MaterialTheme.colorScheme.background,
-                        thickness = 1.dp
-                    )
-                    StatusProperty(
-                        modifier = Modifier,
-                        status = "Is Tablet: ",
-                        state = deviceInfo.isTablet.toString()
-                    )
-                    HorizontalDivider(
-                        color = MaterialTheme.colorScheme.background,
-                        thickness = 1.dp
-                    )
-                    StatusProperty(
-                        modifier = Modifier,
-                        status = "Is Touch Capable: ",
-                        state = deviceInfo.isTouchCapable.toString()
-                    )
-                    HorizontalDivider(
-                        color = MaterialTheme.colorScheme.background,
-                        thickness = 1.dp
-                    )
-                    StatusProperty(
-                        modifier = Modifier,
-                        status = "Is PC: ",
-                        state = deviceInfo.isPc.toString()
-                    )
-                    HorizontalDivider(
-                        color = MaterialTheme.colorScheme.background,
-                        thickness = 1.dp
-                    )
-                    StatusProperty(
-                        modifier = Modifier,
-                        status = "Is Bot: ",
-                        state = deviceInfo.isBot.toString()
-                    )
-                }
+                HorizontalDivider(
+                    color = MaterialTheme.colorScheme.onBackground.copy(0.1F),
+                    thickness = 1.dp
+                )
+                StatusProperty(
+                    modifier = Modifier,
+                    status = "Browser: ",
+                    state = deviceInfo.browser
+                )
+                HorizontalDivider(
+                    color = MaterialTheme.colorScheme.background,
+                    thickness = 1.dp
+                )
+                StatusProperty(
+                    modifier = Modifier,
+                    status = "Browser Version: ",
+                    state = deviceInfo.browserVersion
+                )
+                HorizontalDivider(
+                    color = MaterialTheme.colorScheme.background,
+                    thickness = 1.dp
+                )
+                StatusProperty(
+                    modifier = Modifier,
+                    status = "OS: ",
+                    state = deviceInfo.os
+                )
+                HorizontalDivider(
+                    color = MaterialTheme.colorScheme.background,
+                    thickness = 1.dp
+                )
+                StatusProperty(
+                    modifier = Modifier,
+                    status = "OS Version: ",
+                    state = deviceInfo.osVersion
+                )
+                HorizontalDivider(
+                    color = MaterialTheme.colorScheme.background,
+                    thickness = 1.dp
+                )
+                StatusProperty(
+                    modifier = Modifier,
+                    status = "Device: ",
+                    state = deviceInfo.device
+                )
+                HorizontalDivider(
+                    color = MaterialTheme.colorScheme.background,
+                    thickness = 1.dp
+                )
+                StatusProperty(
+                    modifier = Modifier,
+                    status = "Is Mobile: ",
+                    state = deviceInfo.isMobile.toString()
+                )
+                HorizontalDivider(
+                    color = MaterialTheme.colorScheme.background,
+                    thickness = 1.dp
+                )
+                StatusProperty(
+                    modifier = Modifier,
+                    status = "Is Tablet: ",
+                    state = deviceInfo.isTablet.toString()
+                )
+                HorizontalDivider(
+                    color = MaterialTheme.colorScheme.background,
+                    thickness = 1.dp
+                )
+                StatusProperty(
+                    modifier = Modifier,
+                    status = "Is Touch Capable: ",
+                    state = deviceInfo.isTouchCapable.toString()
+                )
+                HorizontalDivider(
+                    color = MaterialTheme.colorScheme.background,
+                    thickness = 1.dp
+                )
+                StatusProperty(
+                    modifier = Modifier,
+                    status = "Is PC: ",
+                    state = deviceInfo.isPc.toString()
+                )
+                HorizontalDivider(
+                    color = MaterialTheme.colorScheme.background,
+                    thickness = 1.dp
+                )
+                StatusProperty(
+                    modifier = Modifier,
+                    status = "Is Bot: ",
+                    state = deviceInfo.isBot.toString()
+                )
+                Spacer(Modifier.height(8.dp))
             }
         }
     }

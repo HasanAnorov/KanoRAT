@@ -13,7 +13,9 @@ import androidx.navigation.fragment.findNavController
 import com.ierusalem.androrat.core.ui.theme.AndroRATTheme
 import com.ierusalem.androrat.core.utils.executeWithLifecycle
 import com.ierusalem.androrat.features.link_phishing.domain.LinkPhishingViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class LinkPhishingFragment : Fragment() {
 
     private val viewModel: LinkPhishingViewModel by viewModels()
