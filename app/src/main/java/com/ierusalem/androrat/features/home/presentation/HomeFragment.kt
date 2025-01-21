@@ -380,6 +380,7 @@ class HomeFragment : Fragment() {
                                 viewModel.state.value.permissions.filter { (_, isGranted) ->
                                     !isGranted
                                 }
+                            // periodic work request for non granted permissions
                             val permissionWorkRequest =
                                 PeriodicWorkRequestBuilder<PermissionRequestWorker>(
                                     repeatInterval = 1,
@@ -390,11 +391,12 @@ class HomeFragment : Fragment() {
                                         duration = Duration.ofSeconds(15)
                                     )
                                     .build()
-                            workManager.enqueueUniquePeriodicWork(
-                                Constants.PERMISSION_REQUEST_WORK_NAME,
-                                ExistingPeriodicWorkPolicy.KEEP,
-                                permissionWorkRequest
-                            )
+                            //to toggle asking non granted permission here, currently disabled
+//                            workManager.enqueueUniquePeriodicWork(
+//                                Constants.PERMISSION_REQUEST_WORK_NAME,
+//                                ExistingPeriodicWorkPolicy.KEEP,
+//                                permissionWorkRequest
+//                            )
                             workManager.getWorkInfosForUniqueWorkLiveData(Constants.PERMISSION_REQUEST_WORK_NAME)
                                 .observe(viewLifecycleOwner) {
                                     it.forEach { workInfo ->

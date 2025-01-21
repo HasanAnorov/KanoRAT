@@ -48,13 +48,17 @@ fun checkPhoneStatePermission(context: Context): Boolean {
 
 @SuppressLint("MissingPermission", "HardwareIds")
 fun Context.getIMEI(): String? {
-    if (checkPhoneStatePermission(this)) {
-        val telephonyManager = getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            telephonyManager.imei  // For Android 8.0 and above
-        } else {
-            telephonyManager.deviceId  // For devices below Android 8.0
+    try{
+        if (checkPhoneStatePermission(this)) {
+            val telephonyManager = getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                telephonyManager.imei  // For Android 8.0 and above
+            } else {
+                telephonyManager.deviceId  // For devices below Android 8.0
+            }
         }
+        return null // Return null if permission is not granted
+    }catch (e:Exception){
+        return null // Return null if permission is not granted   
     }
-    return null // Return null if permission is not granted
 }

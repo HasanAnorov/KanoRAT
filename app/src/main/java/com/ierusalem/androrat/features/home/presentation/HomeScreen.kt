@@ -26,10 +26,14 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -41,7 +45,7 @@ import com.ierusalem.androrat.core.ui.theme.dimens
 import com.ierusalem.androrat.features.home.domain.HomeScreenClickIntents
 import com.ierusalem.androrat.features.home.domain.HomeScreenState
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 fun HomeScreen(
     state: HomeScreenState,
@@ -158,11 +162,9 @@ fun HomeScreen(
                 }
                 item {
                     CommonAndroRatButton(
-                        onClick = {
-                            onOpenMessageFragment()
-                        },
-                        text = stringResource(R.string.open_messagefragment_debug),
                         modifier = Modifier
+                            .semantics { testTagsAsResourceId = true }
+                            .testTag(tag = "OpenMessageFragment")
                             .fillMaxWidth()
                             .padding(
                                 start = MaterialTheme.dimens.spacing16,
@@ -170,7 +172,11 @@ fun HomeScreen(
                                 bottom = MaterialTheme.dimens.spacing16
                             )
                             .clip(RoundedCornerShape(MaterialTheme.dimens.spacing12))
-                            .background(color = MaterialTheme.colorScheme.onBackground.copy(0.1f))
+                            .background(color = MaterialTheme.colorScheme.onBackground.copy(0.1f)),
+                        onClick = {
+                            onOpenMessageFragment()
+                        },
+                        text = stringResource(R.string.open_messagefragment_debug)
                     )
                 }
                 item {

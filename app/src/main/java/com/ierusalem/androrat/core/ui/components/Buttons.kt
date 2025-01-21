@@ -21,9 +21,9 @@ import com.ierusalem.androrat.core.ui.theme.dimens
 
 @Composable
 fun CommonAndroRatButton(
+    modifier: Modifier = Modifier,
     onClick: () -> Unit,
-    text: String,
-    modifier: Modifier = Modifier
+    text: String
 ) {
     Box(
         modifier = modifier.clickable { onClick() },
