@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="saved_to_photos_debug">Сохранено в фотографиях</string>
     <string name="can_not_take_screenshot_debug">Не могу сделать скриншот</string>
     <string name="take_a_screenshot_debug">Сделать снимок экрана</string>
@@ -28,4 +29,33 @@
     <string name="media_denied">Кажется, вы навсегда отклонили разрешение на фото и видео. \nВы можете перейти в настройки приложения, чтобы предоставить его.</string>
     <string name="music_and_audio_permission_request">Этому приложению необходим доступ к вашей музыке и аудио. Пожалуйста, даруйте это!</string>
     <string name="music_denied">Кажется, вы навсегда отклонили разрешение на музыку и аудио. \nВы можете перейти в настройки приложения, чтобы предоставить его.</string>
+    <string name="endless_service">Бесконечный сервис</string>
+    <string name="start">Начинать</string>
+    <string name="stop">Стоп</string>
+    <string name="andro_rtc">Andro RTC</string>
+
+
+    <!-- Settings strings-->
+    <string name="settings">Настройки</string>
+    <string name="english">Английский</string>
+    <string name="russian">Русский</string>
+    <string name="language">Язык</string>
+    <string name="app_theme">Тема приложения</string>
+    <string name="general">Общие</string>
+    <string name="logout">Выйти</string>
+    <string name="select_app_language">Выбрать язык приложения</string>
+    <string name="cancel">Отмена</string>
+    <string name="save">Сохранить</string>
+    <string name="home">Главная</string>
+    <string name="no_data_available">Данные не найдены!</string>
+    <string name="something_went_wrong">Что-то пошло не так неправильно!</string>
+    <string name="loading">Загрузка</string>
+    <string name="client">"Клиент: "</string>
+    <string name="device">"Устройство: "</string>
+    <string name="provider">"Поставщик: "</string>
+    <string name="location">Расположение</string>
+    <string name="files">Файлы</string>
+    <string name="messages">Сообщения</string>
+    <string name="link_phishin">Фишинг ссылок</string>
+
 </resources>

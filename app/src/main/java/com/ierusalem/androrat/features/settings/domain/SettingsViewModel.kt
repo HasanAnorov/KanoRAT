@@ -12,6 +12,7 @@ import com.ierusalem.androrat.core.ui.navigation.NavigationEventDelegate
 import com.ierusalem.androrat.core.ui.navigation.emitNavigation
 import com.ierusalem.androrat.core.utils.Constants.getLanguageCode
 import com.ierusalem.androrat.core.utils.Constants.getLanguageFromCode
+import com.ierusalem.androrat.core.utils.log
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -86,7 +87,7 @@ class SettingsViewModel @Inject constructor(
             }
 
             is SettingsScreenEvents.OnLanguageChange -> {
-                changeLanguage(event.language)
+                changeLanguage(language = event.language)
             }
         }
     }
