@@ -99,6 +99,7 @@
         android:theme="@style/Theme.AndroRAT"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+
         <activity
             android:name=".core.ui.MainActivity"
             android:configChanges="uiMode|locale|layoutDirection|screenSize|screenLayout|orientation"

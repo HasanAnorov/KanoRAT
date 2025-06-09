@@ -57,6 +57,7 @@ class SettingsViewModel @Inject constructor(
     fun handleEvents(event: SettingsScreenEvents) {
         when (event) {
             SettingsScreenEvents.OnThemeChange -> {
+                log("on theme change - ${!state.value.appTheme}")
                 viewModelScope.launch {
                     dataStorePreferenceRepository.setTheme(!state.value.appTheme)
                     _state.update {
