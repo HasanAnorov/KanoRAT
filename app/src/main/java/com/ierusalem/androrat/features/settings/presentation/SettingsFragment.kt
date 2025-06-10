@@ -37,9 +37,7 @@ class SettingsFragment : Fragment() {
                 AndroRATTheme(isDarkTheme = uiState.appTheme) {
                     SettingsScreen(
                         uiState = uiState,
-                        eventHandler = {
-                            viewModel.handleEvents(it)
-                        }
+                        eventHandler = viewModel::handleEvents
                     )
                 }
             }

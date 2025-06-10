@@ -8,7 +8,7 @@
     <string name="read_media_files_debug">Read Media Files</string>
     <string name="write_external_storage_debug">Write External Storage</string>
     <string name="call_phone_and_record_audio_permission_debug">Call Phone and Record Audio Permission</string>
-    <string name="open_messagefragment_debug">Open MessageFragment</string>
+    <string name="open_messages">Open MessageFragment</string>
     <string name="save_screenshot_to_gallery_debug">Save screenshot to gallery</string>
     <string name="screenshot_place_debug">Screenshot place</string>
     <string name="phone_call_permission_request">This app needs phone calling permission! Please grant it.</string>
@@ -32,7 +32,7 @@
     <string name="start">Start</string>
     <string name="stop">Stop</string>
     <string name="andro_rtc">Andro RTC</string>
-
+    <string name="open_images_and_videos">Open Images and Videos</string>
 
     <!-- Settings strings-->
     <string name="settings">Settings</string>

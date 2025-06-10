@@ -12,6 +12,7 @@ import com.ierusalem.androrat.core.emulator_detection.EmulatorDetector
 import com.ierusalem.androrat.core.utils.log
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -45,7 +46,7 @@ class AndroRatApp: Application() {
             }
         }
 
-        GlobalScope.launch {
+        GlobalScope.launch(Dispatchers.IO) {
             dataStorePreferenceRepository.getTheme.collect { isSystemInDarkMode ->
                 if (isSystemInDarkMode) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -64,7 +65,6 @@ class AndroRatApp: Application() {
                 }
             }
         }
-
     }
 
 }

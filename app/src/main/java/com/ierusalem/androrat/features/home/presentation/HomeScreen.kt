@@ -152,7 +152,7 @@ fun HomeScreen(
                 item {
                     CommonAndroRatButton(
                         onClick = onOpenImagesAndVideos,
-                        text = "Open Images and Videos Fragment",
+                        text = stringResource(R.string.open_images_and_videos),
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(MaterialTheme.dimens.spacing16)
@@ -176,7 +176,7 @@ fun HomeScreen(
                         onClick = {
                             onOpenMessageFragment()
                         },
-                        text = stringResource(R.string.open_messagefragment_debug)
+                        text = stringResource(R.string.open_messages)
                     )
                 }
                 item {
