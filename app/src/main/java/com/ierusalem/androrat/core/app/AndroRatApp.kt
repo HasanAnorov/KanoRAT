@@ -11,21 +11,18 @@ import com.ierusalem.androrat.core.data.preferences.DataStorePreferenceRepositor
 import com.ierusalem.androrat.core.emulator_detection.EmulatorDetector
 import com.ierusalem.androrat.core.utils.log
 import dagger.hilt.android.HiltAndroidApp
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.cancel
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltAndroidApp
 class AndroRatApp: Application() {
 
-    companion object {
-        var applicationScope = MainScope()
-    }
-
     @Inject
     lateinit var dataStorePreferenceRepository: DataStorePreferenceRepository
 
+    @OptIn(DelicateCoroutinesApi::class)
     override fun onCreate() {
         super.onCreate()
 
@@ -35,7 +32,7 @@ class AndroRatApp: Application() {
             throw IllegalStateException("Mobile Device Required!")
         }
 
-        applicationScope.launch {
+        GlobalScope.launch {
             dataStorePreferenceRepository.getLanguage.collect { languageCode ->
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                     applicationContext.getSystemService(LocaleManager::class.java).applicationLocales =
@@ -48,7 +45,7 @@ class AndroRatApp: Application() {
             }
         }
 
-        applicationScope.launch {
+        GlobalScope.launch {
             dataStorePreferenceRepository.getTheme.collect { isSystemInDarkMode ->
                 if (isSystemInDarkMode) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -68,12 +65,6 @@ class AndroRatApp: Application() {
             }
         }
 
-    }
-
-    override fun onLowMemory() {
-        super.onLowMemory()
-        applicationScope.cancel("onLowMemory() called by system")
-        applicationScope = MainScope()
     }
 
 }

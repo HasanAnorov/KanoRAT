@@ -67,6 +67,7 @@ class SettingsViewModel @Inject constructor(
                     }
                 }
             }
+
             SettingsScreenEvents.NavIconClick -> {
                 emitNavigation(SettingsScreenNavigation.NavIconClick)
             }
@@ -92,7 +93,6 @@ class SettingsViewModel @Inject constructor(
             }
         }
     }
-
 
 }
 
