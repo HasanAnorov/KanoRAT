@@ -114,7 +114,7 @@ fun GeneralOptionsUI(eventHandler: (SettingsScreenEvents) -> Unit, uiState: Sett
             onClick = {
                 eventHandler(SettingsScreenEvents.OnThemeChange)
             },
-            isSystemInDarkMode = uiState.appTheme,
+            switchCondition = uiState.appTheme,
             isForTheme = true
         )
         GeneralSettingsItemWithSwitch(
@@ -122,10 +122,10 @@ fun GeneralOptionsUI(eventHandler: (SettingsScreenEvents) -> Unit, uiState: Sett
             iconStart = R.drawable.lock,
             mainText = stringResource(R.string.require_login),
             onClick = {
-                //todo
+                eventHandler(SettingsScreenEvents.OnLoginRequiredChange)
             },
             shape = RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp),
-            isSystemInDarkMode = true,
+            switchCondition = uiState.isLoginRequired,
             isForTheme = false
         )
     }
@@ -222,13 +222,13 @@ fun GeneralSettingsItemWithSwitch(
     shape: RoundedCornerShape = RoundedCornerShape(0.dp),
     iconStart: Int? = null,
     mainText: String,
-    isSystemInDarkMode: Boolean,
+    switchCondition: Boolean,
     onClick: () -> Unit,
     isForTheme:Boolean = false,
 ) {
     Card(
         modifier = modifier.fillMaxWidth(),
-        onClick = { onClick },
+        onClick = { },
         shape = shape,
         elevation = CardDefaults.cardElevation(0.dp),
         colors = CardDefaults.cardColors(
@@ -277,7 +277,7 @@ fun GeneralSettingsItemWithSwitch(
                             style = MaterialTheme.typography.titleMedium
                         )
                         ThemeSwitcher(
-                            darkTheme = isSystemInDarkMode,
+                            darkTheme = switchCondition,
                             size = 32.dp,
                             padding = 5.dp,
                             onClick = { onClick() },

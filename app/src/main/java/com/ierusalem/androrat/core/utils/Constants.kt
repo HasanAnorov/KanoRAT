@@ -28,12 +28,11 @@ object Constants {
 
     const val PREFERENCE_LANGUAGE = "device_language"
     const val PREFERENCE_THEME = "device_theme"
-    const val PREFERENCE_USERNAME = "device_user_username"
+    const val PREFERENCE_LOGIN = "device_require_login"
 
     private const val ENGLISH_LOCALE = "en"
     private const val RUSSIAN_LOCALE = "ru"
 
-    const val UNKNOWN_USER = "Unknown User"
     const val DEFAULT_THEME = false
     const val DEFAULT_LOCALE = RUSSIAN_LOCALE
 

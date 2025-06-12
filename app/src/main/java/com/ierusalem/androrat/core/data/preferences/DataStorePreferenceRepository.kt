@@ -17,15 +17,15 @@ class DataStorePreferenceRepository(context: Context) {
     private val dataStore: DataStore<Preferences> = context.dataStore
     private val defaultLanguage = Constants.DEFAULT_LOCALE
     private val defaultTheme = Constants.DEFAULT_THEME
-    private val defaultUsername = Constants.UNKNOWN_USER
 
     companion object {
         val PREF_LANGUAGE = stringPreferencesKey(name = Constants.PREFERENCE_LANGUAGE)
         val PREF_THEME = booleanPreferencesKey(name = Constants.PREFERENCE_THEME)
-        val PREF_USERNAME = stringPreferencesKey(name = Constants.PREFERENCE_USERNAME)
+        val PREF_LOGIN = booleanPreferencesKey(name = Constants.PREFERENCE_LOGIN)
 
         private var INSTANCE: DataStorePreferenceRepository? = null
 
+        @Suppress("unused")
         fun getInstance(context: Context): DataStorePreferenceRepository {
             return INSTANCE ?: synchronized(this) {
                 INSTANCE?.let {
@@ -37,6 +37,17 @@ class DataStorePreferenceRepository(context: Context) {
             }
         }
     }
+
+    suspend fun setLoginRequired(requireLogin: Boolean) {
+        dataStore.edit { preferences ->
+            preferences[PREF_LOGIN] = requireLogin
+        }
+    }
+
+    val getLoginRequired: Flow<Boolean> = dataStore.data
+        .map { preferences ->
+            preferences[PREF_LOGIN] ?: true
+        }
 
     suspend fun setTheme(isSystemInDarkMode: Boolean) {
         dataStore.edit { preferences ->
@@ -59,16 +70,4 @@ class DataStorePreferenceRepository(context: Context) {
         .map { preferences ->
             preferences[PREF_LANGUAGE] ?: defaultLanguage
         }
-
-    suspend fun setUsername(username: String) {
-        dataStore.edit { preferences ->
-            preferences[PREF_USERNAME] = username
-        }
-    }
-
-    val getUsername: Flow<String> = dataStore.data
-        .map { preferences ->
-            preferences[PREF_USERNAME] ?: defaultUsername
-        }
-
 }

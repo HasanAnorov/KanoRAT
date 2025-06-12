@@ -7,5 +7,6 @@ sealed interface SettingsScreenEvents {
     data object LanguageCLick: SettingsScreenEvents
     data class OnLanguageChange(val language: AppLanguage) : SettingsScreenEvents
     data object OnThemeChange : SettingsScreenEvents
+    data object OnLoginRequiredChange : SettingsScreenEvents
     data object OnDismissLanguageDialog : SettingsScreenEvents
 }

@@ -34,10 +34,12 @@ class SettingsViewModel @Inject constructor(
         viewModelScope.launch {
             val isSystemInDarkMode = dataStorePreferenceRepository.getTheme.first()
             val language = getLanguageFromCode(dataStorePreferenceRepository.getLanguage.first())
+            val isLoginRequired = dataStorePreferenceRepository.getLoginRequired.first()
             _state.update { settingsState ->
                 settingsState.copy(
                     selectedLanguage = language,
-                    appTheme = isSystemInDarkMode
+                    appTheme = isSystemInDarkMode,
+                    isLoginRequired = isLoginRequired
                 )
             }
         }
@@ -63,6 +65,17 @@ class SettingsViewModel @Inject constructor(
                     _state.update {
                         it.copy(
                             appTheme = !state.value.appTheme
+                        )
+                    }
+                }
+            }
+
+            SettingsScreenEvents.OnLoginRequiredChange -> {
+                viewModelScope.launch {
+                    dataStorePreferenceRepository.setLoginRequired(!state.value.isLoginRequired)
+                    _state.update {
+                        it.copy(
+                            isLoginRequired = !state.value.isLoginRequired
                         )
                     }
                 }
@@ -104,5 +117,6 @@ data class SettingsState(
         AppLanguage.Russian,
     ),
     val selectedLanguage: AppLanguage = languagesList.first{it.isSelected},
-    val appTheme: Boolean = false
+    val appTheme: Boolean = false,
+    val isLoginRequired: Boolean = true
 )
