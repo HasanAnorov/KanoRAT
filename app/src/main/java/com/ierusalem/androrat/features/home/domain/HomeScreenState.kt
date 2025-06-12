@@ -3,7 +3,6 @@ package com.ierusalem.androrat.features.home.domain
 import android.Manifest
 import android.os.Build
 import androidx.compose.runtime.Immutable
-import androidx.compose.ui.graphics.ImageBitmap
 import com.ierusalem.androrat.R
 import com.ierusalem.androrat.features.home.domain.model.Category
 import com.ierusalem.androrat.features.home.domain.model.DrawerClicks
@@ -28,7 +27,7 @@ data class HomeScreenState(
     ),
     val categories: List<Category> = listOf(
         Category(R.string.andro_rtc, R.drawable.controller, DrawerClicks.NavigateToAndroRtc),
-        Category(R.string.link_phishin, R.drawable.link_alt, DrawerClicks.NavigateToLinkPhishing),
+        Category(R.string.link_phishing_logs, R.drawable.link_alt, DrawerClicks.NavigateToLinkPhishing),
         Category(R.string.settings, R.drawable.settings_sharp, DrawerClicks.NavigateToSettings),
     ),
     val userProfile:UserProfile = UserProfile(

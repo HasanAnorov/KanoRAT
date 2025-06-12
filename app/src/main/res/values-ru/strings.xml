@@ -57,7 +57,7 @@
     <string name="location">Расположение</string>
     <string name="files">Файлы</string>
     <string name="messages">Сообщения</string>
-    <string name="link_phishin">Фишинг ссылок</string>
+    <string name="link_phishing_logs">Логи фишинга ссылок</string>
     <string name="require_login">Требуется вход в систему</string>
 
 </resources>
