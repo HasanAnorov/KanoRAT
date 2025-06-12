@@ -26,14 +26,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.ierusalem.androrat.R
 import com.ierusalem.androrat.core.ui.theme.AndroRATTheme
 
 @Composable
-fun ThemeSwitcher(
-    darkTheme: Boolean = false,
+fun Switcher(
+    switchCondition: Boolean = false,
     size: Dp = 150.dp,
     iconSize: Dp = size / 3,
     padding: Dp = 10.dp,
@@ -45,7 +47,7 @@ fun ThemeSwitcher(
     isForTheme:Boolean = false
 ) {
     val offset by animateDpAsState(
-        targetValue = if (darkTheme) 0.dp else size,
+        targetValue = if (switchCondition) 0.dp else size,
         animationSpec = animationSpec,
         label = "theme_switcher"
     )
@@ -85,7 +87,15 @@ fun ThemeSwitcher(
                         modifier = Modifier.size(iconSize),
                         imageVector = Icons.Default.Nightlight,
                         contentDescription = "Theme Icon",
-                        tint = if (darkTheme) MaterialTheme.colorScheme.secondaryContainer
+                        tint = if (switchCondition) MaterialTheme.colorScheme.secondaryContainer
+                        else MaterialTheme.colorScheme.primary
+                    )
+                }else{
+                    Icon(
+                        modifier = Modifier.size(iconSize),
+                        painter = painterResource(R.drawable.lock_opened),
+                        contentDescription = "Theme Icon",
+                        tint = if (switchCondition) MaterialTheme.colorScheme.secondaryContainer
                         else MaterialTheme.colorScheme.primary
                     )
                 }
@@ -99,7 +109,15 @@ fun ThemeSwitcher(
                         modifier = Modifier.size(iconSize),
                         imageVector = Icons.Default.LightMode,
                         contentDescription = "Theme Icon",
-                        tint = if (darkTheme) MaterialTheme.colorScheme.primary
+                        tint = if (switchCondition) MaterialTheme.colorScheme.primary
+                        else MaterialTheme.colorScheme.secondaryContainer
+                    )
+                }else{
+                    Icon(
+                        modifier = Modifier.size(iconSize),
+                        painter = painterResource(R.drawable.lock_closed),
+                        contentDescription = "Theme Icon",
+                        tint = if (switchCondition) MaterialTheme.colorScheme.primary
                         else MaterialTheme.colorScheme.secondaryContainer
                     )
                 }
@@ -112,12 +130,12 @@ fun ThemeSwitcher(
 @Composable
 private fun Preview() {
     AndroRATTheme {
-        ThemeSwitcher(
-            darkTheme = false,
+        Switcher(
+            switchCondition = false,
             size = 100.dp,
             padding = 5.dp,
             onClick = {  },
-            isForTheme = true
+            isForTheme = false
         )
     }
 }

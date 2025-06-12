@@ -36,7 +36,7 @@ import androidx.compose.ui.unit.dp
 import com.ierusalem.androrat.R
 import com.ierusalem.androrat.core.ui.components.AndroRatAppBar
 import com.ierusalem.androrat.core.ui.components.LanguageDialog
-import com.ierusalem.androrat.core.ui.components.ThemeSwitcher
+import com.ierusalem.androrat.core.ui.components.Switcher
 import com.ierusalem.androrat.core.ui.theme.AndroRATTheme
 import com.ierusalem.androrat.core.utils.UiText
 import com.ierusalem.androrat.features.settings.domain.SettingsState
@@ -276,8 +276,8 @@ fun GeneralSettingsItemWithSwitch(
                             text = mainText,
                             style = MaterialTheme.typography.titleMedium
                         )
-                        ThemeSwitcher(
-                            darkTheme = switchCondition,
+                        Switcher(
+                            switchCondition = switchCondition,
                             size = 32.dp,
                             padding = 5.dp,
                             onClick = { onClick() },
