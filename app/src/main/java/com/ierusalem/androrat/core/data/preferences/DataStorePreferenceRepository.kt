@@ -17,11 +17,15 @@ class DataStorePreferenceRepository(context: Context) {
     private val dataStore: DataStore<Preferences> = context.dataStore
     private val defaultLanguage = Constants.DEFAULT_LOCALE
     private val defaultTheme = Constants.DEFAULT_THEME
+    private val defaultLogin = Constants.DEFAULT_LOGIN
+    private val defaultPassword = Constants.DEFAULT_PASSWORD
 
     companion object {
         val PREF_LANGUAGE = stringPreferencesKey(name = Constants.PREFERENCE_LANGUAGE)
         val PREF_THEME = booleanPreferencesKey(name = Constants.PREFERENCE_THEME)
-        val PREF_LOGIN = booleanPreferencesKey(name = Constants.PREFERENCE_LOGIN)
+        val IS_PREF_LOGIN_REQUIRED = booleanPreferencesKey(name = Constants.PREFERENCE_IS_LOGIN_REQUIRED)
+        val PREF_LOGIN = stringPreferencesKey(name = Constants.PREFERENCE_LOGIN)
+        val PREF_PASSWORD = stringPreferencesKey(name = Constants.PREFERENCE_PASSWORD)
 
         private var INSTANCE: DataStorePreferenceRepository? = null
 
@@ -40,13 +44,13 @@ class DataStorePreferenceRepository(context: Context) {
 
     suspend fun setLoginRequired(requireLogin: Boolean) {
         dataStore.edit { preferences ->
-            preferences[PREF_LOGIN] = requireLogin
+            preferences[IS_PREF_LOGIN_REQUIRED] = requireLogin
         }
     }
 
     val getLoginRequired: Flow<Boolean> = dataStore.data
         .map { preferences ->
-            preferences[PREF_LOGIN] ?: true
+            preferences[IS_PREF_LOGIN_REQUIRED] ?: true
         }
 
     suspend fun setTheme(isSystemInDarkMode: Boolean) {
@@ -70,4 +74,15 @@ class DataStorePreferenceRepository(context: Context) {
         .map { preferences ->
             preferences[PREF_LANGUAGE] ?: defaultLanguage
         }
+
+    val getLogin: Flow<String> = dataStore.data
+        .map { preferences ->
+            preferences[PREF_LOGIN] ?: defaultLogin
+        }
+
+    val getPassword: Flow<String> = dataStore.data
+        .map { preferences ->
+            preferences[PREF_PASSWORD] ?: defaultPassword
+        }
+
 }

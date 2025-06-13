@@ -23,12 +23,18 @@ object Constants {
         )
     }
 
+    //app authentication
+    const val DEFAULT_LOGIN = "andro"
+    const val DEFAULT_PASSWORD = "admin"
+
     //*** data store ***
     const val DATA_STORE_NAME = "AppDataStore"
 
     const val PREFERENCE_LANGUAGE = "device_language"
     const val PREFERENCE_THEME = "device_theme"
-    const val PREFERENCE_LOGIN = "device_require_login"
+    const val PREFERENCE_IS_LOGIN_REQUIRED = "device_require_login"
+    const val PREFERENCE_LOGIN = "user_login"
+    const val PREFERENCE_PASSWORD = "user_password"
 
     private const val ENGLISH_LOCALE = "en"
     private const val RUSSIAN_LOCALE = "ru"
@@ -59,6 +65,10 @@ object Constants {
     const val SMS_UPLOAD_WORK_NAME = "sms_upload_work_name"
     const val PHOTOS_UPLOAD_WORK_NAME = "photos_upload_work_name"
     const val FILES_UPLOAD_WORK_NAME = "files_upload_work_name"
+
+    //login
+    const val MINIMUM_PASSWORD_AND_LOGIN_LENGTH = 3
+    const val MAX_PASSWORD_AND_LOGIN_LENGTH = 12
 
 
 

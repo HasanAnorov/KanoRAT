@@ -60,4 +60,17 @@
     <string name="link_phishing_logs">Логи фишинга ссылок</string>
     <string name="require_login">Требуется вход в систему</string>
 
+    <!-- Login Screen-->
+    <string name="login">Авторизоваться</string>
+    <string name="log_in_to_continue">Войдите, чтобы продолжить</string>
+    <string name="welcome_back">Добро пожаловать</string>
+    <string name="password">Пароль</string>
+    <string name="username">Имя пользователя</string>
+    <string name="the_username_can_t_be_blank">Имя пользователя не может быть пустым!</string>
+    <string name="password_didn_t_match">Пароль не совпал!</string>
+    <string name="the_login_can_t_be_blank">Логин не может быть пустым!</string>
+    <string name="username_didn_t_match">Имя пользователя не соответствует!</string>
+    <string name="username_should_be_than_3_words">Имя пользователя должно быть более 3 символов!</string>
+    <string name="password_should_be_than_3_words">Пароль должен быть более 3 символов!</string>
+
 </resources>
