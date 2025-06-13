@@ -67,7 +67,7 @@
     <string name="the_username_can_t_be_blank">The username can\'t be blank!</string>
     <string name="password_didn_t_match">Password didn\'t match!</string>
     <string name="the_login_can_t_be_blank">The login can\'t be blank!</string>
-    <string name="username_didn_t_match">The username should be more than 3 characters!</string>
+    <string name="username_didn_t_match">The username didn\'t match!</string>
     <string name="username_should_be_than_3_words">Username should be more than 3 characters!</string>
     <string name="password_should_be_than_3_words">Password should be more than 3 characters!</string>
 
