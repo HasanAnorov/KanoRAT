@@ -74,5 +74,6 @@
     <!-- Images Screen-->
     <string name="images">Images</string>
     <string name="videos">Videos</string>
+    <string name="upload">Upload</string>
 
 </resources>

@@ -76,5 +76,6 @@
     <!-- Images Screen-->
     <string name="images">Изображения</string>
     <string name="videos">Видео</string>
+    <string name="upload">Загрузить</string>
 
 </resources>

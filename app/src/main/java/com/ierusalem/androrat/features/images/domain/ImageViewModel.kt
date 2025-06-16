@@ -15,5 +15,4 @@ class ImageViewModel: ViewModel() {
         this.images = images
     }
 
-
 }

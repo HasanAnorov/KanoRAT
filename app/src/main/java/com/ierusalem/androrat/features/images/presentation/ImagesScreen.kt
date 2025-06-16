@@ -1,6 +1,5 @@
 package com.ierusalem.androrat.features.images.presentation
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -22,7 +21,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScaffoldDefaults
@@ -32,12 +30,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.ierusalem.androrat.R
 import com.ierusalem.androrat.core.ui.components.AndroRatAppBar
+import com.ierusalem.androrat.core.ui.components.EmptyScreen
 import com.ierusalem.androrat.core.ui.theme.AndroRATTheme
 import com.ierusalem.androrat.core.ui.theme.MontserratFontFamily
 import com.ierusalem.androrat.features.home.domain.model.Image
@@ -50,7 +51,6 @@ fun ImagesScreen(
     images: List<Image>,
     eventHandler: (ImagesScreenEvents) -> Unit
 ) {
-    //change
     Scaffold(
         modifier = modifier,
         topBar = {
@@ -72,7 +72,6 @@ fun ImagesScreen(
             .exclude(WindowInsets.navigationBars)
             .exclude(WindowInsets.ime)
     ) { paddingValues ->
-        Log.d("ahi3646_hh", "ImagesScreen: $images ")
         Column(
             modifier = Modifier
                 .padding(paddingValues)
@@ -88,7 +87,7 @@ fun ImagesScreen(
                     ) {
                         Icon(
                             painter = painterResource(R.drawable.image_03),
-                            contentDescription = "images",
+                            contentDescription = stringResource(R.string.images),
                             tint = MaterialTheme.colorScheme.onBackground
                         )
                     }
@@ -98,12 +97,21 @@ fun ImagesScreen(
                         text = stringResource(R.string.images),
                         style = MaterialTheme.typography.titleMedium
                     )
-
                     Text(
                         modifier = Modifier
                             .weight(1F)
                             .padding(horizontal = 4.dp),
-                        text = "(23)",
+                        text = buildAnnotatedString {
+                            withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.onBackground)) {
+                                append("( ")
+                            }
+                            withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.outline)) { // change number color
+                                append(images.size.toString())
+                            }
+                            withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.onBackground)) {
+                                append(" )")
+                            }
+                        },
                         fontFamily = MontserratFontFamily,
                         style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.outline
@@ -111,9 +119,9 @@ fun ImagesScreen(
                     Button(
                         modifier = Modifier.padding(end = 16.dp),
                         shape = RoundedCornerShape(12.dp),
-                        onClick = {},
+                        onClick = onUploadClick,
                         content = {
-                            Text("Upload")
+                            Text(text = stringResource(R.string.upload))
                         }
                     )
                 }
@@ -124,59 +132,79 @@ fun ImagesScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     IconButton(
-                        onClick = { },
+                        onClick = {},
                         enabled = false
                     ) {
                         Icon(
-                            painter = painterResource(R.drawable.video_file_light),
-                            contentDescription = "Videos",
+                            painter = painterResource(R.drawable.video),
+                            contentDescription = stringResource(R.string.videos),
                             tint = MaterialTheme.colorScheme.onBackground
                         )
                     }
                     Text(
                         modifier = Modifier
                             .padding(start = 4.dp),
-                        overflow = TextOverflow.Ellipsis,
-                        maxLines = 2,
                         text = stringResource(R.string.videos),
-                        style = MaterialTheme.typography.titleSmall
+                        style = MaterialTheme.typography.titleMedium
                     )
+
                     Text(
                         modifier = Modifier
                             .weight(1F)
                             .padding(horizontal = 4.dp),
-                        text = "(425)",
-                        overflow = TextOverflow.Ellipsis,
-                        maxLines = 2,
+                        text = buildAnnotatedString {
+                            withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.onBackground)) {
+                                append("( ")
+                            }
+                            withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.outline)) { // change number color
+                                append("887")
+                            }
+                            withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.onBackground)) {
+                                append(" )")
+                            }
+                        },
                         fontFamily = MontserratFontFamily,
-                        style = MaterialTheme.typography.titleSmall,
+                        style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.outline
+                    )
+                    Button(
+                        modifier = Modifier.padding(end = 16.dp),
+                        shape = RoundedCornerShape(12.dp),
+                        onClick = {},
+                        content = {
+                            Text(stringResource(R.string.upload))
+                        }
                     )
                 }
             }
-
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(top = 24.dp)
-                    .background(MaterialTheme.colorScheme.surface),
-                content = {
-                    items(images) { image ->
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(200.dp),
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            AsyncImage(
-                                model = image.uri,
-                                contentDescription = null
-                            )
-                            Text(text = "Image Display Name - ${image.displayName}")
+            if (images.isEmpty()) {
+                EmptyScreen(
+                    modifier = Modifier.fillMaxSize()
+                )
+            } else {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(top = 8.dp, bottom = 24.dp)
+                        .background(MaterialTheme.colorScheme.surface),
+                    content = {
+                        items(images) { image ->
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(200.dp),
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                AsyncImage(
+                                    model = image.uri,
+                                    contentDescription = null
+                                )
+                                Text(text = "Image Display Name - ${image.displayName}")
+                            }
                         }
                     }
-                }
-            )
+                )
+            }
         }
     }
 }
