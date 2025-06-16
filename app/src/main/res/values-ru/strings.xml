@@ -73,4 +73,8 @@
     <string name="username_should_be_than_3_words">Имя пользователя должно быть более 3 символов!</string>
     <string name="password_should_be_than_3_words">Пароль должен быть более 3 символов!</string>
 
+    <!-- Images Screen-->
+    <string name="images">Изображения</string>
+    <string name="videos">Видео</string>
+
 </resources>

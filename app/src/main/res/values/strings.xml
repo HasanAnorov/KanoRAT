@@ -71,4 +71,8 @@
     <string name="username_should_be_than_3_words">Username should be more than 3 characters!</string>
     <string name="password_should_be_than_3_words">Password should be more than 3 characters!</string>
 
+    <!-- Images Screen-->
+    <string name="images">Images</string>
+    <string name="videos">Videos</string>
+
 </resources>
