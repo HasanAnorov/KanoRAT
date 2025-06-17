@@ -35,7 +35,6 @@
     <string name="andro_rtc">Andro RTC</string>
     <string name="open_images_and_videos">Открыть изображения и видео</string>
 
-
     <!-- Settings strings-->
     <string name="settings">Настройки</string>
     <string name="english">Английский</string>
@@ -77,5 +76,6 @@
     <string name="images">Изображения</string>
     <string name="videos">Видео</string>
     <string name="upload">Загрузить</string>
+    <string name="tap_anywhere_to_close">Нажмите в любом месте, чтобы закрыть</string>
 
 </resources>

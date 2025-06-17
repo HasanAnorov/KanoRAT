@@ -75,5 +75,6 @@
     <string name="images">Images</string>
     <string name="videos">Videos</string>
     <string name="upload">Upload</string>
+    <string name="tap_anywhere_to_close">Tap anywhere to close</string>
 
 </resources>
