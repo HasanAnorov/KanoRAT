@@ -16,3 +16,4 @@ class ImageViewModel: ViewModel() {
     }
 
 }
+

@@ -11,7 +11,6 @@ import androidx.core.app.ActivityCompat
 
 @SuppressLint("HardwareIds")
 fun Context.getSystemDetails():String {
-
     val imei = getIMEI() ?: "Permission Not Granted"
 
     return "Brand: ${Build.BRAND} \n" +
@@ -59,6 +58,7 @@ fun Context.getIMEI(): String? {
         }
         return null // Return null if permission is not granted
     }catch (e:Exception){
+        log("IMEI error - $e")
         return null // Return null if permission is not granted   
     }
 }

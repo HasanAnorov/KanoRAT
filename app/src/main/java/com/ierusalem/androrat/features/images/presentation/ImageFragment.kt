@@ -37,6 +37,86 @@ class ImageFragment : Fragment() {
 
     private val viewModel by viewModels<ImageViewModel>()
 
+    private fun loadVideos(context: Context) {
+        val projection = arrayOf(
+            MediaStore.Video.Media._ID,
+            MediaStore.Video.Media.DISPLAY_NAME,
+            MediaStore.Video.Media.MIME_TYPE,
+            MediaStore.Video.Media.SIZE,
+            MediaStore.Video.Media.DATE_TAKEN,
+            MediaStore.Video.Media.DATE_ADDED,
+            MediaStore.Video.Media.DATE_MODIFIED,
+            MediaStore.Video.Media.WIDTH,
+            MediaStore.Video.Media.HEIGHT,
+            MediaStore.Video.Media.BUCKET_DISPLAY_NAME,
+            MediaStore.Video.Media.RELATIVE_PATH,
+            MediaStore.Video.Media.DURATION
+        )
+
+        val sortOrder = "${MediaStore.Video.Media.DATE_TAKEN} DESC"
+
+        val videos = mutableListOf<Image>() // Reusing your Image data class
+
+        context.contentResolver.query(
+            MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
+            projection,
+            null,
+            null,
+            sortOrder
+        )?.use { cursor ->
+            val idCol = cursor.getColumnIndexOrThrow(MediaStore.Video.Media._ID)
+            val displayNameCol = cursor.getColumnIndex(MediaStore.Video.Media.DISPLAY_NAME)
+            val mimeTypeCol = cursor.getColumnIndex(MediaStore.Video.Media.MIME_TYPE)
+            val sizeCol = cursor.getColumnIndex(MediaStore.Video.Media.SIZE)
+            val dateTakenCol = cursor.getColumnIndex(MediaStore.Video.Media.DATE_TAKEN)
+            val widthCol = cursor.getColumnIndex(MediaStore.Video.Media.WIDTH)
+            val heightCol = cursor.getColumnIndex(MediaStore.Video.Media.HEIGHT)
+            val bucketCol = cursor.getColumnIndex(MediaStore.Video.Media.BUCKET_DISPLAY_NAME)
+            val pathCol = cursor.getColumnIndex(MediaStore.Video.Media.RELATIVE_PATH)
+
+            while (cursor.moveToNext()) {
+                val id = cursor.getLong(idCol)
+                val uri = ContentUris.withAppendedId(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, id)
+
+                val displayName = cursor.getStringOrNull(displayNameCol)
+                val mimeType = cursor.getStringOrNull(mimeTypeCol)
+                val size = cursor.getLongOrNull(sizeCol)
+                val dateTaken = cursor.getLongOrNull(dateTakenCol)
+                val width = cursor.getIntOrNull(widthCol)
+                val height = cursor.getIntOrNull(heightCol)
+                val folderName = cursor.getStringOrNull(bucketCol)
+                val relativePath = cursor.getStringOrNull(pathCol)
+
+                videos.add(
+                    Image(
+                        id = id,
+                        uri = uri,
+                        displayName = displayName,
+                        mimeType = mimeType,
+                        size = size.toReadableFileSize(),
+                        dateTaken = dateTaken.toReadableDate(),
+                        width = width,
+                        height = height,
+                        folderName = folderName,
+                        relativePath = relativePath,
+                        author = null,
+                        description = null,
+                        orientation = null,
+                        latitude = null,
+                        longitude = null,
+                        cameraModel = null,
+                        iso = null,
+                        aperture = null,
+                        exposureTime = null
+                    )
+                )
+            }
+
+            //viewModel.updateVideos(videos) // You'll need a similar function to update video state
+        }
+    }
+
+
     private fun loadImages(context: Context) {
         val projection = arrayOf(
             MediaStore.Images.Media._ID,
@@ -156,7 +236,6 @@ class ImageFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         loadImages(context = requireContext())
     }
 
@@ -183,41 +262,6 @@ class ImageFragment : Fragment() {
                         onUploadClick = {
                             val apiService = RetrofitInstance(requireContext()).api
                             val images = viewModel.images
-//                            val image = images[0]
-//                            val imageUri = image.uri
-//                            val inputStream = requireContext().contentResolver.openInputStream(imageUri)
-//                            val imageFile = File.createTempFile(
-//                                "image",
-//                                ".jpg",
-//                                requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-//                            )
-//                            val fileOutputStream = FileOutputStream(imageFile)
-//                            inputStream?.copyTo(fileOutputStream)
-//                            fileOutputStream.close()
-//
-//                            val imageDataTake = getShortDate(image.dataTaken)
-
-//                            val requestBody: RequestBody = MultipartBody.Builder()
-//                                .setType(MultipartBody.FORM)
-//                                .addFormDataPart(
-//                                    name = "description",
-//                                    value = "Image Description: " +
-//                                            "\nImage Display Name - ${image.displayName} " +
-//                                            "\nImage Data - ${image.data}" +
-//                                            "\nImage Uri - ${image.uri}" +
-//                                            "\nImage Author - ${image.author}" +
-//                                            "\nImage Description - ${image.description}" +
-//                                            "\nImage Id - ${image.id}" +
-//                                            "\nImage Data Taken - $imageDataTake"
-//                                )
-//                                .addFormDataPart(
-//                                    "file",
-//                                    imageFile.name,
-//                                    imageFile.asRequestBody(
-//                                        "image/*".toMediaType()
-//                                    )
-//                                )
-//                                .build()
 
                             val requestBodyBuilder = MultipartBody.Builder()
                             requestBodyBuilder.setType(MultipartBody.FORM)
@@ -270,59 +314,8 @@ class ImageFragment : Fragment() {
                             }
                             val requestBody = requestBodyBuilder.build()
 
-//                            val images = viewModel.images
-//                            val parts: MutableList<MultipartBody.Part> = mutableListOf()
-//
-//                            for (i in 0 .. 3){
-//                                parts.add(
-//                                    prepareFile(
-//                                        images[i].uri
-//                                    )
-//                                )
-//                            }
-
-//                            val parts: MutableList<RequestBody> = mutableListOf()
-//                            val images = viewModel.images
-//                            for(i in 0 .. 3){
-//                                val tempImage = images[i]
-//                                val tempImageUri = tempImage.uri
-//                                val tempInputStream = requireContext().contentResolver.openInputStream(tempImageUri)
-//                                val tempImageFile = File.createTempFile(
-//                                    "image",
-//                                    ".jpg",
-//                                    requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-//                                )
-//                                val tempFileOutputStream = FileOutputStream(tempImageFile)
-//                                tempInputStream?.copyTo(tempFileOutputStream)
-//                                fileOutputStream.close()
-//
-//                                val requestBody: RequestBody = MultipartBody.Builder()
-//                                    .setType(MultipartBody.FORM)
-//                                    .addFormDataPart(
-//                                        name = "description",
-//                                        value = "Image Description: " +
-//                                                "\nImage Display Name - ${tempImage.displayName} " +
-//                                                "\nImage Data - ${tempImage.data}" +
-//                                                "\nImage Uri - ${tempImage.uri}" +
-//                                                "\nImage Author - ${tempImage.author}" +
-//                                                "\nImage Description - ${tempImage.description}" +
-//                                                "\nImage Id - ${tempImage.id}" +
-//                                                "\nImage Data Taken - imageDataTake"
-//                                    )
-//                                    .addFormDataPart(
-//                                        "file",
-//                                        tempImageFile.name,
-//                                        tempImageFile.asRequestBody(
-//                                            "image/*".toMediaType()
-//                                        )
-//                                    )
-//                                    .build()
-//                                parts.add(requestBody)
-//                            }
-
                             scope.launch {
                                 val response = apiService.postImage(requestBody)
-//                                val response = apiService.postImages(parts = parts)
                                 if (response.isSuccessful) {
                                     Log.d(
                                         "ahi3646_photo",
