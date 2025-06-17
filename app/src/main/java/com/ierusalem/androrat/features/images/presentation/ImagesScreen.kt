@@ -266,7 +266,7 @@ fun ImagePreviewDialog(
                     .verticalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                // Display image
+
                 AsyncImage(
                     model = image.uri,
                     contentDescription = image.displayName,
