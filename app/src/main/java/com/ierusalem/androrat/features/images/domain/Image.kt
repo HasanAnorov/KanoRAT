@@ -1,4 +1,4 @@
-package com.ierusalem.androrat.features.home.domain.model
+package com.ierusalem.androrat.features.images.domain
 
 import android.net.Uri
 

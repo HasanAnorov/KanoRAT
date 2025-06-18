@@ -4,12 +4,18 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.ierusalem.androrat.features.home.domain.model.Image
 
 class ImageViewModel: ViewModel() {
 
     var images by mutableStateOf(emptyList<Image>())
         private set
+
+    var videos by mutableStateOf(emptyList<Video>())
+        private set
+
+    fun updateVideos(videos: List<Video>){
+        this.videos = videos
+    }
 
     fun updateImages(images: List<Image>){
         this.images = images

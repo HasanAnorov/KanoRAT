@@ -9,7 +9,7 @@ import com.ierusalem.androrat.features.home.domain.model.DrawerClicks
 import com.ierusalem.androrat.core.ui.navigation.DefaultNavigationEventDelegate
 import com.ierusalem.androrat.core.ui.navigation.NavigationEventDelegate
 import com.ierusalem.androrat.core.ui.navigation.emitNavigation
-import com.ierusalem.androrat.features.home.domain.model.Image
+import com.ierusalem.androrat.features.images.domain.Image
 import com.ierusalem.androrat.features.home.presentation.HomeScreenNavigation
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

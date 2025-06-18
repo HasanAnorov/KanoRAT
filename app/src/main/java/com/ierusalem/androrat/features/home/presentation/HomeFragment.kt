@@ -64,7 +64,7 @@ import com.ierusalem.androrat.core.utils.openAppSettings
 import com.ierusalem.androrat.core.utils.toReadableDate
 import com.ierusalem.androrat.core.worker.SMSUploadWorker
 import com.ierusalem.androrat.features.home.domain.HomeViewModel
-import com.ierusalem.androrat.features.home.domain.model.Image
+import com.ierusalem.androrat.features.images.domain.Image
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream

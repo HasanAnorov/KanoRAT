@@ -60,7 +60,7 @@ import com.ierusalem.androrat.core.ui.components.AndroRatAppBar
 import com.ierusalem.androrat.core.ui.components.EmptyScreen
 import com.ierusalem.androrat.core.ui.theme.AndroRATTheme
 import com.ierusalem.androrat.core.ui.theme.MontserratFontFamily
-import com.ierusalem.androrat.features.home.domain.model.Image
+import com.ierusalem.androrat.features.images.domain.Image
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
