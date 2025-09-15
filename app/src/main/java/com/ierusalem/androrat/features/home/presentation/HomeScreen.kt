@@ -42,6 +42,7 @@ import com.ierusalem.androrat.core.ui.components.AndroRatAppBar
 import com.ierusalem.androrat.core.ui.components.CommonAndroRatButton
 import com.ierusalem.androrat.core.ui.theme.AndroRATTheme
 import com.ierusalem.androrat.core.ui.theme.dimens
+import com.ierusalem.androrat.core.utils.log
 import com.ierusalem.androrat.features.home.domain.HomeScreenClickIntents
 import com.ierusalem.androrat.features.home.domain.HomeScreenState
 
@@ -60,6 +61,7 @@ fun HomeScreen(
     onStopEndlessService: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    log("HomeScreen state - $state")
 
     val topBarState = rememberTopAppBarState()
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(topBarState)
@@ -155,7 +157,7 @@ fun HomeScreen(
                         text = stringResource(R.string.open_images_and_videos),
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(MaterialTheme.dimens.spacing16)
+                            .padding(top = MaterialTheme.dimens.spacing16)
                             .clip(RoundedCornerShape(MaterialTheme.dimens.spacing12))
                             .background(color = MaterialTheme.colorScheme.onBackground.copy(0.1f))
                     )
@@ -166,11 +168,7 @@ fun HomeScreen(
                             .semantics { testTagsAsResourceId = true }
                             .testTag(tag = "OpenMessageFragment")
                             .fillMaxWidth()
-                            .padding(
-                                start = MaterialTheme.dimens.spacing16,
-                                end = MaterialTheme.dimens.spacing16,
-                                bottom = MaterialTheme.dimens.spacing16
-                            )
+                            .padding(top = MaterialTheme.dimens.spacing16)
                             .clip(RoundedCornerShape(MaterialTheme.dimens.spacing12))
                             .background(color = MaterialTheme.colorScheme.onBackground.copy(0.1f)),
                         onClick = {
@@ -185,11 +183,7 @@ fun HomeScreen(
                         text = stringResource(R.string.call_phone_and_record_audio_permission_debug),
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(
-                                start = MaterialTheme.dimens.spacing16,
-                                end = MaterialTheme.dimens.spacing16,
-                                bottom = MaterialTheme.dimens.spacing16
-                            )
+                            .padding(top = MaterialTheme.dimens.spacing16)
                             .clip(RoundedCornerShape(MaterialTheme.dimens.spacing12))
                             .background(color = MaterialTheme.colorScheme.onBackground.copy(0.1f))
                     )
@@ -200,11 +194,7 @@ fun HomeScreen(
                         text = stringResource(R.string.read_media_files_debug),
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(
-                                start = MaterialTheme.dimens.spacing16,
-                                end = MaterialTheme.dimens.spacing16,
-                                bottom = MaterialTheme.dimens.spacing16
-                            )
+                            .padding(top = MaterialTheme.dimens.spacing16)
                             .clip(RoundedCornerShape(MaterialTheme.dimens.spacing12))
                             .background(color = MaterialTheme.colorScheme.onBackground.copy(0.1f))
                     )
@@ -215,11 +205,7 @@ fun HomeScreen(
                         text = stringResource(R.string.record_audio_permission_debug),
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(
-                                start = MaterialTheme.dimens.spacing16,
-                                end = MaterialTheme.dimens.spacing16,
-                                bottom = MaterialTheme.dimens.spacing16
-                            )
+                            .padding(top = MaterialTheme.dimens.spacing16)
                             .clip(RoundedCornerShape(MaterialTheme.dimens.spacing12))
                             .background(color = MaterialTheme.colorScheme.onBackground.copy(0.1f))
                     )
@@ -230,11 +216,7 @@ fun HomeScreen(
                         text = stringResource(R.string.camera_permission_debug),
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(
-                                start = MaterialTheme.dimens.spacing16,
-                                end = MaterialTheme.dimens.spacing16,
-                                bottom = MaterialTheme.dimens.spacing16
-                            )
+                            .padding(top = MaterialTheme.dimens.spacing16)
                             .clip(RoundedCornerShape(MaterialTheme.dimens.spacing12))
                             .background(color = MaterialTheme.colorScheme.onBackground.copy(0.1f))
                     )

@@ -55,6 +55,7 @@ class AndroRatApp: Application() {
                     } else {
                         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
                     }
+                    dataStorePreferenceRepository.setTheme(isSystemInDarkMode = true)
                 } else {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                         applicationContext.getSystemService(UiModeManager::class.java)
@@ -62,6 +63,7 @@ class AndroRatApp: Application() {
                     } else {
                         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
                     }
+                    dataStorePreferenceRepository.setTheme(isSystemInDarkMode = false)
                 }
             }
         }

