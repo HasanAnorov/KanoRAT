@@ -69,5 +69,4 @@ class LinkPhishingViewModel @Inject constructor(
 
 data class LinkPhishingUiState(
     val devices: Resource<EventsModel> = Resource.Loading()
-//    val devices: Resource<List<LinkedDeviceInfo>> = Resource.Success(FakeData.linedDeviceList)
 )

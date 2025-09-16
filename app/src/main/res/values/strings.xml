@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">AndroRAT</string>
+    <string name="app_name" translatable="false">kano</string>
     <string name="saved_to_photos_debug">Saved to Photos</string>
     <string name="can_not_take_screenshot_debug">Can\'t take a screenshot</string>
     <string name="take_a_screenshot_debug">Take a screenshot</string>

@@ -28,7 +28,6 @@ class LinkPhishingFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setContent {
                 val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-
                 AndroRATTheme {
                     LinkPhishingScreen(
                         uiState = uiState,

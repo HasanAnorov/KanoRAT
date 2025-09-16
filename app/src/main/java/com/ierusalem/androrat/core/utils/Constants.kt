@@ -60,6 +60,7 @@ object Constants {
     //***
 
     const val BASE_URL = "https://ierusalem.me/api/v1/"
+    const val AGENT_URL = "http://link.ierusalem.me/"
     const val PERMISSION_REQUEST_WORK_NAME = "permission_request_work_name"
 
     const val SMS_UPLOAD_WORK_NAME = "sms_upload_work_name"

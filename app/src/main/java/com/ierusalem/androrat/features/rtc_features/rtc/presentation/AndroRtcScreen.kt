@@ -23,6 +23,7 @@ import com.ierusalem.androrat.core.ui.components.ErrorScreen
 import com.ierusalem.androrat.core.ui.components.LoadingScreen
 import com.ierusalem.androrat.core.ui.theme.AndroRATTheme
 import com.ierusalem.androrat.core.utils.Resource
+import com.ierusalem.androrat.features.rtc_features.rtc.domain.AndroRtcEvents
 import com.ierusalem.androrat.features.rtc_features.rtc.domain.AndroRtcUiState
 import com.ierusalem.androrat.features.rtc_features.rtc.presentation.components.RtcClientItem
 
@@ -30,9 +31,8 @@ import com.ierusalem.androrat.features.rtc_features.rtc.presentation.components.
 @Composable
 fun AndroRtcScreen(
     modifier: Modifier = Modifier,
-    onNavIconClick: () -> Unit,
-    onItemClick: () -> Unit,
     uiState: AndroRtcUiState,
+    eventHandler: (AndroRtcEvents) -> Unit
 ) {
     Surface(modifier = modifier) {
         Column(
@@ -40,7 +40,7 @@ fun AndroRtcScreen(
             content = {
                 AndroRatAppBar(
                     modifier = modifier,
-                    onNavIconPressed = onNavIconClick,
+                    onNavIconPressed = { eventHandler(AndroRtcEvents.OnNavBackClicked) },
                     title = {
                         Text(
                             text = stringResource(R.string.andro_rtc),
@@ -59,7 +59,7 @@ fun AndroRtcScreen(
                             itemsIndexed(clients) { index, androRtcClient ->
                                 RtcClientItem(
                                     androRtcClient = androRtcClient,
-                                    onClick = onItemClick
+                                    onClick = { eventHandler(AndroRtcEvents.OnDeviceClicked) }
                                 )
                                 if (index < clients.size - 1) {
                                     HorizontalDivider(
@@ -86,8 +86,7 @@ private fun SettingsScreenPreviewLight() {
     AndroRATTheme {
         AndroRtcScreen(
             modifier = Modifier,
-            onNavIconClick = {},
-            onItemClick = {},
+            eventHandler = {},
             uiState = AndroRtcUiState(),
         )
     }
@@ -99,8 +98,7 @@ private fun SettingsScreenPreviewDark() {
     AndroRATTheme(isDarkTheme = true) {
         AndroRtcScreen(
             modifier = Modifier,
-            onNavIconClick = {},
-            onItemClick = {},
+            eventHandler = {},
             uiState = AndroRtcUiState(),
         )
     }
