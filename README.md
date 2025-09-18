@@ -61,3 +61,4 @@ See `docs/architecture.png` for a sanitized architecture diagram. The high-level
 2. Client uploads telemetry to KanoRTC API over HTTPS.
 3. KanoRTC stores sanitized logs and presents them in a dashboard UI.
 4. Admin interacts with dashboard in a lab browser to analyse telemetry.
+
