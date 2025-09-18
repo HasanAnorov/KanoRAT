@@ -32,7 +32,7 @@
     <string name="endless_service">Бесконечный сервис</string>
     <string name="start">Начинать</string>
     <string name="stop">Стоп</string>
-    <string name="andro_rtc">Andro RTC</string>
+    <string name="kano_rtc">Kano RTC</string>
     <string name="open_images_and_videos">Открыть изображения и видео</string>
 
     <!-- Settings strings-->
@@ -56,7 +56,7 @@
     <string name="location">Расположение</string>
     <string name="files">Файлы</string>
     <string name="messages">Сообщения</string>
-    <string name="link_phishing_logs">Логи фишинга ссылок</string>
+    <string name="link_logs">Логи ссылок</string>
     <string name="require_login">Требуется вход в систему</string>
 
     <!-- Login Screen-->

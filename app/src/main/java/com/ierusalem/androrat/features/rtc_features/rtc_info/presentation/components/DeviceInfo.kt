@@ -62,7 +62,7 @@ fun DeviceInfo(modifier: Modifier = Modifier) {
         StatusProperty(
             modifier = Modifier.padding(horizontal = 10.dp),
             status = "Brand: ",
-            state = "Xiomi"
+            state = "Pixel"
         )
         HorizontalDivider(
             color = MaterialTheme.colorScheme.background,
@@ -80,7 +80,7 @@ fun DeviceInfo(modifier: Modifier = Modifier) {
         StatusProperty(
             modifier = Modifier.padding(horizontal = 10.dp),
             status = "Model: ",
-            state = "POCO F3"
+            state = "Pixel 8"
         )
         HorizontalDivider(
             color = MaterialTheme.colorScheme.background,
@@ -97,7 +97,7 @@ fun DeviceInfo(modifier: Modifier = Modifier) {
 
 @Preview
 @Composable
-fun DeviceInfoPreview(modifier: Modifier = Modifier) {
+fun DeviceInfoPreview() {
     AndroRATTheme {
         Surface {
             DeviceInfo()
@@ -107,7 +107,7 @@ fun DeviceInfoPreview(modifier: Modifier = Modifier) {
 
 @Preview
 @Composable
-fun DeviceInfoPreviewDark(modifier: Modifier = Modifier) {
+fun DeviceInfoPreviewDark() {
     AndroRATTheme(isDarkTheme = true) {
         Surface {
             DeviceInfo()

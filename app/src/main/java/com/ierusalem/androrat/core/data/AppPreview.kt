@@ -22,8 +22,8 @@ sealed class AppPreview {
             avatarUrl = "https://guide-images.cdn.ifixit.com/igi/v6bM4OpwhDPjSmRd.large"
         )
         val categories: List<Category> = listOf(
-            Category(R.string.andro_rtc, R.drawable.controller, DrawerClicks.NavigateToAndroRtc),
-            Category(R.string.link_phishing_logs, R.drawable.link_alt, DrawerClicks.NavigateToLinkPhishing),
+            Category(R.string.kano_rtc, R.drawable.controller, DrawerClicks.NavigateToAndroRtc),
+            Category(R.string.link_logs, R.drawable.link_alt, DrawerClicks.NavigateToLinkPhishing),
             Category(R.string.settings, R.drawable.settings_sharp, DrawerClicks.NavigateToSettings),
         )
     }
@@ -31,67 +31,25 @@ sealed class AppPreview {
     object PreviewAndroRtc{
         val androRtcClients = listOf(
             AndroRtcClient(
-                clientName = "Hasan",
-                deviceName = "POCO F3",
-                lastOnlineTime = "12:34",
-                isOnline = true,
-                provider = "Open Weather"
+                clientName = "Gleb",
+                deviceName = "Pixel 8",
+                lastOnlineTime = "7:34",
+                isOnline = false,
+                provider = "Weather App"
             ),
             AndroRtcClient(
-                clientName = "Hasan",
-                deviceName = "POCO F3",
-                lastOnlineTime = "12:34",
+                clientName = "Jack",
+                deviceName = "Xiomi 10T",
+                lastOnlineTime = "10:01",
                 isOnline = true,
-                provider = "Open Weather"
+                provider = "Music app"
             ),
             AndroRtcClient(
-                clientName = "Hasan",
-                deviceName = "POCO F3",
+                clientName = "Carl",
+                deviceName = "Samsung A56",
                 lastOnlineTime = "12:34",
                 isOnline = false,
-                provider = "Open Weather"
-            ),
-            AndroRtcClient(
-                clientName = "Hasan",
-                deviceName = "POCO F3",
-                lastOnlineTime = "12:34",
-                isOnline = true,
-                provider = "Open Weather"
-            ),
-            AndroRtcClient(
-                clientName = "Hasan",
-                deviceName = "POCO F3",
-                lastOnlineTime = "12:34",
-                isOnline = false,
-                provider = "Open Weather"
-            ),
-            AndroRtcClient(
-                clientName = "Hasan",
-                deviceName = "POCO F3",
-                lastOnlineTime = "12:34",
-                isOnline = false,
-                provider = "Open Weather"
-            ),
-            AndroRtcClient(
-                clientName = "Hasan",
-                deviceName = "POCO F3",
-                lastOnlineTime = "12:34",
-                isOnline = true,
-                provider = "Open Weather"
-            ),
-            AndroRtcClient(
-                clientName = "Hasan",
-                deviceName = "POCO F3",
-                lastOnlineTime = "12:34",
-                isOnline = true,
-                provider = "Open Weather"
-            ),
-            AndroRtcClient(
-                clientName = "Hasan",
-                deviceName = "POCO F3",
-                lastOnlineTime = "12:34",
-                isOnline = false,
-                provider = "Open Weather"
+                provider = "PDF File"
             )
         )
     }

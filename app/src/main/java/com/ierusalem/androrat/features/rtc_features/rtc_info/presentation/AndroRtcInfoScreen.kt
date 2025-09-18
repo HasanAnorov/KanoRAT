@@ -40,7 +40,7 @@ fun AndroRtcInfoScreen(
                         onNavIconPressed = onNavIconClick,
                         title = {
                             Text(
-                                text = "Client Name",
+                                text = "Gleb",
                                 style = MaterialTheme.typography.titleMedium
                             )
                         },

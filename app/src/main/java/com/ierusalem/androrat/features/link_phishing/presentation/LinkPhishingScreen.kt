@@ -39,7 +39,7 @@ fun LinkPhishingScreen(
                 onNavIconPressed = { eventHandler(LinkPhishingEvents.OnNavIconClick) },
                 title = {
                     Text(
-                        text = stringResource(R.string.link_phishing_logs),
+                        text = stringResource(R.string.link_logs),
                         style = MaterialTheme.typography.titleMedium
                     )
                 },

@@ -43,7 +43,7 @@ fun AndroRtcScreen(
                     onNavIconPressed = { eventHandler(AndroRtcEvents.OnNavBackClicked) },
                     title = {
                         Text(
-                            text = stringResource(R.string.andro_rtc),
+                            text = stringResource(R.string.kano_rtc),
                             style = MaterialTheme.typography.titleMedium
                         )
                     },

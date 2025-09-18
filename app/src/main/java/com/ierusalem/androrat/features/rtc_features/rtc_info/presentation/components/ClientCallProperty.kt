@@ -46,7 +46,7 @@ fun ClientCallProperty(modifier: Modifier = Modifier) {
                     modifier = Modifier.fillMaxWidth(),
                     style = MaterialTheme.typography.titleSmall,
                     fontSize = 16.sp,
-                    text = "Client Name",
+                    text = "Gleb",
                     color = MaterialTheme.colorScheme.onBackground
                 )
                 Text(

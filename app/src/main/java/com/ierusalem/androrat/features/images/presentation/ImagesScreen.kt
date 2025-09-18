@@ -179,7 +179,7 @@ fun ImagesScreen(
                                 append("( ")
                             }
                             withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.outline)) { // change number color
-                                append("887")
+                                append("0")
                             }
                             withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.onBackground)) {
                                 append(" )")
