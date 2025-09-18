@@ -1,7 +1,7 @@
 
 # KanoRAT
 
-[![License](https://img.shields.io/badge/license-MIT-blue)](#license) [![Status](https://img.shields.io/badge/status-lab--only-orange)](#ethics--safety)
+[![Status](https://img.shields.io/badge/status-lab--only-orange)](#ethics--safety)
 
 **Short pitch —** KanoRAT is an educational Android telemetry client and KanoRTC dashboard (Kotlin + Jetpack Compose) that demonstrates how device metadata and consenting telemetry flow in a controlled lab environment. Built for learning and research while transitioning from mobile development into cybersecurity.
 
