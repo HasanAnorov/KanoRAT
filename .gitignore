@@ -13,3 +13,6 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+#excluding some important files
+app/src/main/java/com/ierusalem/androrat/core/
