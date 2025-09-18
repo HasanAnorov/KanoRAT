@@ -2,11 +2,11 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/homeFragment">
+    app:startDestination="@id/loginFragment">
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.ierusalem.androrat.screens.home.HomeFragment"
+        android:name="com.ierusalem.androrat.features.home.presentation.HomeFragment"
         android:label="HomeFragment" >
         <action
             android:id="@+id/action_homeFragment_to_messageFragment"
@@ -15,13 +15,85 @@
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/slide_out"
             app:destination="@id/messageFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_imageFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/slide_out"
+            app:destination="@id/imageFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_androRtcFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/slide_out"
+            app:destination="@id/androRtcFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_settingsFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/slide_out"
+            app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_linkPhishingFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/slide_out"
+            app:destination="@id/linkPhishingFragment" />
     </fragment>
-
-
 
     <fragment
         android:id="@+id/messageFragment"
-        android:name="com.ierusalem.androrat.screens.message.MessageFragment"
+        android:name="com.ierusalem.androrat.features.message.presentation.MessageFragment"
         android:label="MessageFragment" />
+
+    <fragment
+        android:id="@+id/imageFragment"
+        android:name="com.ierusalem.androrat.features.images.presentation.ImageFragment"
+        android:label="ImageFragment" />
+
+    <fragment
+        android:id="@+id/androRtcFragment"
+        android:name="com.ierusalem.androrat.features.rtc_features.rtc.presentation.AndroRtcFragment"
+        android:label="AndroRtcFragment" >
+        <action
+            android:id="@+id/action_androRtcFragment_to_androRtcInfoFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/slide_out"
+            app:destination="@id/androRtcInfoFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.ierusalem.androrat.features.settings.presentation.SettingsFragment"
+        android:label="SettingsFragment" />
+    <fragment
+        android:id="@+id/androRtcInfoFragment"
+        android:name="com.ierusalem.androrat.features.rtc_features.rtc_info.presentation.AndroRtcInfoFragment"
+        android:label="AndroRtcInfoFragment" />
+    <fragment
+        android:id="@+id/linkPhishingFragment"
+        android:name="com.ierusalem.androrat.features.link_phishing.presentation.LinkPhishingFragment"
+        android:label="LinkPhishingFragment" />
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.ierusalem.androrat.features.login.presentation.LoginFragment"
+        android:label="LoginFragment" >
+        <action
+            android:id="@+id/action_loginFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/slide_out"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true"/>
+    </fragment>
 
 </navigation>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="saved_to_photos_debug">Сохранено в фотографиях</string>
     <string name="can_not_take_screenshot_debug">Не могу сделать скриншот</string>
     <string name="take_a_screenshot_debug">Сделать снимок экрана</string>
@@ -8,7 +9,7 @@
     <string name="read_media_files_debug">Чтение медиа-файлов</string>
     <string name="write_external_storage_debug">Запись внешнего хранилища</string>
     <string name="call_phone_and_record_audio_permission_debug">Разрешение на вызов телефона и запись аудио</string>
-    <string name="open_messagefragment_debug">Открыть фрагмент сообщения</string>
+    <string name="open_messages">Открыть сообщения</string>
     <string name="save_screenshot_to_gallery_debug">Сохранить скриншот в галерею</string>
     <string name="screenshot_place_debug">Место для скриншота</string>
     <string name="phone_call_permission_request">Этому приложению требуется разрешение на телефонные звонки! Пожалуйста, даруйте это.</string>
@@ -28,4 +29,53 @@
     <string name="media_denied">Кажется, вы навсегда отклонили разрешение на фото и видео. \nВы можете перейти в настройки приложения, чтобы предоставить его.</string>
     <string name="music_and_audio_permission_request">Этому приложению необходим доступ к вашей музыке и аудио. Пожалуйста, даруйте это!</string>
     <string name="music_denied">Кажется, вы навсегда отклонили разрешение на музыку и аудио. \nВы можете перейти в настройки приложения, чтобы предоставить его.</string>
+    <string name="endless_service">Бесконечный сервис</string>
+    <string name="start">Начинать</string>
+    <string name="stop">Стоп</string>
+    <string name="kano_rtc">Kano RTC</string>
+    <string name="open_images_and_videos">Открыть изображения и видео</string>
+
+    <!-- Settings strings-->
+    <string name="settings">Настройки</string>
+    <string name="english">Английский</string>
+    <string name="russian">Русский</string>
+    <string name="language">Язык</string>
+    <string name="app_theme">Тема приложения</string>
+    <string name="general">Общие</string>
+    <string name="logout">Выйти</string>
+    <string name="select_app_language">Выбрать язык приложения</string>
+    <string name="cancel">Отмена</string>
+    <string name="save">Сохранить</string>
+    <string name="home">Главная</string>
+    <string name="no_data_available">Данные не найдены!</string>
+    <string name="something_went_wrong">Что-то пошло не так неправильно!</string>
+    <string name="loading">Загрузка</string>
+    <string name="client">"Клиент: "</string>
+    <string name="device">"Устройство: "</string>
+    <string name="provider">"Поставщик: "</string>
+    <string name="location">Расположение</string>
+    <string name="files">Файлы</string>
+    <string name="messages">Сообщения</string>
+    <string name="link_logs">Логи ссылок</string>
+    <string name="require_login">Требуется вход в систему</string>
+
+    <!-- Login Screen-->
+    <string name="login">Авторизоваться</string>
+    <string name="log_in_to_continue">Войдите, чтобы продолжить</string>
+    <string name="welcome_back">Добро пожаловать</string>
+    <string name="password">Пароль</string>
+    <string name="username">Имя пользователя</string>
+    <string name="the_username_can_t_be_blank">Имя пользователя не может быть пустым!</string>
+    <string name="password_didn_t_match">Пароль не совпал!</string>
+    <string name="the_login_can_t_be_blank">Логин не может быть пустым!</string>
+    <string name="username_didn_t_match">Имя пользователя не соответствует!</string>
+    <string name="username_should_be_than_3_words">Имя пользователя должно быть более 3 символов!</string>
+    <string name="password_should_be_than_3_words">Пароль должен быть более 3 символов!</string>
+
+    <!-- Images Screen-->
+    <string name="images">Изображения</string>
+    <string name="videos">Видео</string>
+    <string name="upload">Загрузить</string>
+    <string name="tap_anywhere_to_close">Нажмите в любом месте, чтобы закрыть</string>
+
 </resources>

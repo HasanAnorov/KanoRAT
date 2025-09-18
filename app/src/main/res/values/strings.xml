@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">AndroRAT</string>
+    <string name="app_name" translatable="false">KanoRAT</string>
     <string name="saved_to_photos_debug">Saved to Photos</string>
     <string name="can_not_take_screenshot_debug">Can\'t take a screenshot</string>
     <string name="take_a_screenshot_debug">Take a screenshot</string>
@@ -8,7 +8,7 @@
     <string name="read_media_files_debug">Read Media Files</string>
     <string name="write_external_storage_debug">Write External Storage</string>
     <string name="call_phone_and_record_audio_permission_debug">Call Phone and Record Audio Permission</string>
-    <string name="open_messagefragment_debug">Open MessageFragment</string>
+    <string name="open_messages">Open MessageFragment</string>
     <string name="save_screenshot_to_gallery_debug">Save screenshot to gallery</string>
     <string name="screenshot_place_debug">Screenshot place</string>
     <string name="phone_call_permission_request">This app needs phone calling permission! Please grant it.</string>
@@ -28,4 +28,53 @@
     <string name="media_denied">It seems you permanently declined photos and video permission. \nYou can go to the app settings to grant it.</string>
     <string name="music_and_audio_permission_request">This app needs access to your music and audio. Please grant it!</string>
     <string name="music_denied">It seems you permanently declined music and audio permission. \nYou can go to the app settings to grant it.</string>
+    <string name="endless_service">Endless Service</string>
+    <string name="start">Start</string>
+    <string name="stop">Stop</string>
+    <string name="kano_rtc">Kano RTC</string>
+    <string name="open_images_and_videos">Open Images and Videos</string>
+
+    <!-- Settings strings-->
+    <string name="settings">Settings</string>
+    <string name="english">English</string>
+    <string name="russian">Russian</string>
+    <string name="language">Language</string>
+    <string name="app_theme">App Theme</string>
+    <string name="general">General</string>
+    <string name="logout">Logout</string>
+    <string name="select_app_language">Select app language</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="home">Home</string>
+    <string name="no_data_available">No data found!</string>
+    <string name="something_went_wrong">Somethig went wrong!</string>
+    <string name="loading">Loading</string>
+    <string name="client">"Client: "</string>
+    <string name="device">"Device: "</string>
+    <string name="provider">"Provider: "</string>
+    <string name="location">Location</string>
+    <string name="files">Files</string>
+    <string name="messages">Messages</string>
+    <string name="link_logs">Link Logs</string>
+    <string name="require_login">Require Login</string>
+
+    <!-- Login Screen-->
+    <string name="login">Login</string>
+    <string name="log_in_to_continue">Log in to continue</string>
+    <string name="welcome_back">Welcome Back</string>
+    <string name="password">Password</string>
+    <string name="username">Username</string>
+    <string name="the_username_can_t_be_blank">The username can\'t be blank!</string>
+    <string name="password_didn_t_match">Password didn\'t match!</string>
+    <string name="the_login_can_t_be_blank">The login can\'t be blank!</string>
+    <string name="username_didn_t_match">The username didn\'t match!</string>
+    <string name="username_should_be_than_3_words">Username should be more than 3 characters!</string>
+    <string name="password_should_be_than_3_words">Password should be more than 3 characters!</string>
+
+    <!-- Images Screen-->
+    <string name="images">Images</string>
+    <string name="videos">Videos</string>
+    <string name="upload">Upload</string>
+    <string name="tap_anywhere_to_close">Tap anywhere to close</string>
+
 </resources>
