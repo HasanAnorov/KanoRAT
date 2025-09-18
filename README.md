@@ -160,49 +160,9 @@ By running or contributing to this repository you agree to:
 * Redact or syntheticize any real PII before publishing screenshots or logs.
 * Maintain a test plan and a consent log for each test device.
 
-## 3. Consent template (use this to get written permission)
-
-```
-I, <FULL NAME>, give permission to <RESEARCHER NAME> to perform controlled security testing on the device listed below for research and learning purposes.
-
-Device: <device model / serial>
-Owner: <owner name>
-Date range: <start> to <end>
-Scope: The researcher may collect device metadata and telemetry for analysis. The researcher will not exfiltrate or publish personal data without explicit, additional consent.
-
-Signature: ____________________    Date: ___________
-```
-
 Store signed consent templates securely in your lab records.
 
-## 4. Responsible disclosure
+## 3. Contact & reporting
 
-If you discover a vulnerability in third-party software while testing, follow the vendor's disclosure policy. If no policy exists, email security@<vendor-domain> and allow a reasonable disclosure period before publishing. Also notify the KanoRAT maintainers via the `SECURITY.md` contact.
+For policy questions or to report an incident, contact: `anorovhasan@gmail.com`.
 
-## 5. Data handling & retention
-
-* Minimise collected data; use synthetic data where possible.
-* Retain telemetry only as long as needed for research; then delete securely.
-* When publishing, redact IMEI, Android\_ID, serial numbers, IPs (or mask them), and any other PII.
-
-## 6. Contact & reporting
-
-For policy questions or to report an incident, contact: `kano@example.com` (replace with an email you control before publishing).
-
----
-
-# CHANGELOG.md
-
-# Changelog
-
-All notable changes to this project will be documented in this file.
-
-## \[Unreleased]
-
-* Initial project structure and README
-* ETHICS.md added
-* Placeholder for sanitized architecture diagram
-
----
-
-*End of generated files.*
