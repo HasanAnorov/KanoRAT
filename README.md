@@ -27,10 +27,10 @@ KanoRAT is a research-oriented Android client and KanoRTC dashboard that demonst
 
 - [Motivation](#motivation)
 - [Project summary](#project-summary)
+- [Tech stack](#tech-stack)
 - [Key features (non-actionable)](#key-features-non-actionable)
-- [Design principles](#design-principles)
-- [High-level architecture](#high-level-architecture)
-- [Data model & privacy considerations](#data-model--privacy-considerations)
+- [Contact & reporting](#contact-reporting)
+- [Disclaimer](#disclaimer)
 
 
 ---
@@ -100,7 +100,6 @@ I built KanoRAT to:
 ## Contact & reporting
 
 For policy questions or to report an incident, contact: `kano@example.com` (replace with an email you control before publishing).
-
 
 ## Disclaimer
 
