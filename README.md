@@ -109,7 +109,7 @@ I built KanoRAT to:
 > **PII note:** Access to `imei` is restricted on Android 10+ and typically unavailable to third‑party apps. Do **not** store plaintext identifiers; prefer hashed, salted tokens (e.g., `imeiSha256`) or avoid collecting them entirely.
 
 
-## Key features (non-actionable)
+## Key features 
 
 - Permission-gated device metadata extraction: Android `Build.*` fields, Android_ID placeholder, SDK level, brand/model, etc.
 - Link logs: short URL that, when clicked by a consenting browser, records request metadata (IP, UA).
