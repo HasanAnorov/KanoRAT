@@ -3,9 +3,9 @@
 
 [![Status](https://img.shields.io/badge/status-lab--only-orange)](#ethics--safety)
 
-KanoRAT is a research-oriented Android client and KanoRTC dashboard that demonstrates permission-gated telemetry collection, short-link logging, and a simple telemetry visualization dashboard. It was built to help a mobile developer transition into cybersecurity by exploring device metadata, telemetry pipelines, and responsible red-team thinking — all inside an isolated, consented lab environment.
+KanoRAT is a research-oriented Android client and KanoRTC dashboard that demonstrates permission-gated telemetry collection, short-link logging, and a simple telemetry visualization dashboard. I built it to transition from mobile development into cybersecurity by exploring device metadata, telemetry pipelines, and responsible red-team thinking — all inside an isolated, consented lab environment. The app works with the server to fetch data collected from consent devices. The backend side was built using the Django REST framework for APIs and has its own admin panel. Currently, KanoRAT has two main features (other features are being developed) :
 
-- **Link Logger** – a simple metadata logger behind a short link for demonstrating what a typical HTTP request reveals (IP, user‑agent, device hints, etc.).
+- **Link Logger** – a simple metadata logger behind a short link for demonstrating what a typical HTTP request reveals (example payload is provided below).
 - **KanoRTC** – a dashboard that lists **opt‑in** client devices connected over WebRTC **data channels** and displays device details the user explicitly shared.
 
 > ⚠️ **Ethics & legality**
