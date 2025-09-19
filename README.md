@@ -19,7 +19,7 @@ KanoRAT is a research-oriented Android client and KanoRTC dashboard that demonst
 - [Motivation](#motivation)
 - [Project summary](#project-summary)
 - [Tech stack](#tech-stack)
-- [Key features (non-actionable)](#key-features-non-actionable)
+- [Key features](#key-features)
 - [Contact & reporting](#contact--reporting)
 - [Disclaimer](#disclaimer)
 
