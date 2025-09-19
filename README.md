@@ -90,8 +90,7 @@ I built KanoRAT to:
 
 ## Key features (non-actionable)
 
-- Permission-gated device metadata extraction: Android `Build.*` fields, Android_ID placeholder, SDK level, brand/model, etc.
-- Link logs: short URL that, when clicked by a consenting browser, records request metadata (IP, UA).
+- Link logs: agent URL - http://example.agent.url/, when clicked by the target, an HTTP request will be sent to the Server and display the Agent browser. The server will extract important information from metadata and store it. KanoRAT's Link logs section will retrieve the target's metadata and show us visually.
 - KanoRTC dashboard: lists clients, status (online/offline), and “Acquired Data” categories.
 - WorkManager-based scheduling to simulate deferred telemetry uploads (network-aware).
 - Localization (English + Russian) and theme toggle (light/dark).
