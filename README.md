@@ -3,62 +3,108 @@
 
 [![Status](https://img.shields.io/badge/status-lab--only-orange)](#ethics--safety)
 
-**Short pitch —** KanoRAT is an educational Android telemetry client and KanoRTC dashboard (Kotlin + Jetpack Compose) that demonstrates how device metadata and consenting telemetry flow in a controlled lab environment. Built for learning and research while transitioning from mobile development into cybersecurity.
+KanoRAT is a research-oriented Android client and KanoRTC dashboard that demonstrates permission-gated telemetry collection, short-link logging, and a simple telemetry visualization dashboard. It was built to help a mobile developer transition into cybersecurity by exploring device metadata, telemetry pipelines, and responsible red-team thinking — all inside an isolated, consented lab environment.
 
-> **Important:** KanoRAT is strictly for learning, research and lab-only use. It must **never** be deployed on devices you do not own or have explicit, documented consent to test. See `docs/ETHICS.md`.
+- **Link Logger** – a simple metadata logger behind a short link for demonstrating what a typical HTTP request reveals (IP, user‑agent, device hints, etc.).
+- **KanoRTC** – a dashboard that lists **opt‑in** client devices connected over WebRTC **data channels** and displays device details the user explicitly shared.
+
+> ⚠️ **Ethics & legality**
+>
+> *Do not deploy this on devices you do not own or control.* This project is **not** a surveillance tool. It is a **teaching artifact** for privacy awareness, blue‑team hardening, and lawful red‑team exercises **with informed consent**.
+
+## Highlights
+
+- 📋 **Metadata awareness** – demonstrate what a click can reveal (browser, OS, device type, isMobile/isBot flags, etc.).
+- 🔌 **WebRTC data channel** – near‑real‑time client ↔ server telemetry in controlled labs.
+- 🧭 **Opt‑in scopes** – clients choose what to share (e.g., device model) and can revoke at any time.
+- 🔐 **Security by default** – TLS everywhere, audit logging, and visible foreground notifications on Android.
+- 🧱 **Offline safe queue** – WorkManager queues uploads until network is available (no silent background exfiltration).
+- 🧩 **Modern Android** – Kotlin, Jetpack Compose UI, Retrofit + Chucker for networking, WorkManager for scheduling.
 
 ---
 
 ## Table of contents
 
-* [Overview](#overview)
-* [Features (non-actionable)](#features-non-actionable)
-* [Tech stack](#tech-stack)
-* [Architecture](#architecture)
+- [Motivation](#motivation)
+- [Project summary](#project-summary)
+- [Tech stack](#tech-stack)
+- [Key features (non-actionable)](#key-features-non-actionable)
+- [Contact & reporting](#contact--reporting)
+- [Disclaimer](#disclaimer)
+
 
 ---
 
-## Overview
+## Motivation
 
-KanoRAT is an educational Android client/server project to explore device metadata collection and telemetry pipelines in an isolated, consensual lab. The Android agent demonstrates permission-gated collection (device build fields, optional location, media metadata) and WorkManager-based scheduling for deferred uploads. The KanoRTC side visualises received telemetry and link logs.
+I built KanoRAT to:
 
-**Learning goals**:
-
-* Understand what metadata is exposed by Android devices and HTTP requests
-* Build a simple, inspectable telemetry pipeline and dashboard for analysis
-* Practice secure-by-design and responsible-use practices when exploring offensive/defensive concepts
+- Move from mobile development to cybersecurity by experimenting with telemetry, device metadata, and secure design patterns.
+- Learn what metadata is commonly exposed by mobile devices and how telemetry pipelines behave end-to-end.
+- Practice secure-by-design and responsible disclosure behavior while exploring concepts occasionally associated with red-team operations — within a strictly ethical, lab-only context.
 
 ---
 
-## Features (non-actionable)
+## Project summary
 
-* Agent link logging: short link that records metadata when clicked
-* Device metadata extraction: UA and Android `Build.*` fields, Android\_ID placeholder, SDK level, brand/model, etc.
-* KanoRTC dashboard: client list, status, basic device attributes
-* Acquired-data categories: Location (consented), Files (consented), Messages (consented)
-* Background scheduling demo using WorkManager for deferred uploads
-* Localisation (English + Russian) and light/dark theme support
+- **Agent (Android)**: Kotlin + Jetpack Compose app that collects permissioned device attributes and uploads telemetry to a server (in a lab). Demonstrates WorkManager for scheduled uploads and uses Retrofit for networking (debugging via Chucker).
+- **Server / Dashboard (KanoRTC)**: Visualization UI that displays link logs, client lists, device details, and acquired-data categories (Location, Files, Messages) — only showing what is explicitly consented and uploaded.
+- **Link logging**: A short link captures request-level metadata (IP, UA, headers) when clicked and displays these entries in the dashboard.
 
-> The app UI shows conceptual controls for actions (e.g., microphone/camera toggles). These are **not** to be used on devices without explicit consent and are shown for lab demonstration only.
+> All sensitive actions (camera/mic access, file reads) must be performed only in an emulator or a device with explicit consent. The UI includes conceptual controls that are disabled unless used in a controlled test.
 
 ---
 
 ## Tech stack
 
-* Kotlin (Android) + Jetpack Compose
-* WebRTC (experimental UI flows) for real-time concepts
-* Retrofit (networking) and Chucker (debugging)
-* WorkManager (background scheduling)
-* Android Studio, Gradle
+**Mobile & client**
+- 📱 **Kotlin** — Android app (Jetpack Compose UI)
+- 🎨 **Jetpack Compose** — modern declarative UI
+- 🔊 **WebRTC** — real-time comms concepts / experimental RTC flows
+- 🔌 **Retrofit** — HTTP client for API calls (development: Chucker)
+- ⏱️ **WorkManager** — background scheduling & reliable uploads
+- 🛠️ **Android Studio**, **Gradle** (Kotlin DSL)
 
+**Server & backend**
+- 🐍 **Python** / **Django** + **Django REST Framework** — telemetry API
+- 🗄️ **PostgreSQL** — production-ready DB (or SQLite for local dev)
+- 🔁 **Gunicorn + Nginx** — recommended production stack (reverse proxy + WSGI)
 ---
 
-## Architecture
+## Example: Link Logger Payload
 
-See `docs/architecture.png` for a sanitized architecture diagram. The high-level flow is:
+```json
+{
+  "ip": "203.0.113.42",
+  "browser": "Yandex",
+  "browserVersion": "131.0",
+  "os": "Android",
+  "osVersion": "13",
+  "device": "Xiaomi",
+  "isMobile": true,
+  "isTablet": false,
+  "isPC": false,
+  "isBot": false
+}
+```
 
-1. Android Agent collects consented fields and schedules uploads via WorkManager.
-2. Client uploads telemetry to KanoRTC API over HTTPS.
-3. KanoRTC stores sanitized logs and presents them in a dashboard UI.
-4. Admin interacts with dashboard in a lab browser to analyse telemetry.
+## Key features (non-actionable)
+
+- Permission-gated device metadata extraction: Android `Build.*` fields, Android_ID placeholder, SDK level, brand/model, etc.
+- Link logs: short URL that, when clicked by a consenting browser, records request metadata (IP, UA).
+- KanoRTC dashboard: lists clients, status (online/offline), and “Acquired Data” categories.
+- WorkManager-based scheduling to simulate deferred telemetry uploads (network-aware).
+- Localization (English + Russian) and theme toggle (light/dark).
+- Debug tooling integration (Chucker) for development only.
+
+## Contact & reporting
+
+For policy questions or to report an incident, contact: `kano@example.com` (replace with an email you control before publishing).
+
+## Disclaimer
+
+This repository is provided **as‑is** for **educational** purposes. The authors and contributors are **not responsible** for any misuse or damage resulting from running this project outside lawful, consented environments.
+
+
+
 
