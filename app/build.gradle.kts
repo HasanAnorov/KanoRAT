@@ -81,7 +81,7 @@ dependencies {
     implementation("io.coil-kt:coil-compose:2.6.0")
 
     //extended icons
-    implementation("androidx.compose.material:material-icons-extended:1.6.8")
+    implementation("androidx.compose.material:material-icons-extended:1.7.8")
 
     //navigation
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.7")
@@ -89,8 +89,8 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-compose-android:2.8.2")
 
     //chucker
-    debugImplementation("com.github.chuckerteam.chucker:library:4.2.0")
-    releaseImplementation("com.github.chuckerteam.chucker:library-no-op:4.2.0")
+    debugImplementation("com.github.chuckerteam.chucker:library:4.0.0")
+    releaseImplementation("com.github.chuckerteam.chucker:library-no-op:4.0.0")
 
     //data store
     implementation("androidx.datastore:datastore-preferences:1.1.7")
