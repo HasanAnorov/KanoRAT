@@ -5,3 +5,4 @@ src/main/java/com/ierusalem/androrat/core/app/NetworkModule.kt
 src/main/java/com/ierusalem/androrat/core/data/networking/ApiService.kt
 src/main/java/com/ierusalem/androrat/core/utils/Constants.kt
 src/main/java/com/ierusalem/androrat/core/utils/Context.kt
+src/main/java/com/ierusalem/androrat/core/Important Notes
