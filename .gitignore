@@ -15,7 +15,7 @@
 local.properties
 
 #excluding some important files
-/app/src/main/java/com/ierusalem/androrat/core/app/NetworkModule.kt
-/app/src/main/java/com/ierusalem/androrat/core/data/networking/ApiService.kt
-/app/src/main/java/com/ierusalem/androrat/core/utils/Constants.kt
-/app/src/main/java/com/ierusalem/androrat/core/utils/Context.kt
+app/src/main/java/com/ierusalem/androrat/core/app/NetworkModule.kt
+app/src/main/java/com/ierusalem/androrat/core/data/networking/ApiService.kt
+app/src/main/java/com/ierusalem/androrat/core/utils/Constants.kt
+app/src/main/java/com/ierusalem/androrat/core/utils/Context.kt
