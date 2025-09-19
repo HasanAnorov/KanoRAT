@@ -109,7 +109,7 @@ I built KanoRAT to:
 > **PII note:** Access to `imei` is restricted on Android 10+ and typically unavailable to third‑party apps. Do **not** store plaintext identifiers; prefer hashed, salted tokens (e.g., `imeiSha256`) or avoid collecting them entirely.
 
 
-## Key features (non-actionable)
+## Key features 
 
 - Link logs: agent URL - http://example.agent.url/, when clicked by the target, an HTTP request will be sent to the Server and display the Agent browser. The server will extract important information from metadata and store it. KanoRAT's Link logs section will retrieve the target's metadata and show us visually.
 - KanoRTC dashboard: lists clients, status (online/offline), and “Acquired Data” categories.
