@@ -84,9 +84,9 @@ I built KanoRAT to:
 ```json
 {
   "brand": "Google",
-  "deviceId": "2f1a4cbe-9d3a-4b6f-bf64-7a2d1c8e5f90",
+  "deviceId": "x...x",
   "model": "Pixel 8",
-  "id": "TQ3A.230805.001",
+  "id": "sdf765s5f7sf",
   "sdk": 33,
   "manufacturer": "Google",
   "hardware": "bluejay",
@@ -97,12 +97,12 @@ I built KanoRAT to:
   "incremental": "123456789",
   "board": "bluejay",
   "host": "abfarm-123",
-  "fingerprint": "google/bluejay/bluejay:13/TQ3A.230805.001/1234567:user/release-keys",
-  "display": "TQ3A.230805.001",
+  "fingerprint": "x.....x",
+  "display": "TQ3A01",
   "imei": null,
   "versionCode": 120,
   "timestamp": "2025-09-20T12:00:00Z",
-  "consentScopes": ["device_info"]
+  ...
 }
 ```
 
