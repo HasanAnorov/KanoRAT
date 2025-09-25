@@ -6,7 +6,6 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.Service
-import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Build
@@ -77,9 +76,9 @@ class EndlessService : Service() {
                 restartServiceIntent,
                 PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
             )
-        applicationContext.getSystemService(Context.ALARM_SERVICE)
+        applicationContext.getSystemService(ALARM_SERVICE)
         val alarmService: AlarmManager =
-            applicationContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            applicationContext.getSystemService(ALARM_SERVICE) as AlarmManager
         alarmService.set(
             AlarmManager.ELAPSED_REALTIME,
             SystemClock.elapsedRealtime() + 1000,
@@ -98,7 +97,7 @@ class EndlessService : Service() {
         // we need this lock so our service gets not affected by Doze Mode
         //and this wake lock will run after 1 minute
         wakeLock =
-            (getSystemService(Context.POWER_SERVICE) as PowerManager).run {
+            (getSystemService(POWER_SERVICE) as PowerManager).run {
                 newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "EndlessService::lock").apply {
                     acquire(60 * 1000L /*1 minute*/)
                 }
@@ -133,16 +132,9 @@ class EndlessService : Service() {
         setServiceState(this, ServiceState.STOPPED)
     }
 
-        private fun stopForegroundService(){
+    private fun stopForegroundService() {
         // Stop the foreground service
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            // API level 24 and above
-            stopForeground(STOP_FOREGROUND_REMOVE)
-        } else {
-            // Below API level 24
-            @Suppress("DEPRECATION")
-            stopForeground(true)
-        }
+        stopForeground(STOP_FOREGROUND_REMOVE)
 
         // Stop the service
         stopSelf()
@@ -161,7 +153,7 @@ class EndlessService : Service() {
         // to use a specific method to create the notification
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationManager =
-                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                getSystemService(NOTIFICATION_SERVICE) as NotificationManager
             val channel = NotificationChannel(
                 notificationChannelId,
                 "Endless Service notifications channel",
@@ -189,7 +181,7 @@ class EndlessService : Service() {
             ) else Notification.Builder(this)
 
         return builder
-            .setContentTitle("Andro")
+            .setContentTitle("Kano")
             .setContentIntent(pendingIntent)
             .setSmallIcon(R.mipmap.ic_launcher)
             .setTicker("Ticker text")

@@ -43,7 +43,8 @@
     <!-- TODO - OTHER PERMISSION  OPTIMIZE LATER-->
 
     <!-- SMS READING-->
-    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.READ_SMS"
+        tools:ignore="SmsAndCallLogPolicy" />
 
     <!-- CALL PHONE-->
     <uses-feature
@@ -72,10 +73,12 @@
     <!--todo implement android14 specific functions-->
     <uses-permission
         android:name="android.permission.READ_MEDIA_IMAGES"
-        android:minSdkVersion="33" />
+        android:minSdkVersion="33"
+        tools:ignore="PhotoAndVideoPolicy" />
     <uses-permission
         android:name="android.permission.READ_MEDIA_VIDEO"
-        android:minSdkVersion="33"/>
+        android:minSdkVersion="33"
+        tools:ignore="PhotoAndVideoPolicy" />
     <uses-permission
         android:name="android.permission.READ_MEDIA_AUDIO"
         android:minSdkVersion="33"
