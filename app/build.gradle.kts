@@ -73,7 +73,7 @@ dependencies {
     //work manager
     implementation("androidx.work:work-runtime-ktx:2.9.0")
 
-    //gson, implement when needed
+    //gson
     implementation("com.google.code.gson:gson:2.10.1")
 
     //to load images
@@ -95,6 +95,7 @@ dependencies {
     //data store
     implementation("androidx.datastore:datastore-preferences:1.1.7")
 
+    //hilt DI
     implementation("com.google.dagger:hilt-android:2.48")
     kapt("com.google.dagger:hilt-compiler:2.48.1")
 
@@ -103,6 +104,12 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.11")
     implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.11")
+
+    //web rtc
+    implementation("io.getstream:stream-webrtc-android:1.3.9")
+
+    //stream custom logger
+    implementation("io.getstream:stream-log-android:1.1.4")
 
     implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.2")
