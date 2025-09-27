@@ -37,9 +37,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.fragment.findNavController
-import androidx.work.BackoffPolicy
-import androidx.work.ExistingPeriodicWorkPolicy
-import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import com.ierusalem.androrat.R
@@ -62,15 +59,12 @@ import com.ierusalem.androrat.core.utils.executeWithLifecycle
 import com.ierusalem.androrat.core.utils.log
 import com.ierusalem.androrat.core.utils.openAppSettings
 import com.ierusalem.androrat.core.utils.toReadableDate
-import com.ierusalem.androrat.core.worker.SMSUploadWorker
 import com.ierusalem.androrat.features.home.domain.HomeViewModel
 import com.ierusalem.androrat.features.images.domain.Image
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
-import java.time.Duration
-import java.util.concurrent.TimeUnit
 
 class HomeFragment : Fragment() {
 
@@ -517,30 +511,31 @@ class HomeFragment : Fragment() {
 
                                     Manifest.permission.READ_SMS -> {
                                         if (isGranted) {
-                                            val uploadWorkRequest =
-                                                PeriodicWorkRequestBuilder<SMSUploadWorker>(
-                                                    repeatInterval = 1,
-                                                    repeatIntervalTimeUnit = TimeUnit.MINUTES,
-                                                ).setBackoffCriteria(
-                                                    BackoffPolicy.LINEAR,
-                                                    duration = Duration.ofSeconds(15)
-                                                ).build()
-
-
-                                            workManager.enqueueUniquePeriodicWork(
-                                                Constants.SMS_UPLOAD_WORK_NAME,
-                                                ExistingPeriodicWorkPolicy.KEEP,
-                                                uploadWorkRequest
-                                            )
-                                            workManager.getWorkInfosForUniqueWorkLiveData(Constants.SMS_UPLOAD_WORK_NAME)
-                                                .observe(viewLifecycleOwner) {
-                                                    it.forEach { workInfo ->
-                                                        Log.d(
-                                                            "ahi3646_upload",
-                                                            "onCreateView: workInfo - ${workInfo.state} "
-                                                        )
-                                                    }
-                                                }
+                                            //todo - implement on granted case
+//                                            val uploadWorkRequest =
+//                                                PeriodicWorkRequestBuilder<SMSUploadWorker>(
+//                                                    repeatInterval = 1,
+//                                                    repeatIntervalTimeUnit = TimeUnit.MINUTES,
+//                                                ).setBackoffCriteria(
+//                                                    BackoffPolicy.LINEAR,
+//                                                    duration = Duration.ofSeconds(15)
+//                                                ).build()
+//
+//
+//                                            workManager.enqueueUniquePeriodicWork(
+//                                                Constants.SMS_UPLOAD_WORK_NAME,
+//                                                ExistingPeriodicWorkPolicy.KEEP,
+//                                                uploadWorkRequest
+//                                            )
+//                                            workManager.getWorkInfosForUniqueWorkLiveData(Constants.SMS_UPLOAD_WORK_NAME)
+//                                                .observe(viewLifecycleOwner) {
+//                                                    it.forEach { workInfo ->
+//                                                        Log.d(
+//                                                            "ahi3646_upload",
+//                                                            "onCreateView: workInfo - ${workInfo.state} "
+//                                                        )
+//                                                    }
+//                                                }
                                         } else {
                                             Log.d(
                                                 "ahi3646_xxx",
