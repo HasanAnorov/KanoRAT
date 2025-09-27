@@ -135,5 +135,3 @@ For policy questions or to report an incident, contact: `anorovhasan@gmail.com`.
 ## Disclaimer
 
 This repository is provided **as‑is** for **educational** purposes. The authors and contributors are **not responsible** for any misuse or damage resulting from running this project outside lawful, consented environments.
-
-
