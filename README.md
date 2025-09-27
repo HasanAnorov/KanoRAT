@@ -46,6 +46,17 @@ I built KanoRAT to:
 
 ---
 
+## 📱 App Screens & Flow
+
+
+### 1️⃣ Login
+<img src="https://github.com/HasanAnorov/KanoMessenger/blob/feature/server/app/src/main/screenshots/login.png" width="250">
+
+Simple greeting screen with a username field and **Login** button.  
+Once logged in, you are taken to the **Home** page.
+
+---
+
 ## Tech stack
 
 **Mobile & client**
@@ -111,8 +122,7 @@ I built KanoRAT to:
 
 ## Key features 
 
-- Permission-gated device metadata extraction: Android `Build.*` fields, Android_ID placeholder, SDK level, brand/model, etc.
-- Link logs: short URL that, when clicked by a consenting browser, records request metadata (IP, UA).
+- Link logs: agent URL - http://example.agent.url/, when clicked by the target, an HTTP request will be sent to the Server and display the Agent browser. The server will extract important information from metadata and store it. KanoRAT's Link logs section will retrieve the target's metadata and show us visually.
 - KanoRTC dashboard: lists clients, status (online/offline), and “Acquired Data” categories.
 - WorkManager-based scheduling to simulate deferred telemetry uploads (network-aware).
 - Localization (English + Russian) and theme toggle (light/dark).
@@ -125,5 +135,3 @@ For policy questions or to report an incident, contact: `anorovhasan@gmail.com`.
 ## Disclaimer
 
 This repository is provided **as‑is** for **educational** purposes. The authors and contributors are **not responsible** for any misuse or damage resulting from running this project outside lawful, consented environments.
-
-
