@@ -16,7 +16,7 @@ class DataStorePreferenceRepository(context: Context) {
     private val Context.dataStore by preferencesDataStore(Constants.DATA_STORE_NAME)
     private val dataStore: DataStore<Preferences> = context.dataStore
     private val defaultLanguage = Constants.DEFAULT_LOCALE
-    private val defaultTheme = Constants.DEFAULT_THEME
+    private val defaultTheme = false
     private val defaultLogin = Constants.DEFAULT_LOGIN
     private val defaultPassword = Constants.DEFAULT_PASSWORD
 
