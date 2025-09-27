@@ -46,6 +46,17 @@ I built KanoRAT to:
 
 ---
 
+## 📱 App Screens & Flow
+
+
+### 1️⃣ Login
+<img src="https://github.com/HasanAnorov/KanoMessenger/blob/feature/server/app/src/main/screenshots/login.png" width="250">
+
+Simple greeting screen with a username field and **Login** button.  
+Once logged in, you are taken to the **Home** page.
+
+---
+
 ## Tech stack
 
 **Mobile & client**
