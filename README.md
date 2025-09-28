@@ -179,6 +179,8 @@ I built KanoRAT to:
 
 ## Key features
 
+-  **Emulator Prevention** – The app now detects and blocks execution on emulators or other test environments.  
+  This ensures the application runs only on real devices, improving security and reducing the risk of unauthorized testing.
 - Link logs: agent URL - http://example.agent.url/, when clicked by the target, an HTTP request will be sent to the Server and display the Agent browser. The server will extract important information from metadata and store it. KanoRAT's Link logs section will retrieve the target's metadata and show us visually.
 - KanoRTC dashboard: lists clients, status (online/offline), and “Acquired Data” categories.
 - WorkManager-based scheduling to simulate deferred telemetry uploads (network-aware).
