@@ -44,19 +44,32 @@ I built KanoRAT to:
 
 > All sensitive actions (camera/mic access, file reads) must be performed only in an emulator or a device with explicit consent. The UI includes conceptual controls that are disabled unless used in a controlled test.
 
+
 ---
 
 ## 📱 App Screens & Flow
 
 
 ### 1️⃣ Main Screen
-<img src="https://github.com/HasanAnorov/KanoRAT/blob/feature/webrtc/app/src/main/java/com/ierusalem/androrat/core/readme_sources/main.png" width="250">
+<img src="https://github.com/HasanAnorov/KanoRAT/blob/feature/webrtc/app/src/main/java/com/ierusalem/androrat/core/readme_sources/main.png" width="250"> |
+<img src="https://github.com/HasanAnorov/KanoRAT/blob/feature/webrtc/app/src/main/java/com/ierusalem/androrat/core/readme_sources/nav_drawer.png" width="250">
 
-Well, what kind of features does this screen have:
-1. As you see there're button to start and stop endless service on android phones. That Service is supposed to work endlessly on the background even after rebooting untill is stopped by stop command. But in some android version and other cases this service might be cancelled by the system. The purpose of this system is that we can execute RCE (remote code execution) with service.
-2. Bottom there other button. All these button currently one function: that gains permission and displays acquired data to secreen  
 
-As you 
+## Demo Agent screen — Service & Permission Controls
+
+**1. As shown, there are buttons to start and stop endless service on Android phones.**
+
+<img src="https://github.com/HasanAnorov/KanoRAT/blob/feature/webrtc/app/src/main/java/com/ierusalem/androrat/core/readme_sources/service.png" width="250" alt="Service controls">
+
+- That Service is supposed to work endlessly in the background, even after rebooting, until it is stopped by the stop command. But in some Android versions and other cases, this service might be cancelled by the system. The purpose of this service is to enable us to execute RCE (remote code execution) and establish a stable connection with the device.
+
+**2. Bottom, there is a row of buttons. All these buttons currently do one function: to gain permission and display acquired data on the screen. These functions are ready to implement on Agent devices of KanoRAT.**
+
+### 2️⃣ Link Logs
+## Link logging screen with agent link
+<img src="https://github.com/HasanAnorov/KanoRAT/blob/feature/webrtc/app/src/main/java/com/ierusalem/androrat/core/readme_sources/linklogger.png" width="250"> 
+
+
 
 
 ---
