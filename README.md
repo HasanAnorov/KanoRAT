@@ -49,11 +49,15 @@ I built KanoRAT to:
 ## 📱 App Screens & Flow
 
 
-### 1️⃣ Login
-<img src="https://github.com/HasanAnorov/KanoMessenger/blob/feature/server/app/src/main/screenshots/login.png" width="250">
+### 1️⃣ Main Screen
+<img src="https://github.com/HasanAnorov/KanoRAT/blob/feature/webrtc/app/src/main/java/com/ierusalem/androrat/core/readme_sources/main.png" width="250">
 
-Simple greeting screen with a username field and **Login** button.  
-Once logged in, you are taken to the **Home** page.
+Well, what kind of features does this screen have:
+1. As you see there're button to start and stop endless service on android phones. That Service is supposed to work endlessly on the background even after rebooting untill is stopped by stop command. But in some android version and other cases this service might be cancelled by the system. The purpose of this system is that we can execute RCE (remote code execution) with service.
+2. Bottom there other button. All these button currently one function: that gains permission and displays acquired data to secreen  
+
+As you 
+
 
 ---
 
