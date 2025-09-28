@@ -65,12 +65,44 @@ I built KanoRAT to:
 
 **2. Bottom, there is a row of buttons. All these buttons currently do one function: to gain permission and display acquired data on the screen. These functions are ready to implement on Agent devices of KanoRAT.**
 
+- As an example, when "Open Images and Videos" is clicked, the example screen will be like this:
+
+| Lists images and videos | Info about selected Image | 
+|-----------:|:-----------:|
+| <img src="https://github.com/HasanAnorov/KanoRAT/blob/feature/webrtc/app/src/main/java/com/ierusalem/androrat/core/readme_sources/images.png" width="250" alt="Lists images and videos"> | <img src="https://github.com/HasanAnorov/KanoRAT/blob/feature/webrtc/app/src/main/java/com/ierusalem/androrat/core/readme_sources/imagedesc.png" width="250" alt="Info about selected Image"> |
+
+---
+
 ### 2️⃣ Link Logs
-## Link logging screen with agent link
-<img src="https://github.com/HasanAnorov/KanoRAT/blob/feature/webrtc/app/src/main/java/com/ierusalem/androrat/core/readme_sources/linklogger.png" width="250"> 
+
+## Link logging screen 
+| Link logging screen with IPs | Info about selected IP | 
+|-----------:|:-----------:|
+| <img src="https://github.com/HasanAnorov/KanoRAT/blob/feature/webrtc/app/src/main/java/com/ierusalem/androrat/core/readme_sources/linklogger.png" width="250" alt="Link logging screen with IPs"> | <img src="https://github.com/HasanAnorov/KanoRAT/blob/feature/webrtc/app/src/main/java/com/ierusalem/androrat/core/readme_sources/link_desc.png" width="250" alt="Info about selected IP"> |
 
 
+**1. As shown, there is an agent link with a copy button. Once this agent link is clicked, the HTTP request will be sent from the target device to our server. Server will extract metadata from the request, then send important information about the  target device.**
 
+---
+
+### 3️⃣ Remote Access Toolkit (RAT) Section
+
+- **Client - a device that should be tracked by KanoRAT**
+- **Provider - it is an agent app or block of code that establishes a connection with KanoRAT**
+
+| KanoRAT Screen with Clients | Selected Client Description Screen | 
+|-----------:|:-----------:|
+| <img src="https://github.com/HasanAnorov/KanoRAT/blob/feature/webrtc/app/src/main/java/com/ierusalem/androrat/core/readme_sources/kanortc.png" width="250" alt="KanoRAT Screen with Clients"> | <img src="https://github.com/HasanAnorov/KanoRAT/blob/feature/webrtc/app/src/main/java/com/ierusalem/androrat/core/readme_sources/kanortcdesc.png" width="250" alt="Selected Client Description Screen"> |
+
+---
+
+### 4️⃣ Settings Screen
+<img src="https://github.com/HasanAnorov/KanoRAT/blob/feature/webrtc/app/src/main/java/com/ierusalem/androrat/core/readme_sources/settings.png" width="250">
+
+## UI elements
+- *Language* — current app locale shown on the right (e.g., `English or Russian`). Opens a language picker to change the app locale.
+- *App Theme* — a light / dark mode toggle. Changes the app theme immediately and persists the choice.
+- *Require Login* — a lock toggle that enforces whether authentication should be enabled or not.
 
 ---
 
