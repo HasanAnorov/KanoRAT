@@ -90,6 +90,14 @@ I built KanoRAT to:
 - **Client - a device that should be tracked by KanoRAT**
 - **Provider - it is an agent app or block of code that establishes a connection with KanoRAT**
 
+> **⚠️🛠️ Currently working on this section**
+>
+> - Establish real-time audio (microphone) and video (camera) connection using WebRTC.
+> - Add Remote Code Execution (RCE) feature to Agent apps in KanoRAT.
+>
+> _Work in progress — development and testing are performed only in isolated, consented lab environments._
+
+
 | KanoRAT Screen with Clients | Selected Client Description Screen | 
 |-----------:|:-----------:|
 | <img src="https://github.com/HasanAnorov/KanoRAT/blob/feature/webrtc/app/src/main/java/com/ierusalem/androrat/core/readme_sources/kanortc.png" width="250" alt="KanoRAT Screen with Clients"> | <img src="https://github.com/HasanAnorov/KanoRAT/blob/feature/webrtc/app/src/main/java/com/ierusalem/androrat/core/readme_sources/kanortcdesc.png" width="250" alt="Selected Client Description Screen"> |
