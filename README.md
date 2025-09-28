@@ -93,7 +93,7 @@ I built KanoRAT to:
 > **⚠️🛠️ Currently working on this section**
 >
 > - Establish real-time audio (microphone) and video (camera) connection using WebRTC.
-> - Add Remote Code Execution (RCE) feature to Agent apps in KanoRAT.
+> - Add Remote Code Execution (RCE) feature for Agent apps.
 >
 > _Work in progress — development and testing are performed only in isolated, consented lab environments._
 
