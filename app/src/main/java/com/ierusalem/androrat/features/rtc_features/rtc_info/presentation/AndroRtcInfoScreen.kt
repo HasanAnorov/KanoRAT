@@ -18,7 +18,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ierusalem.androrat.core.ui.components.AndroRatAppBar
 import com.ierusalem.androrat.core.ui.theme.AndroRATTheme
-import com.ierusalem.androrat.features.rtc_features.rtc_info.domain.AndroRtcInfoUiState
 import com.ierusalem.androrat.features.rtc_features.rtc_info.presentation.components.ClientCallProperty
 import com.ierusalem.androrat.features.rtc_features.rtc_info.presentation.components.DeviceData
 import com.ierusalem.androrat.features.rtc_features.rtc_info.presentation.components.DeviceInfo

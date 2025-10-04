@@ -7,20 +7,20 @@ import android.view.ViewGroup
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.fragment.findNavController
 import com.ierusalem.androrat.R
 import com.ierusalem.androrat.core.ui.theme.AndroRATTheme
 import com.ierusalem.androrat.core.utils.executeWithLifecycle
+import com.ierusalem.androrat.features.rtc_features.domain.AndroRtcViewModel
 import com.ierusalem.androrat.features.rtc_features.rtc.domain.AndroRtcNavigation
-import com.ierusalem.androrat.features.rtc_features.rtc.domain.AndroRtcViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class AndroRtcFragment : Fragment() {
 
-    private val viewModel: AndroRtcViewModel by viewModels()
+    private val viewModel: AndroRtcViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,

