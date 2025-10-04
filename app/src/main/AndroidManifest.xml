@@ -116,14 +116,14 @@
         </activity>
 
         <service
-            android:name=".core.data.services.endless_service.EndlessService"
+            android:name=".core.data.service.EndlessService"
             android:enabled="true"
             android:exported="false"
             android:foregroundServiceType="camera|microphone|location"
             android:stopWithTask="false" />
 
         <receiver
-            android:name=".core.data.services.endless_service.StartReceiver"
+            android:name=".core.data.service.StartReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
