@@ -25,7 +25,7 @@ import com.ierusalem.androrat.R
 import com.ierusalem.androrat.core.ui.theme.AndroRATTheme
 
 @Composable
-fun ClientCallProperty(modifier: Modifier = Modifier) {
+fun WebRtcProperty(modifier: Modifier = Modifier) {
     Card(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
@@ -83,7 +83,7 @@ fun ClientCallProperty(modifier: Modifier = Modifier) {
 @Composable
 private fun PreviewLight() {
     AndroRATTheme {
-        ClientCallProperty()
+        WebRtcProperty()
     }
 }
 
@@ -91,6 +91,6 @@ private fun PreviewLight() {
 @Composable
 private fun PreviewDark() {
     AndroRATTheme(isDarkTheme = true) {
-        ClientCallProperty()
+        WebRtcProperty()
     }
 }

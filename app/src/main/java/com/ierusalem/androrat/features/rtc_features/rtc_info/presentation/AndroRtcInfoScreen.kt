@@ -18,7 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ierusalem.androrat.core.ui.components.AndroRatAppBar
 import com.ierusalem.androrat.core.ui.theme.AndroRATTheme
-import com.ierusalem.androrat.features.rtc_features.rtc_info.presentation.components.ClientCallProperty
+import com.ierusalem.androrat.features.rtc_features.rtc_info.presentation.components.WebRtcProperty
 import com.ierusalem.androrat.features.rtc_features.rtc_info.presentation.components.DeviceData
 import com.ierusalem.androrat.features.rtc_features.rtc_info.presentation.components.DeviceInfo
 
@@ -47,7 +47,7 @@ fun AndroRtcInfoScreen(
                     )
                 }
                 item {
-                    ClientCallProperty(
+                    WebRtcProperty(
                         modifier = Modifier
                             .padding(horizontal = 8.dp)
                     )
