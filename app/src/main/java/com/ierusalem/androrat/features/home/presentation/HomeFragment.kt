@@ -40,10 +40,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import com.ierusalem.androrat.R
-import com.ierusalem.androrat.core.data.services.endless_service.Actions
-import com.ierusalem.androrat.core.data.services.endless_service.EndlessService
-import com.ierusalem.androrat.core.data.services.endless_service.ServiceState
-import com.ierusalem.androrat.core.data.services.endless_service.getServiceState
+import com.ierusalem.androrat.core.data.service.Actions
+import com.ierusalem.androrat.core.data.service.EndlessService
+import com.ierusalem.androrat.core.data.service.ServiceState
+import com.ierusalem.androrat.core.data.service.getServiceState
 import com.ierusalem.androrat.core.ui.components.AndroRatAppDrawer
 import com.ierusalem.androrat.core.ui.components.CameraPermissionTextProvider
 import com.ierusalem.androrat.core.ui.components.MusicAndAudioPermissionTextProvider

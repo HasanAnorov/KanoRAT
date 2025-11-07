@@ -1,4 +1,4 @@
-package com.ierusalem.androrat.core.data.services.endless_service
+package com.ierusalem.androrat.core.data.service
 
 import android.app.AlarmManager
 import android.app.Notification

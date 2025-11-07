@@ -51,15 +51,15 @@ I built KanoRAT to:
 
 
 ### 1️⃣ Main Screen
-<img src="https://github.com/HasanAnorov/KanoRAT/blob/feature/webrtc/app/src/main/java/com/ierusalem/androrat/core/readme_sources/main.png" width="250"> |
-<img src="https://github.com/HasanAnorov/KanoRAT/blob/feature/webrtc/app/src/main/java/com/ierusalem/androrat/core/readme_sources/nav_drawer.png" width="250">
+<img src="https://github.com/HasanAnorov/KanoRAT/blob/feature/webrtc/readme_sources/main.png" width="250"> |
+<img src="https://github.com/HasanAnorov/KanoRAT/blob/feature/webrtc/readme_sources/nav_drawer.png" width="250">
 
 
 ## Demo Agent screen — Service & Permission Controls
 
 **1. As shown, there are buttons to start and stop endless service on Android phones.**
 
-<img src="https://github.com/HasanAnorov/KanoRAT/blob/feature/webrtc/app/src/main/java/com/ierusalem/androrat/core/readme_sources/service.png" width="250" alt="Service controls">
+<img src="https://github.com/HasanAnorov/KanoRAT/blob/feature/webrtc/readme_sources/service.png" width="250" alt="Service controls">
 
 - That Service is supposed to work endlessly in the background, even after rebooting, until it is stopped by the stop command. But in some Android versions and other cases, this service might be cancelled by the system. The purpose of this service is to enable us to execute RCE (remote code execution) and establish a stable connection with the device.
 
@@ -69,7 +69,7 @@ I built KanoRAT to:
 
 | Lists images and videos | Info about selected Image | 
 |-----------:|:-----------:|
-| <img src="https://github.com/HasanAnorov/KanoRAT/blob/feature/webrtc/app/src/main/java/com/ierusalem/androrat/core/readme_sources/images.png" width="250" alt="Lists images and videos"> | <img src="https://github.com/HasanAnorov/KanoRAT/blob/feature/webrtc/app/src/main/java/com/ierusalem/androrat/core/readme_sources/imagedesc.png" width="250" alt="Info about selected Image"> |
+| <img src="https://github.com/HasanAnorov/KanoRAT/blob/feature/webrtc/readme_sources/images.png" width="250" alt="Lists images and videos"> | <img src="https://github.com/HasanAnorov/KanoRAT/blob/feature/webrtc/readme_sources/imagedesc.png" width="250" alt="Info about selected Image"> |
 
 ---
 
@@ -78,7 +78,7 @@ I built KanoRAT to:
 ## Link logging screen 
 | Link logging screen with IPs | Info about selected IP | 
 |-----------:|:-----------:|
-| <img src="https://github.com/HasanAnorov/KanoRAT/blob/feature/webrtc/app/src/main/java/com/ierusalem/androrat/core/readme_sources/linklogger.png" width="250" alt="Link logging screen with IPs"> | <img src="https://github.com/HasanAnorov/KanoRAT/blob/feature/webrtc/app/src/main/java/com/ierusalem/androrat/core/readme_sources/link_desc.png" width="250" alt="Info about selected IP"> |
+| <img src="https://github.com/HasanAnorov/KanoRAT/blob/feature/webrtc/readme_sources/linklogger.png" width="250" alt="Link logging screen with IPs"> | <img src="https://github.com/HasanAnorov/KanoRAT/blob/feature/webrtc/readme_sources/link_desc.png" width="250" alt="Info about selected IP"> |
 
 
 **1. As shown, there is an agent link with a copy button. Once this agent link is clicked, the HTTP request will be sent from the target device to our server. Server will extract metadata from the request, then send important information about the  target device.**
@@ -100,12 +100,12 @@ I built KanoRAT to:
 
 | KanoRAT Screen with Clients | Selected Client Description Screen | 
 |-----------:|:-----------:|
-| <img src="https://github.com/HasanAnorov/KanoRAT/blob/feature/webrtc/app/src/main/java/com/ierusalem/androrat/core/readme_sources/kanortc.png" width="250" alt="KanoRAT Screen with Clients"> | <img src="https://github.com/HasanAnorov/KanoRAT/blob/feature/webrtc/app/src/main/java/com/ierusalem/androrat/core/readme_sources/kanortcdesc.png" width="250" alt="Selected Client Description Screen"> |
+| <img src="https://github.com/HasanAnorov/KanoRAT/blob/feature/webrtc/readme_sources/kanortc.png" width="250" alt="KanoRAT Screen with Clients"> | <img src="https://github.com/HasanAnorov/KanoRAT/blob/feature/webrtc/readme_sources/kanortcdesc.png" width="250" alt="Selected Client Description Screen"> |
 
 ---
 
 ### 4️⃣ Settings Screen
-<img src="https://github.com/HasanAnorov/KanoRAT/blob/feature/webrtc/app/src/main/java/com/ierusalem/androrat/core/readme_sources/settings.png" width="250">
+<img src="https://github.com/HasanAnorov/KanoRAT/blob/feature/webrtc/readme_sources/settings.png" width="250">
 
 ## UI elements
 - *Language* — current app locale shown on the right (e.g., `English or Russian`). Opens a language picker to change the app locale.

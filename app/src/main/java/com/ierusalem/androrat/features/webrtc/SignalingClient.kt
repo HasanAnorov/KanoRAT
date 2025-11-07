@@ -21,7 +21,7 @@ class SignalingClient {
   private val client = OkHttpClient()
   private val request = Request
     .Builder()
-    .url("ws://192.168.1.123:8080/rtc")
+    .url("ws://10.128.105.70:8080/rtc")
     .build()
 
   // opening web socket with signaling server

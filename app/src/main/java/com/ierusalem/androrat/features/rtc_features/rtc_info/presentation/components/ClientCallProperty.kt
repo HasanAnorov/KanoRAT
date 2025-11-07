@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -15,17 +16,16 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ierusalem.androrat.R
 import com.ierusalem.androrat.core.ui.theme.AndroRATTheme
+import com.ierusalem.androrat.core.ui.theme.MontserratFontFamily
 
 @Composable
-fun ClientCallProperty(modifier: Modifier = Modifier) {
+fun WebRtcProperty(modifier: Modifier = Modifier, targetName: String) {
     Card(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
@@ -33,48 +33,52 @@ fun ClientCallProperty(modifier: Modifier = Modifier) {
             containerColor = MaterialTheme.colorScheme.surfaceDim.copy(0.4F)
         )
     ) {
-        Row(
-            horizontalArrangement = Arrangement.Start,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column(
-                modifier = Modifier
-                    .weight(1F)
-                    .padding(horizontal = 8.dp, vertical = 12.dp)
+        Column(modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp)) {
+            Row(
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
-                    modifier = Modifier.fillMaxWidth(),
-                    style = MaterialTheme.typography.titleSmall,
-                    fontSize = 16.sp,
-                    text = "Gleb",
-                    color = MaterialTheme.colorScheme.onBackground
-                )
-                Text(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 4.dp),
-                    maxLines = 1,
-                    style = MaterialTheme.typography.labelMedium,
-                    overflow = TextOverflow.Ellipsis,
-                    color = Color.Red,
-                    text = "Offline",
-                    fontSize = 14.sp
-                )
+                Row (
+                    modifier = Modifier.weight(1F)
+                ) {
+                    Text(
+                        text = "Target: ",
+                        fontFamily = MontserratFontFamily,
+                        style = MaterialTheme.typography.titleSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        style = MaterialTheme.typography.titleSmall,
+                        fontSize = 16.sp,
+                        text = targetName,
+                        color = MaterialTheme.colorScheme.onBackground
+                    )
+                }
+                IconButton(onClick = { /*TODO*/ }) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.mic),
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onBackground
+                    )
+                }
+                IconButton(onClick = { /*TODO*/ }) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.video),
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onBackground
+                    )
+                }
             }
-            IconButton(onClick = { /*TODO*/ }) {
-                Icon(
-                    painter = painterResource(id = R.drawable.mic),
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onBackground
-                )
-            }
-            IconButton(onClick = { /*TODO*/ }) {
-                Icon(
-                    painter = painterResource(id = R.drawable.video),
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onBackground
-                )
-            }
+            HorizontalDivider(
+                color = MaterialTheme.colorScheme.background,
+                thickness = 1.dp
+            )
+            StatusProperty(
+                modifier = Modifier,
+                status = "Peer Status: ",
+                state = "Waiting for connection ..."
+            )
         }
     }
 }
@@ -83,7 +87,9 @@ fun ClientCallProperty(modifier: Modifier = Modifier) {
 @Composable
 private fun PreviewLight() {
     AndroRATTheme {
-        ClientCallProperty()
+        WebRtcProperty(
+            targetName = "Gleb"
+        )
     }
 }
 
@@ -91,6 +97,8 @@ private fun PreviewLight() {
 @Composable
 private fun PreviewDark() {
     AndroRATTheme(isDarkTheme = true) {
-        ClientCallProperty()
+        WebRtcProperty(
+            targetName = "Gleb"
+        )
     }
 }

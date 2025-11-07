@@ -24,7 +24,6 @@ import com.ierusalem.androrat.core.ui.components.LoadingScreen
 import com.ierusalem.androrat.core.ui.theme.AndroRATTheme
 import com.ierusalem.androrat.core.utils.Resource
 import com.ierusalem.androrat.features.rtc_features.rtc.domain.AndroRtcEvents
-import com.ierusalem.androrat.features.rtc_features.rtc.domain.AndroRtcUiState
 import com.ierusalem.androrat.features.rtc_features.rtc.presentation.components.RtcClientItem
 
 @OptIn(ExperimentalMaterial3Api::class)
